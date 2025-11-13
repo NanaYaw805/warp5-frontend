@@ -7,12 +7,37 @@ import FooterSection from '@/components/FooterSection';
 function Page() {
   const [activeTab, setActiveTab] = useState('personalInfo');
 
+  const [notifications, setNotifications] = useState({
+    emailNotif: true,
+    smsNotif: false,
+    pushNotif: true,
+    reservationReminders: true,
+    promoOffers: false,
+  });
+
   const personalInfo = [
     { label: 'First Name', name: 'firstName', value: 'Isaac' },
     { label: 'Last Name', name: 'lastName', value: 'Newton' },
     { label: 'Date of Birth', name: 'dob', value: '23/06/1990' },
     { label: 'Gender', name: 'gender', value: 'Male' },
   ]
+
+  const handleNotificationChange = (name: string, checked: boolean) => {
+    setNotifications(prev => ({ ...prev, [name]: checked }));
+  };
+
+  const notificationSettings = [
+    { label: 'Email Alerts', name: 'emailNotif', checked: notifications.emailNotif, description: 'Get account updates, and important notice via email' },
+    { label: 'SMS notifications', name: 'smsNotif', checked: notifications.smsNotif, description: 'Get updates via SMS.' },
+    { label: 'Web alerts', name: 'pushNotif', checked: notifications.pushNotif, description: 'See alerts directly in your on site when you\'re logged in.' },
+    { label: 'Reservation Reminders', name: 'reservationReminders', checked: notifications.reservationReminders, description: 'Receive reminders for your upcoming reservations.' },
+    { label: 'Promotional Offers', name: 'promoOffers', checked: notifications.promoOffers, description: 'Get notified about special offers and promotions.' },
+  ];
+
+  const privacySettings = [
+    { title: 'Privacy Policy', description: 'We respect your privacy. Your personal data is handled securely and used only to support your experience on Warp5. For full details, please review our Privacy Policy.', buttonText: 'View Policy', buttonColor: '#E4E4E4', textColor: '#333333' },
+    { title: 'Privacy Policy', description: 'We respect your privacy. Your personal data is handled securely and used only to support your experience on Warp5. For full details, please review our Privacy Policy.', buttonText: 'View Policy', buttonColor: '#FF0000', textColor: '#FFFFFF' },
+  ];
 
   const tabs = [
     { id: 'personalInfo', label: 'Personal Information' },
@@ -49,7 +74,7 @@ function Page() {
 
           <div className='mt-20'>
             <div className='w-[40vw] mx-auto grid grid-cols-2 gap-4'>
-              <div className='flex flex-col space-y-16'>
+              <div className='flex flex-col space-y-12'>
                 {tabs.map((tab) => (
                   <div
                     key={tab.id}
@@ -70,26 +95,69 @@ function Page() {
                   </h1>
                 </div>
 
-                <div className='mt-8 space-y-12'>
-                  <>
-                    {personalInfo.map((info) => (
-                      <div key={info.name}>
-                        <label htmlFor={info.name} className='mb-2 block text-base font-regular text-[#333333]'>
-                          {info.label}
-                        </label>
-                        <input
-                          type='text'
-                          value={info.value}
-                          id={info.name}
-                          name={info.name}
-                          className='w-full h-16 px-8 border border-[#787878] text-base text-[#333333] rounded-full transition-all focus:outline-none'
-                        />
+                <div className='mt-8 space-y-10'>
+                  {activeTab === 'personalInfo' && (
+                    <>
+                      {personalInfo.map((info) => (
+                        <div key={info.name}>
+                          <label htmlFor={info.name} className='mb-2 block text-base font-regular text-[#333333]'>
+                            {info.label}
+                          </label>
+                          <input
+                            type='text'
+                            value={info.value}
+                            id={info.name}
+                            name={info.name}
+                            className='w-full h-16 px-8 border border-[#787878] text-base text-[#333333] rounded-full transition-all focus:outline-none'
+                          />
+                        </div>
+                      ))}
+                      <div className='flex justify-center items-center bg-[#E4E4E4] h-16 rounded-full'>
+                        <h1 className='text-base text-[#333333] font-medium'>Save Changes</h1>
                       </div>
-                    ))}
-                    <div className='flex justify-center items-center bg-[#E4E4E4] h-16 rounded-full'>
-                      <h1 className='text-base text-[#333333] font-medium'>Save Changes</h1>
-                    </div>
-                  </>
+                    </>
+                  )}
+
+                  {activeTab === 'notification' && (
+                    <>
+                      <div>
+                        <h1 className='text-base text-[#333333] font-medium'>Choose how you&apos;d like to receive updates from Warp5</h1>
+
+                        <div className='mt-8 space-y-8'>
+                          {notificationSettings.map((setting) => (
+                            <div key={setting.name} className='flex justify-between'>
+                              <div className='flex flex-col space-y-1'>
+                                <h1 className='text-[#333333] text-base font-medium'>{setting.label}</h1>
+                                <p className='text-[#333333] text-base font-regular'>{setting.description}</p>
+                              </div>
+
+                              <div className='flex cursor-pointer' onClick={() => handleNotificationChange(setting.name, !setting.checked)}>
+                                <i className={`ri-toggle-${setting.checked ? 'fill' : 'line'} ${setting.checked ? 'text-[#43A047]' : 'text-[#787878]'} text-5xl`}></i>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className='mt-16 flex justify-center items-center bg-[#E4E4E4] h-16 rounded-full'>
+                          <h1 className='text-base text-[#333333] font-medium'>Save Preferences</h1>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {activeTab === 'privacy' && (
+                    <>
+                      <div>
+                        {privacySettings.map((setting, index) => (
+                          <div key={index} className={`flex flex-col space-y-6 ${index > 0 ? 'border-t border-[#E4E4E4] mt-16 pt-16' : ''}`}>
+                            <h1 className='text-[#333333] text-base font-medium'>{setting.title}</h1>
+                            <p className='text-[#333333] text-base font-regular'>{setting.description}</p>
+                            <button className={`flex justify-center items-center w-56 h-14 text-sm font-medium rounded-full`} style={{ backgroundColor: setting.buttonColor, color: setting.textColor }}>{setting.buttonText}</button>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
 
 
                 </div>

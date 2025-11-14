@@ -3,15 +3,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import WarpLogo from '../public/logo/warp-logo.svg';
 import LoginForm from './LoginForm';
-import ForgotPassword from './resetPassword/ForgotPassword';
-import ResetPassword from './resetPassword/ResetPassword';
-import PasswordResetDone from './resetPassword/PasswordResetDone';
-
 
 function PageHeader() {
   const router = useRouter();
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [resetStep, setResetStep] = useState<'forgot' | 'reset' | 'done' | null>(null);
   const [isUser, setIsUser] = useState(false);
   const [showUserModal, setShowUserModal] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -26,24 +21,7 @@ function PageHeader() {
 
   const handleForgotPassword = () => {
     setShowLoginModal(false);
-    setResetStep('forgot');
-  };
-
-  const closeResetModal = () => {
-    setResetStep(null);
-  };
-
-  const handleContinue = () => {
-    setResetStep('reset');
-  };
-
-  const handleReset = () => {
-    setResetStep('done');
-  };
-
-  const handleLoginFromReset = () => {
-    setResetStep(null);
-    setShowLoginModal(true);
+    router.push('/forgotpassword');
   };
 
   const handleMouseEnter = () => {
@@ -152,24 +130,6 @@ function PageHeader() {
       {showLoginModal && (
         <>
           <LoginForm closeModal={closeModal} onForgotPassword={handleForgotPassword} />
-        </>
-      )}
-
-      {resetStep === 'forgot' && (
-        <>
-          <ForgotPassword closeModal={closeResetModal} onContinue={handleContinue} />
-        </>
-      )}
-
-      {resetStep === 'reset' && (
-        <>
-          <ResetPassword closeModal={closeResetModal} onReset={handleReset} />
-        </>
-      )}
-
-      {resetStep === 'done' && (
-        <>
-          <PasswordResetDone closeModal={closeResetModal} onLogin={handleLoginFromReset} />
         </>
       )}
     </>

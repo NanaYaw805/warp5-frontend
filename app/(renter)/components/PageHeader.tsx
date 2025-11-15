@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -7,7 +9,7 @@ import LoginForm from './LoginForm';
 function PageHeader() {
   const router = useRouter();
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [isUser, setIsUser] = useState(false);
+  const [isUser, setIsUser] = useState(true);
   const [showUserModal, setShowUserModal] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -21,7 +23,7 @@ function PageHeader() {
 
   const handleForgotPassword = () => {
     setShowLoginModal(false);
-    router.push('/forgotpassword');
+    router.push('/renter/forgotpassword');
   };
 
   const handleMouseEnter = () => {
@@ -50,7 +52,7 @@ function PageHeader() {
     <>
       <div className='h-32 bg-white flex items-center justify-center'>
         <div className='w-[85vw] mx-auto grid grid-cols-3 '>
-          <div className='flex justify-start items-center'>
+          <div className='flex justify-start items-center' onClick={() => router.push('/renter/dashboard')}>
             <Image
               src={WarpLogo}
               alt='Warp Logo'
@@ -102,7 +104,7 @@ function PageHeader() {
                       </div>
 
                       <div className='mt-8'>
-                        <div className='flex justify-center items-center cursor-pointer' onClick={() => router.push('/profile')}>
+                        <div className='flex justify-center items-center cursor-pointer' onClick={() => router.push('/renter/profile')}>
                           <h1 className='font-medium text-[#333333] text-base'>Account Management</h1>
                         </div>
                       </div>

@@ -4,7 +4,7 @@ import React from 'react'
 import PageHeader from '../../components/PageHeader';
 import EquipmentSearch from '../../components/EquipmentSearch';
 import CarGrid from '../../components/CarGrid';
-import SeeMoreSection from '../../../../components/SeeMoreSection';
+import SeeMoreSection from '../../components/SeeMoreSection';
 import CTASection from '../../components/CTASection';
 import WhyChooseUsSection from '../../components/whyChooseUsSection';
 import PartnerSection from '../../components/PartnerSection';

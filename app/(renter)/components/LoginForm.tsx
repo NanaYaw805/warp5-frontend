@@ -1,6 +1,10 @@
-import React from 'react'
+'use client'
+
+import React from 'react';
+import { useRouter } from 'next/navigation';
 
 function LoginForm({ closeModal, onForgotPassword }: { closeModal: () => void; onForgotPassword: () => void }) {
+  const router = useRouter();
   return (
     <>
       <div className='fixed inset-0 bg-black/70 bg-opacity-50 flex items-center justify-center z-50'>
@@ -57,13 +61,10 @@ function LoginForm({ closeModal, onForgotPassword }: { closeModal: () => void; o
             </button>
           </form>
 
-          <div className='text-center mt-6'>
-            <p className='text-gray-600'>
-              Don't have an account?{' '}
-              <a href='#' className='text-[#43A047] hover:text-[#2E7D32] transition-colors font-medium'>
-                Sign up
-              </a>
-            </p>
+          <div className='mt-8 flex justify-center items-center space-x-2'>
+            <h1 className='text-base text-[#333333] font-medium'>Don&apos;t have an account?</h1>
+            <button className='border-b border-[#43A047] text-[#43A047] text-base font-medium cursor-pointer'
+              onClick={() => router.push('/renter/signup')}>Sign Up</button>
           </div>
         </div>
       </div>

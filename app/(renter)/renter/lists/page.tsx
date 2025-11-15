@@ -36,7 +36,7 @@ function Page() {
         </section>
 
         <section className='mt-20 flex justify-center items-center'>
-          <SeeMoreSection />
+          <SeeMoreSection title='Load More' />
         </section>
 
         <section className='mt-36 bg-[#43A047] py-16'>

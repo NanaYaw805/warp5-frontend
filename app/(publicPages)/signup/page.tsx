@@ -31,7 +31,6 @@ function Page() {
     }
   };
 
-
   const tabs = [
     { id: 'personalInfo', label: 'Personal Information' },
     { id: 'address', label: 'Address' },
@@ -75,7 +74,7 @@ function Page() {
       <div className='h-screen bg-white flex items-center justify-center'>
         {step === 1 ? (
           <>
-            <div className='bg-white h-auto min-w-[25vw] shadow-xl py-8 px-8 md:px-16 lg:px-20 rounded-2xl'>
+            <div className='bg-white h-auto w-full max-w-sm lg:max-w-md xl:max-w-lg shadow-md py-8 px-8 md:px-16 lg:px-20 xl:px-24 rounded-2xl'>
 
               <div className='flex justify-end items-center '>
                 <i className="ri-close-line text-[#333333] text-4xl cursor-pointer" onClick={() => router.back()}></i>
@@ -130,8 +129,8 @@ function Page() {
           </>
         ) : (
           <>
-            <div className='bg-white min-h-[60vh] min-w-[40vw] shadow-xl py-12 px-8 md:px-16 lg:px-28 rounded-2xl grid grid-cols-2'>
-              <div className='flex flex-col mt-16 space-y-16'>
+            <div className='bg-white min-h-[60vh] w-full max-w-2xl lg:max-w-4xl xl:max-w-5xl shadow-md py-12 px-8 md:px-16 lg:px-28 xl:px-32 rounded-2xl grid grid-cols-1 lg:grid-cols-2'>
+              <div className='flex flex-col mt-8 lg:mt-16 space-y-8 lg:space-y-16'>
                 {tabs.map((tab) => (
                   <div
                     key={tab.id}
@@ -228,7 +227,7 @@ function Page() {
                         <p className='text-[#333333] text-sm font-regular'>Enter the code sent to +233 *******45</p>
                       </div>
 
-                      <div className='mt-8 flex justify-center space-x-4'>
+                      <div className='mt-8 flex justify-center space-x-4 lg:space-x-6 xl:space-x-8'>
                         {otp.map((digit, index) => (
                           <input
                             key={index}

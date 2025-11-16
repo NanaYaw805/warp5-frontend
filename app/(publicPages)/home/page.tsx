@@ -1,16 +1,15 @@
 'use client'
 
-import React from 'react'
-import PageHeader from '../../../components/PageHeader';
-import EquipmentSearch from '../components/EquipmentSearch';
-import CarGrid from '../components/CarGrid';
-import SeeMoreSection from '../../../components/SeeMoreSection';
-import CTASection from '../components/CTASection';
-import WhyChooseUsSection from '../components/whyChooseUsSection';
-import PartnerSection from '../components/PartnerSection';
-import HowItWorksSection from '../components/HowItWorksSection';
-import FAQSection from '../components/FAQSection';
-import FooterSection from '../../../components/FooterSection';
+import PublicPageHeader from '@/components/layout/PublicPageHeader';
+import FooterSection from '@/components/layout/FooterSection';
+import EquipmentSearch from '@/components/marketing/EquipmentSearch';
+import CarGrid from '@/components/marketing/CarGrid';
+import SeeMoreSection from '@/components/marketing/SeeMoreSection';
+import CTASection from '@/components/marketing/CTASection';
+import WhyChooseUsSection from '@/components/marketing/WhyChooseUsSection';
+import PartnerSection from '@/components/marketing/PartnerSection';
+import HowItWorksSection from '@/components/marketing/HowItWorksSection';
+import FAQSection from '@/components/marketing/FAQSection';
 import Car1Image from '../../../public/cars/car1.jpg';
 import Car3Image from '../../../public/cars/car3.jpg';
 import Car4Image from '../../../public/cars/car4.jpg';
@@ -30,49 +29,49 @@ function Page() {
   return (
     <>
       <main className='h-screen bg-white'>
-        <PageHeader />
+        <PublicPageHeader />
 
-        <section className='relative h-160 w-full'>
+        <section className='relative h-155 w-full'>
           <EquipmentSearch />
         </section>
 
-        <section className='mt-36'>
+        <section className='mt-24 lg:mt-36 xl:mt-48'>
           <CarGrid title='Highly Rated By Customers' cars={highlyRatedCars} />
         </section>
 
-        <section className='mt-20'>
+        <section className='mt-16 lg:mt-20 xl:mt-24'>
           <CarGrid title='Most Viewed Equipment' cars={highlyRatedCars} />
         </section>
 
-        <section className='mt-20'>
+        <section className='mt-16 lg:mt-20 xl:mt-24'>
           <CarGrid title='You Might Also Like' cars={highlyRatedCars} />
         </section>
 
-        <section className='mt-20 pb-10 flex justify-center'>
+        <section className='mt-16 lg:mt-20 xl:mt-24 pb-8 lg:pb-10 xl:pb-12 flex justify-center'>
           <SeeMoreSection route='/products' />
         </section>
 
-        <section className='mt-36'>
+        <section className='mt-24 lg:mt-36 xl:mt-48'>
           <CTASection />
         </section>
 
-        <section className='pt-32 rounded-4xl backdrop-blur-xl p-10' style={{ background: 'linear-gradient(135deg, #dffbfe 1%, #fff0f1 100%)' }}>
+        <section className='pt-24 lg:pt-32 xl:pt-40 rounded-4xl backdrop-blur-xl p-8 lg:p-10 xl:p-12' style={{ background: 'linear-gradient(135deg, #dffbfe 1%, #fff0f1 100%)' }}>
           <WhyChooseUsSection />
         </section>
 
-        <section className='bg-[#F6F6F6] py-32'>
+        <section className='bg-[#F6F6F6] py-24 lg:py-32 xl:py-40'>
           <PartnerSection />
         </section>
 
-        <section className='mt-36'>
+        <section className='mt-24 lg:mt-36 xl:mt-48'>
           <HowItWorksSection />
         </section>
 
-        <section className='mt-36'>
+        <section className='mt-24 lg:mt-36 xl:mt-48'>
           <FAQSection />
         </section>
 
-        <section className='mt-36 bg-[#43A047] py-16'>
+        <section className='mt-24 lg:mt-36 xl:mt-48 bg-[#43A047] py-12 lg:py-16 xl:py-20'>
           <FooterSection />
         </section>
       </main>

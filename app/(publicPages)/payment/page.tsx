@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
-import PageHeader from '../../../components/PageHeader';
-import FooterSection from '../../../components/FooterSection';
+import PublicPageHeader from '@/components/layout/PublicPageHeader';
+import FooterSection from '@/components/layout/FooterSection';
 
 function Page() {
   const [activeTab, setActiveTab] = useState<'momo' | 'debit' | 'other'>('momo');
@@ -29,9 +29,9 @@ function Page() {
   return (
     <>
       <main className='h-screen bg-white'>
-        <PageHeader />
+        <PublicPageHeader />
 
-        <section className='mt-28 w-[70vw] mx-auto grid grid-cols-2 gap-50'>
+        <section className='mt-28 w-full max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-32'>
 
           <div className='flex flex-col'>
             <div className='flex justify-center items-center'>
@@ -39,7 +39,7 @@ function Page() {
             </div>
 
             <div className='mt-12'>
-              <div className='flex flex-col space-y-8'>
+              <div className='flex flex-col space-y-6 lg:space-y-8 xl:space-y-10'>
 
                 <div className='flex space-x-2 tracking-wide'>
                   <h1 className='text-[#333333] font-bold text-base'>Equipment:</h1>
@@ -65,12 +65,12 @@ function Page() {
                   <h1 className='text-[#333333] text-base font-medium'>Select Payment Method</h1>
                 </div>
 
-                <div className='mt-12 flex flex-col space-y-10'>
+                <div className='mt-12 flex flex-col space-y-8 lg:space-y-10 xl:space-y-12'>
                   {paymentMethods.map((method) => (
                     <button
                       key={method.key}
                       type='button'
-                      className={`flex justify-between items-center h-24 px-12 rounded-xl shadow-md border transition-colors ${activeTab === method.key ? 'border-[#43A047] shadow-lg' : 'border-transparent'}`}
+                      className={`flex justify-between items-center h-20 lg:h-24 xl:h-28 px-8 lg:px-12 xl:px-16 rounded-xl shadow-md border transition-colors ${activeTab === method.key ? 'border-[#43A047] shadow-lg' : 'border-transparent'}`}
                       onClick={() => handlePaymentSelect(method.key)}
                     >
                       <div className='flex space-x-2 items-center'>
@@ -94,7 +94,7 @@ function Page() {
               </div>
 
               <div className='mt-12'>
-                <div className='flex flex-col space-y-16'>
+                <div className='flex flex-col space-y-12 lg:space-y-16 xl:space-y-20'>
 
                   <div className='flex flex-col space-y-2'>
                     <h1 className='text-[#333333] font-regular text-base'>Card Number</h1>
@@ -103,7 +103,7 @@ function Page() {
                     <input className='border border-[#787878] h-16 mt-4 rounded-full px-4' />
                   </div>
 
-                  <div className='grid grid-cols-2 gap-12'>
+                  <div className='grid grid-cols-2 gap-8 lg:gap-12 xl:gap-16'>
                     <div className='flex flex-col space-y-2'>
                       <h1 className='text-[#333333] font-regular text-base'>Expire Date</h1>
 
@@ -139,7 +139,7 @@ function Page() {
               </div>
 
               <div className='mt-12'>
-                <div className='flex flex-col space-y-16'>
+                <div className='flex flex-col space-y-12 lg:space-y-16 xl:space-y-20'>
 
                   <div className='flex flex-col space-y-2'>
                     <h1 className='text-[#333333] font-regular text-base'>Mobile Number</h1>
@@ -173,10 +173,10 @@ function Page() {
           )}
 
           {activeTab === 'other' && (
-            <div className='flex flex-col items-center justify-center text-center px-10'>
+            <div className='flex flex-col items-center justify-center text-center px-8 lg:px-16 xl:px-20'>
               <h1 className='text-[#333333] text-xl font-semibold'>Need a different payment option?</h1>
               <p className='mt-4 text-[#787878] text-base'>Share your preferred method and our support team will help you complete the reservation.</p>
-              <button className='mt-8 border border-[#43A047] text-[#43A047] px-8 h-14 rounded-full font-medium hover:bg-[#43A047] hover:text-white transition-colors'>Contact Support</button>
+              <button className='mt-8 border border-[#43A047] text-[#43A047] px-6 lg:px-8 xl:px-12 h-12 lg:h-14 xl:h-16 rounded-full font-medium hover:bg-[#43A047] hover:text-white transition-colors'>Contact Support</button>
             </div>
           )}
         </section>

@@ -49,7 +49,7 @@ function Page() {
       <main className='h-screen bg-white'>
         <PublicPageHeader />
 
-        <section className='relative h-155 w-full'>
+        <section className='relative h-130 w-full xl:h-155'>
           <Image
             src={BannerImage}
             alt='Banner'
@@ -59,8 +59,8 @@ function Page() {
           />
           <div className='absolute inset-0 bg-black/35'></div>
           <div className='absolute inset-0 z-10 flex flex-col justify-center items-center text-center px-6 lg:px-12 xl:px-24'>
-            <h1 className='text-[#FFFFFF] font-semibold text-base lg:text-4xl'>Warp5 Help Center</h1>
-            <h1 className='text-[#FFFFFF] font-semibold text-sm lg:text-lg mt-4'>We are Here To Answer All Your Questions</h1>
+            <h1 className='text-[#FFFFFF] font-semibold text-lg lg:text-4xl'>Warp5 Help Center</h1>
+            <h1 className='text-[#FFFFFF] font-semibold text-xs lg:text-lg mt-4'>We are Here To Answer All Your Questions</h1>
           </div>
         </section>
 
@@ -93,6 +93,7 @@ function Page() {
               })}
             </div>
           </div>
+
         </section>
 
         <section className='mt-16 sm:mt-24 pb-4'>
@@ -155,7 +156,6 @@ function Page() {
                 <div className='mt-6 sm:mt-8 lg:mt-10 xl:mt-12 bg-[#43A047] h-10 sm:h-12 lg:h-14 xl:h-16 flex justify-center items-center rounded-full'>
                   <h1 className='text-[#FFFFFF] font-medium text-xs lg:text-base'>Send Message</h1>
                 </div>
-
 
               </div>
             </div>

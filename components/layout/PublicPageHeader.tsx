@@ -44,7 +44,7 @@ const PublicPageHeader: React.FC = () => {
 
   const navItems = [
     { label: 'Home', path: '/home' },
-    { label: 'Dashboard', path: '/renter/dashboard' },
+    // { label: 'Dashboard', path: '/renter/dashboard' },
     { label: 'Help', path: '/help' },
   ];
 
@@ -189,6 +189,8 @@ const PublicPageHeader: React.FC = () => {
                 ) : (
                   <button onClick={() => { handleLoginClick(); setMobileMenuOpen(false); }} className="w-full text-left px-4 py-3 font-medium text-xs">Log In</button>
                 )}
+
+                <button className='w-full text-left px-4 py-3 font-medium text-xs' onClick={() => router.push('/profile')}>Account Management</button>
               </div>
             </div>
           </div>

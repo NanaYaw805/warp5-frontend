@@ -147,10 +147,10 @@ const EquipmentSearch: React.FC = () => {
           >
             <div className='grid grid-cols-2 gap-8 xl:grid-cols-5 xl:gap-0'>
               <div className='flex flex-col items-start justify-center space-y-2 xl:border-r-[1px] xl:border-[#DDDDDDB2]/70'>
-                <h1 className='text-[#FFFFFF] text-base lg:text-xl font-medium'>Location</h1>
+                <h1 className='text-[#FFFFFF] text-sm lg:text-lg font-medium'>Location</h1>
                 <div className='flex space-x-1 items-center cursor-pointer relative xl:space-x-2' onClick={handleLocationClick}>
-                  <span className='text-[#DDDDDD] font-regular text-sm lg:text-lg'>{city || 'Select Your City'}</span>
-                  <i className='ri-arrow-down-s-line text-[#DDDDDD] text-sm lg:text-lg'></i>
+                  <span className='text-[#DDDDDD] font-regular text-xs lg:text-base'>{city || 'Select Your City'}</span>
+                  <i className='ri-arrow-down-s-line text-[#DDDDDD] text-sm lg:text-base'></i>
                 </div>
 
                 {showLocationDropdown && (
@@ -179,10 +179,10 @@ const EquipmentSearch: React.FC = () => {
               </div>
 
               <div className='flex flex-col items-start justify-center space-y-2 xl:border-r-[1px] xl:border-[#DDDDDDB2]/70 pl-0 xl:pl-8'>
-                <h1 className='text-[#FFFFFF] text-base lg:text-xl font-medium'>Equipment</h1>
+                <h1 className='text-[#FFFFFF] text-sm lg:text-lg font-medium'>Equipment</h1>
                 <div className='flex space-x-2 items-center cursor-pointer relative' onClick={handleEquipmentClick}>
-                  <span className='text-[#DDDDDD] font-regular text-sm lg:text-lg'>{equipment || 'Choose Type'}</span>
-                  <i className='ri-arrow-down-s-line text-[#DDDDDD] text-sm lg:text-lg'></i>
+                  <span className='text-[#DDDDDD] font-regular text-xs lg:text-base'>{equipment || 'Choose Type'}</span>
+                  <i className='ri-arrow-down-s-line text-[#DDDDDD] text-xs lg:text-base'></i>
                 </div>
 
                 {showEquipmentDropdown && (
@@ -213,10 +213,10 @@ const EquipmentSearch: React.FC = () => {
               </div>
 
               <div className='flex flex-col items-start justify-center space-y-2 xl:border-r-[1px] xl:border-[#DDDDDDB2]/70 pl-0 xl:pl-8'>
-                <h1 className='text-[#FFFFFF] text-base lg:text-xl font-medium'>Price Range</h1>
+                <h1 className='text-[#FFFFFF] text-sm lg:text-lg font-medium'>Price Range</h1>
                 <div className='flex space-x-2 items-center cursor-pointer relative' onClick={handlePriceClick}>
-                  <span className='text-[#DDDDDD] font-regular text-sm lg:text-lg'>{(minPrice || maxPrice) ? `${minPrice || '0'} - ${maxPrice || '∞'}` : 'Choose Range'}</span>
-                  <i className='ri-arrow-down-s-line text-[#DDDDDD] text-sm lg:text-lg'></i>
+                  <span className='text-[#DDDDDD] font-regular text-xs lg:text-base'>{(minPrice || maxPrice) ? `${minPrice || '0'} - ${maxPrice || '∞'}` : 'Choose Range'}</span>
+                  <i className='ri-arrow-down-s-line text-[#DDDDDD] text-xs lg:text-base'></i>
                 </div>
 
                 {showPriceDropdown && (
@@ -252,10 +252,10 @@ const EquipmentSearch: React.FC = () => {
               </div>
 
               <div className='flex flex-col items-start justify-center space-y-2 pl-0 xl:pl-8'>
-                <h1 className='text-[#FFFFFF] text-base lg:text-xl font-medium'>Date</h1>
+                <h1 className='text-[#FFFFFF] text-sm lg:text-lg font-medium'>Date</h1>
                 <div className='flex space-x-2 items-center cursor-pointer relative' onClick={handleDateClick}>
-                  <i className='ri-calendar-2-line text-[#DDDDDD] text-sm lg:text-lg'></i>
-                  <span className='text-[#DDDDDD] font-regular text-sm lg:text-lg'>
+                  <i className='ri-calendar-2-line text-[#DDDDDD] text-xs lg:text-base'></i>
+                  <span className='text-[#DDDDDD] font-regular text-xs lg:text-base'>
                     {startDate && endDate ? `${startDate} - ${endDate}` : '**/**/**** '}
                   </span>
                 </div>

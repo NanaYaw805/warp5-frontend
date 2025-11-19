@@ -87,7 +87,7 @@ function Page() {
       <main className='bg-white'>
         <PublicPageHeader />
 
-        <section className='w-[85vw] mx-auto grid grid-cols-1 lg:grid-cols-[2.5fr_1fr] gap-6 lg:gap-8 xl:gap-10'>
+        <section className='mt-4 w-[85vw] mx-auto grid grid-cols-1 lg:grid-cols-[2.5fr_1fr] gap-6 lg:gap-8 xl:gap-10'>
           <div className='flex flex-col gap-4 lg:gap-6'>
             <div className='relative w-full aspect-[6/4] bg-gray-100 overflow-hidden'>
               <Image
@@ -124,11 +124,11 @@ function Page() {
             <div className='mt-6 lg:mt-8'>
               <div className='flex flex-col'>
                 <div className='flex flex-col justify-center items-start'>
-                  <h1 className='text-[#43A047] font-bold text-base lg:text-xl'>Excavators</h1>
+                  <h1 className='text-[#43A047] font-bold text-sm lg:text-lg'>Excavators</h1>
                   <div className='mt-2 flex space-x-4 lg:space-x-6'>
-                    <div className='flex'>
+                    <div className='flex items-center'>
                       <i className="ri-map-pin-2-line"></i>
-                      <h1 className='text-[#333333] text-sm lg:text-lg font-regular'>Takoradi</h1>
+                      <h1 className='text-[#333333] text-xs lg:text-base font-regular'>Takoradi</h1>
                     </div>
 
                     <div className='flex space-x-1 items-center'>
@@ -196,7 +196,7 @@ function Page() {
             <div className='mt-8 lg:mt-12'>
               <div className='flex flex-col space-y-4'>
                 <div className='flex justify-start items-center'>
-                  <h1 className='text-[#333333] font-medium text-base lg:text-xl'>Equipment Location On Map</h1>
+                  <h1 className='text-[#333333] font-medium text-sm lg:text-lg'>Equipment Location On Map</h1>
                 </div>
 
                 <div className='flex justify-center items-center bg-[#F4F4F4] min-h-24 lg:min-h-32 xl:min-h-40'>
@@ -207,7 +207,7 @@ function Page() {
 
             <div className='mt-8 lg:mt-12'>
               <div className='flex justify-start items-center'>
-                <h1 className='text-[#333333] text-base lg:text-xl font-medium'>Related equipment</h1>
+                <h1 className='text-[#333333] text-sm lg:text-lg font-medium'>Related equipment</h1>
               </div>
 
               <div className='relative mt-6 lg:mt-8'>
@@ -218,7 +218,7 @@ function Page() {
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 lg:gap-6'>
                   {cars.map((car) => (
                     <div key={car.id} className='flex flex-col'>
-                      <div className='group relative mb-3 w-full overflow-hidden rounded-4xl bg-gray-50 shadow-sm'>
+                      <div className='group relative mb-1 sm:mb-2 lg:mb-3 xl:mb-4 w-full overflow-hidden rounded-2xl xl:rounded-4xl bg-gray-50 shadow-sm'>
                         <div className='relative w-full pb-[100%]'>
                           <Image
                             src={car.image}
@@ -228,8 +228,8 @@ function Page() {
                           />
                         </div>
 
-                        <button className='absolute top-6 right-6 flex justify-center items-center w-6 lg:w-8 h-6 lg:h-8 rounded-full bg-white/50 hover:bg-[#FFF0F6] transition-colors shadow-md'>
-                          <i className="ri-heart-line text-[#FF0063] text-base lg:text-lg"></i>
+                        <button className='absolute top-6 right-6 sm:top-4 lg:top-4 xl:top-5 right-2 sm:right-3 lg:right-4 xl:right-5 flex justify-center items-center w-8 sm:w-6 lg:w-8 xl:w-10 h-8 sm:h-6 lg:h-8 xl:h-10 rounded-full bg-white/50 hover:bg-[#FFF0F6] transition-colors shadow-md'>
+                          <i className='ri-heart-line text-[#FF0063] text-xs lg:text-base'></i>
                         </button>
                       </div>
 

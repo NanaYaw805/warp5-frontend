@@ -139,12 +139,12 @@ const ReservationSearch: React.FC = () => {
         className='bg-white/20 w-[95vw] rounded-md px-8 py-6 xl:rounded-4xl xl:max-w-7xl border border-black/30 cursor-pointer'
         onClick={closeAllDropdowns}
       >
-        <div className='grid grid-cols-2 gap-8 xl:grid-cols-5 xl:gap-0'>
-          <div className='flex flex-col items-start justify-center space-y-2 xl:border-r-[1px] xl:border-[#DDDDDDB2]/70'>
-            <h1 className='text-[#333333] text-base lg:text-xl font-medium'>Location</h1>
-            <div className='flex space-x-1 items-center cursor-pointer relative xl:space-x-2' onClick={handleLocationClick}>
-              <span className='text-[#787878] font-regular text-sm lg:text-lg'>{city || 'Select Your City'}</span>
-              <i className='ri-arrow-down-s-line text-[#787878] text-sm lg:text-lg'></i>
+        <div className='grid grid-cols-2 gap-8 lg:grid-cols-5 lg:gap-0'>
+          <div className='flex flex-col items-start justify-center space-y-2 lg:border-r-[1px] lg:border-[#DDDDDDB2]/70'>
+            <h1 className='text-[#333333] text-sm lg:text-lg font-medium'>Location</h1>
+            <div className='flex space-x-1 items-center cursor-pointer relative lg:space-x-2' onClick={handleLocationClick}>
+              <span className='text-[#787878] font-regular text-xs lg:text-base'>{city || 'Select Your City'}</span>
+              <i className='ri-arrow-down-s-line text-[#787878] text-xs lg:text-base'></i>
             </div>
 
             {showLocationDropdown && (
@@ -172,11 +172,11 @@ const ReservationSearch: React.FC = () => {
             )}
           </div>
 
-          <div className='flex flex-col items-start justify-center space-y-2 xl:border-r-[1px] xl:border-[#DDDDDDB2]/70 pl-0 xl:pl-8'>
-            <h1 className='text-[#333333] text-base lg:text-xl font-medium'>Equipment</h1>
+          <div className='flex flex-col items-start justify-center space-y-2 lg:border-r-[1px] lg:border-[#DDDDDDB2]/70 pl-0 lg:pl-8'>
+            <h1 className='text-[#333333] text-sm lg:text-lg font-medium'>Equipment</h1>
             <div className='flex space-x-2 items-center cursor-pointer relative' onClick={handleEquipmentClick}>
-              <span className='text-[#787878] font-regular text-sm lg:text-lg'>{equipment || 'Choose Type'}</span>
-              <i className='ri-arrow-down-s-line text-[#787878] text-sm lg:text-lg'></i>
+              <span className='text-[#787878] font-regular text-xs lg:text-base'>{equipment || 'Choose Type'}</span>
+              <i className='ri-arrow-down-s-line text-[#787878] text-xs lg:text-base'></i>
             </div>
 
             {showEquipmentDropdown && (
@@ -206,11 +206,11 @@ const ReservationSearch: React.FC = () => {
             )}
           </div>
 
-          <div className='flex flex-col items-start justify-center space-y-2 xl:border-r-[1px] xl:border-[#DDDDDDB2]/70 pl-0 xl:pl-8'>
-            <h1 className='text-[#333333] text-base lg:text-xl font-medium'>Price Range</h1>
+          <div className='flex flex-col items-start justify-center space-y-2 lg:border-r-[1px] lg:border-[#DDDDDDB2]/70 pl-0 lg:pl-8'>
+            <h1 className='text-[#333333] text-sm lg:text-lg font-medium'>Price Range</h1>
             <div className='flex space-x-2 items-center cursor-pointer relative' onClick={handlePriceClick}>
-              <span className='text-[#787878] font-regular text-sm lg:text-lg'>{(minPrice || maxPrice) ? `${minPrice || '0'} - ${maxPrice || '∞'}` : 'Choose Range'}</span>
-              <i className='ri-arrow-down-s-line text-[#787878] text-sm lg:text-lg'></i>
+              <span className='text-[#787878] font-regular text-xs lg:text-base'>{(minPrice || maxPrice) ? `${minPrice || '0'} - ${maxPrice || '∞'}` : 'Choose Range'}</span>
+              <i className='ri-arrow-down-s-line text-[#787878] text-xs lg:text-base'></i>
             </div>
 
             {showPriceDropdown && (
@@ -223,7 +223,7 @@ const ReservationSearch: React.FC = () => {
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className='mb-3'>
-                  <h3 className='text-gray-700 font-medium text-sm lg:text-lg'>Price GHC</h3>
+                  <h3 className='text-gray-700 font-medium text-sm lg:text-base'>Price GHC</h3>
                 </div>
                 <div className='grid grid-cols-2 gap-4 items-center space-x-2'>
                   <input
@@ -245,11 +245,11 @@ const ReservationSearch: React.FC = () => {
             )}
           </div>
 
-          <div className='flex flex-col items-start justify-center space-y-2 pl-0 xl:pl-8'>
-            <h1 className='text-[#333333] text-base lg:text-xl font-medium'>Date</h1>
+          <div className='flex flex-col items-start justify-center space-y-2 pl-0 lg:pl-8'>
+            <h1 className='text-[#333333] text-sm lg:text-lg font-medium'>Date</h1>
             <div className='flex space-x-2 items-center cursor-pointer relative' onClick={handleDateClick}>
-              <i className='ri-calendar-2-line text-[#787878] text-sm lg:text-lg'></i>
-              <span className='text-[#787878] font-regular text-sm lg:text-lg whitespace-nowrap'>
+              <i className='ri-calendar-2-line text-[#787878] text-xs lg:text-base'></i>
+              <span className='text-[#787878] font-regular text-xs lg:text-base whitespace-nowrap'>
                 {startDate && endDate ? `${startDate} - ${endDate}` : '**/**/**** '}
               </span>
             </div>

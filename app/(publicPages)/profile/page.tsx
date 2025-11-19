@@ -72,7 +72,7 @@ function Page() {
         </div>
 
         <div className='mt-12 sm:mt-16'>
-          <div className='w-full max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-2 sm:gap-3 lg:gap-6 xl:gap-9'>
+          <div className='w-[90vw] lg:max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-3 lg:gap-9'>
             <div className='flex flex-col space-y-4 sm:space-y-6 lg:space-y-10 xl:space-y-14'>
               {tabs.map((tab) => (
                 <div

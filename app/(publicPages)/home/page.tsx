@@ -46,7 +46,7 @@ function Page() {
         </section>
 
         <section className='mt-8 sm:mt-12 lg:mt-16 xl:mt-20 pb-4 sm:pb-6 lg:pb-8 xl:pb-10 flex justify-center'>
-          <SeeMoreSection route='/products' />
+          <SeeMoreSection route='/equipments' />
         </section>
 
         <section className='mt-16 sm:mt-20 lg:mt-28 xl:mt-36'>

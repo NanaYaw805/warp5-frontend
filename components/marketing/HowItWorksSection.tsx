@@ -30,7 +30,7 @@ const HowItWorksSection: React.FC = () => {
   return (
     <div className='w-[80vw] sm:w-[65vw] mx-auto'>
       <div className='flex justify-center items-center'>
-        <h1 className='text-[#333333] text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-semibold'>How It Works</h1>
+        <h1 className='text-[#333333] text-base lg:text-xl font-semibold'>How It Works</h1>
       </div>
 
       <div className='mt-4 sm:mt-6 lg:mt-8 xl:mt-10 flex flex-col space-y-4 sm:space-y-6 lg:space-y-8 xl:space-y-10'>
@@ -43,8 +43,8 @@ const HowItWorksSection: React.FC = () => {
               {index < howItWorksSteps.length - 1 && <div className='w-0.5 h-8 sm:h-12 lg:h-16 xl:h-20 bg-[#333333] mt-2'></div>}
             </div>
             <div className='flex flex-col space-y-1 sm:space-y-2 lg:space-y-3 xl:space-y-4'>
-              <h2 className='text-[#333333] text-xs sm:text-sm lg:text-base xl:text-lg font-semibold'>{step.title}</h2>
-              <p className='text-[#333333] text-xs sm:text-xs lg:text-sm xl:text-base'>{step.description}</p>
+              <h2 className='text-[#333333] text-sm lg:text-lg font-semibold'>{step.title}</h2>
+              <p className='text-[#333333] text-xs lg:text-base'>{step.description}</p>
             </div>
           </div>
         ))}

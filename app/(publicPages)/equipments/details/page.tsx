@@ -124,11 +124,11 @@ function Page() {
             <div className='mt-6 lg:mt-8'>
               <div className='flex flex-col'>
                 <div className='flex flex-col justify-center items-start'>
-                  <h1 className='text-[#43A047] font-bold text-lg lg:text-xl xl:text-2xl'>Excavators</h1>
+                  <h1 className='text-[#43A047] font-bold text-base lg:text-xl'>Excavators</h1>
                   <div className='mt-2 flex space-x-4 lg:space-x-6'>
                     <div className='flex'>
                       <i className="ri-map-pin-2-line"></i>
-                      <h1 className='text-[#333333] text-sm lg:text-base font-regular'>Takoradi</h1>
+                      <h1 className='text-[#333333] text-sm lg:text-lg font-regular'>Takoradi</h1>
                     </div>
 
                     <div className='flex space-x-1 items-center'>
@@ -136,7 +136,7 @@ function Page() {
                       <i className="ri-star-s-line"></i>
                       <i className="ri-star-s-line"></i>
                       <i className="ri-star-s-line"></i>
-                      <h1 className='text-[#333333]'>4.9</h1>
+                      <h1 className='text-[#333333] text-xs lg:text-base'>4.9</h1>
                     </div>
                   </div>
                 </div>
@@ -146,14 +146,14 @@ function Page() {
             <div className='mt-4'>
               <div className='flex flex-col'>
                 <div className='flex items-center space-x-1'>
-                  <h1 className={`flex justify-center items-center ${activeTab === 'description' ? 'bg-[#F4F4F4] text-[#333333]' : 'bg-[#333333] text-white'} text-sm lg:text-base font-medium w-24 lg:w-32 h-10 lg:h-12`} onClick={() => setActiveTab('description')}>Description</h1>
-                  <h1 className={`flex justify-center items-center ${activeTab === 'rate' ? 'bg-[#F4F4F4] text-[#333333]' : 'bg-[#333333] text-white'} text-sm lg:text-base font-medium w-24 lg:w-32 h-10 lg:h-12`} onClick={() => setActiveTab('rate')}>Rate</h1>
-                  <h1 className={`flex justify-center items-center ${activeTab === 'availability' ? 'bg-[#F4F4F4] text-[#333333]' : 'bg-[#333333] text-white'} text-sm lg:text-base font-medium w-24 lg:w-32 h-10 lg:h-12`} onClick={() => setActiveTab('availability')}>Availability</h1>
+                  <h1 className={`flex justify-center items-center ${activeTab === 'description' ? 'bg-[#F4F4F4] text-[#333333]' : 'bg-[#333333] text-white'} text-sm lg:text-lg font-medium w-24 lg:w-32 h-10 lg:h-12`} onClick={() => setActiveTab('description')}>Description</h1>
+                  <h1 className={`flex justify-center items-center ${activeTab === 'rate' ? 'bg-[#F4F4F4] text-[#333333]' : 'bg-[#333333] text-white'} text-sm lg:text-lg font-medium w-24 lg:w-32 h-10 lg:h-12`} onClick={() => setActiveTab('rate')}>Rate</h1>
+                  <h1 className={`flex justify-center items-center ${activeTab === 'availability' ? 'bg-[#F4F4F4] text-[#333333]' : 'bg-[#333333] text-white'} text-sm lg:text-lg font-medium w-24 lg:w-32 h-10 lg:h-12`} onClick={() => setActiveTab('availability')}>Availability</h1>
                 </div>
 
                 {activeTab === 'description' && (
                   <div className='bg-[#F4F4F4] min-h-[10vh] max-h-96 rounded-b-3xl p-6 lg:p-8 xl:p-10 overflow-y-auto'>
-                    <h1 className='text-[#333333] text-sm lg:text-base tracking-wider font-regular'>Lorem ipsum dolor sit amet, {description}
+                    <h1 className='text-[#333333] text-xs lg:text-base tracking-wider font-regular'>Lorem ipsum dolor sit amet, {description}
                     </h1>
                   </div>
                 )}
@@ -162,21 +162,22 @@ function Page() {
                   <div className='bg-[#fff] min-h-[10vh] max-h-96 shadow-md rounded-b-3xl p-8 lg:p-12 xl:p-16 overflow-y-auto'>
                     <div className='flex flex-col lg:flex-row justify-around items-center space-y-4 lg:space-y-0'>
                       <div className='flex flex-col'>
-                        <h1 className='text-[#333333] text-sm lg:text-base font-medium'>Daily</h1>
+                        <h1 className='text-[#333333] text-sm lg:text-lg font-medium'>Daily</h1>
                         <h1 className='text-[#333333] text-lg lg:text-xl font-bold'>GH 1000.00</h1>
                       </div>
 
                       <div className='border-l border-[#333333] h-8 lg:h-10 hidden lg:block' />
 
                       <div className='flex flex-col'>
-                        <h1 className='text-[#333333] text-sm lg:text-base font-medium'>3 Days</h1>
+                        <h1 className='text-[#333333] text-sm lg:text-lg font-medium'>3 Days</h1>
                         <h1 className='text-[#333333] text-lg lg:text-xl font-bold'>GH 2500.00</h1>
                       </div>
 
                       <div className='border-l border-[#333333] h-8 lg:h-10 hidden lg:block' />
 
                       <div className='flex flex-col'>
-                        <h1 className='text-[#333333] text-sm lg:text-base font-medium'>Weekly</h1>
+                        <h1 className='text-[#333333] text-sm lg:text-lg font-medium'>Weekly</h1
+                        >
                         <h1 className='text-[#333333] text-lg lg:text-xl font-bold'>GH 7020.00</h1>
                       </div>
                     </div>
@@ -185,7 +186,7 @@ function Page() {
 
                 {activeTab === 'availability' && (
                   <div className='bg-[#F4F4F4] min-h-[10vh] max-h-96 rounded-b-3xl p-6 lg:p-8 xl:p-10 overflow-y-auto'>
-                    <h1 className='text-[#333333] text-sm lg:text-base tracking-wider font-regular'>Availability content goes here.</h1>
+                    <h1 className='text-[#333333] text-xs lg:text-base tracking-wider font-regular'>Availability content goes here.</h1>
                   </div>
                 )}
 
@@ -195,7 +196,7 @@ function Page() {
             <div className='mt-8 lg:mt-12'>
               <div className='flex flex-col space-y-4'>
                 <div className='flex justify-start items-center'>
-                  <h1 className='text-[#333333] font-medium text-lg lg:text-xl'>Equipment Location On Map</h1>
+                  <h1 className='text-[#333333] font-medium text-base lg:text-xl'>Equipment Location On Map</h1>
                 </div>
 
                 <div className='flex justify-center items-center bg-[#F4F4F4] min-h-24 lg:min-h-32 xl:min-h-40'>
@@ -206,7 +207,7 @@ function Page() {
 
             <div className='mt-8 lg:mt-12'>
               <div className='flex justify-start items-center'>
-                <h1 className='text-[#333333] text-lg lg:text-xl font-medium'>Related equipment</h1>
+                <h1 className='text-[#333333] text-base lg:text-xl font-medium'>Related equipment</h1>
               </div>
 
               <div className='relative mt-6 lg:mt-8'>
@@ -233,15 +234,15 @@ function Page() {
                       </div>
 
                       <div className='flex flex-col justify-center items-center'>
-                        <h1 className='text-sm lg:text-base text-[#333333] font-semibold'>{car.name}</h1>
+                        <h1 className='text-sm lg:text-lg text-[#333333] font-semibold'>{car.name}</h1>
                         <div className='flex items-center space-x-1'>
                           <i className="ri-map-pin-2-line text-[#787878]"></i>
-                          <h1 className='text-[#787878] text-xs lg:text-sm font-regular'>{car.location}</h1>
+                          <h1 className='text-[#787878] text-xs lg:text-base font-regular'>{car.location}</h1>
                         </div>
 
                         <div className='flex items-center space-x-1 mt-1'>
                           <i className="ri-star-fill text-[#FFB800]"></i>
-                          <h1 className='text-[#787878] text-xs lg:text-sm font-medium'>{car.rating}</h1>
+                          <h1 className='text-[#787878] text-xs lg:text-base font-medium'>{car.rating}</h1>
                         </div>
                       </div>
                     </div>
@@ -259,20 +260,20 @@ function Page() {
             <div className='pt-8 lg:pt-12 xl:pt-16 flex justify-center items-center space-x-3'>
               <div className='flex items-center space-x-2 cursor-pointer'>
                 <i className="ri-share-2-line text-[#333333] text-base lg:text-lg"></i>
-                <h1 className='text-[#333333] text-xs lg:text-sm font-medium'>Share</h1>
+                <h1 className='text-[#333333] text-xs lg:text-base font-medium'>Share</h1>
               </div>
 
               <div className='h-6 border-l border-[#333333]'></div>
 
               <div className='flex items-center space-x-2 cursor-pointer'>
                 <i className="ri-heart-line text-[#333333] text-base lg:text-lg"></i>
-                <h1 className='text-[#333333] text-xs lg:text-sm font-medium'>Save</h1>
+                <h1 className='text-[#333333] text-xs lg:text-base font-medium'>Save</h1>
               </div>
             </div>
 
             <div className='mt-8 lg:mt-12 xl:mt-16 py-6 lg:py-8 xl:py-10 flex flex-col justify-center shadow-xl rounded-b-4xl'>
               <div className='flex justify-center items-center'>
-                <h1 className='text-[#000000] text-sm lg:text-base font-medium'>Rental Period</h1>
+                <h1 className='text-[#000000] text-sm lg:text-lg font-medium'>Rental Period</h1>
               </div>
 
               <div className='relative mt-6 lg:mt-8 xl:mt-10 flex justify-center'>
@@ -280,8 +281,8 @@ function Page() {
                   className='flex justify-center items-center border border-[#787878] w-40 lg:w-48 xl:w-56 mx-auto h-10 lg:h-12 rounded-full space-x-2 cursor-pointer bg-white'
                   onClick={handleDateClick}
                 >
-                  <i className="ri-calendar-2-line text-[#787878] text-xs lg:text-sm"></i>
-                  <h1 className='text-[#787878] text-xs lg:text-sm font-regular'>
+                  <i className="ri-calendar-2-line text-[#787878] text-xs lg:text-base"></i>
+                  <h1 className='text-[#787878] text-xs lg:text-base font-regular'>
                     {startDate && endDate ? `${startDate} - ${endDate}` : 'Select Rental Dates'}
                   </h1>
                 </div>
@@ -302,13 +303,13 @@ function Page() {
                       <div className='flex space-x-2 pt-2'>
                         <button
                           onClick={handleDateCancel}
-                          className='flex-1 px-3 py-2 border border-gray-300 rounded-md text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors duration-200'
+                          className='flex-1 px-3 py-2 border border-gray-300 rounded-md text-xs lg:text-base font-medium text-gray-700 hover:bg-gray-50 transition-colors duration-200'
                         >
                           Cancel
                         </button>
                         <button
                           onClick={handleDateDone}
-                          className='flex-1 px-3 py-2 bg-[#43A047] text-white rounded-md text-xs font-medium hover:bg-[#3d8b3d] transition-colors duration-200'
+                          className='flex-1 px-3 py-2 bg-[#43A047] text-white rounded-md text-xs lg:text-base font-medium hover:bg-[#3d8b3d] transition-colors duration-200'
                         >
                           Done
                         </button>
@@ -320,7 +321,7 @@ function Page() {
 
               <div className='mt-6 lg:mt-8 xl:mt-10 flex justify-center items-center'>
                 <button className='flex justify-center items-center w-40 lg:w-48 xl:w-56 h-10 lg:h-12 bg-[#43A047] rounded-full cursor-pointer' onClick={() => router.push('/equipments/reserve')}>
-                  <h1 className='text-white font-medium text-xs lg:text-sm'>Reserve</h1>
+                  <h1 className='text-white font-medium text-xs lg:text-base'>Reserve</h1>
                 </button>
               </div>
             </div>

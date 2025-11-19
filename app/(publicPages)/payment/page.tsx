@@ -31,29 +31,29 @@ function Page() {
       <main className='h-screen bg-white'>
         <PublicPageHeader />
 
-        <section className='mt-16 sm:mt-20 w-full max-w-4xl lg:max-w-5xl xl:max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-12 xl:gap-20'>
+        <section className='mt-16 w-[90vw] lg:max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-20'>
 
           <div className='flex flex-col'>
             <div className='flex justify-center items-center'>
-              <h1 className='text-[#43A047] text-lg sm:text-xl font-bold'>Your Reservation</h1>
+              <h1 className='text-[#43A047] text-base lg:text-xl font-bold'>Your Reservation</h1>
             </div>
 
             <div className='mt-6 sm:mt-8'>
               <div className='flex flex-col space-y-3 sm:space-y-4 lg:space-y-6 xl:space-y-8'>
 
                 <div className='flex space-x-2 tracking-wide'>
-                  <h1 className='text-[#333333] font-bold text-xs sm:text-sm'>Equipment:</h1>
-                  <h1 className='text-[#333333] font-regular text-xs sm:text-sm'>Excavator</h1>
+                  <h1 className='text-[#333333] font-bold text-sm lg:text-lg'>Equipment:</h1>
+                  <h1 className='text-[#333333] font-regular text-xs lg:text-base'>Excavator</h1>
                 </div>
 
                 <div className='flex space-x-2 tracking-wide'>
-                  <h1 className='text-[#333333] font-bold text-xs sm:text-sm'>Date:</h1>
-                  <h1 className='text-[#333333] font-regular text-xs sm:text-sm'>1 November, 2025 - 21 November, 2025</h1>
+                  <h1 className='text-[#333333] font-bold text-sm lg:text-lg'>Date:</h1>
+                  <h1 className='text-[#333333] font-regular text-xs lg:text-base'>1 November, 2025 - 21 November, 2025</h1>
                 </div>
 
                 <div className='flex space-x-2 tracking-wide'>
-                  <h1 className='text-[#333333] font-bold text-xs sm:text-sm'>Amount:</h1>
-                  <h1 className='text-[#333333] font-regular text-xs sm:text-sm'>GHC 10,000</h1>
+                  <h1 className='text-[#333333] font-bold text-sm lg:text-lg'>Amount:</h1>
+                  <h1 className='text-[#333333] font-regular text-xs lg:text-base'>GHC 10,000</h1>
                 </div>
 
               </div>
@@ -62,7 +62,7 @@ function Page() {
 
               <div className='mt-8 sm:mt-12'>
                 <div className='flex items-center'>
-                  <h1 className='text-[#333333] text-xs sm:text-sm font-medium'>Select Payment Method</h1>
+                  <h1 className='text-[#333333] text-sm lg:text-lg font-medium'>Select Payment Method</h1>
                 </div>
 
                 <div className='mt-6 sm:mt-8 flex flex-col space-y-4 sm:space-y-6 lg:space-y-8 xl:space-y-10'>
@@ -74,7 +74,7 @@ function Page() {
                       onClick={() => handlePaymentSelect(method.key)}
                     >
                       <div className='flex space-x-2 items-center'>
-                        <h1 className='text-[#333333] font-medium text-xs sm:text-sm'>{method.label}</h1>
+                        <h1 className='text-[#333333] font-medium text-sm lg:text-lg'>{method.label}</h1>
                         <i className={`${method.icon} ${activeTab === method.key ? 'text-[#43A047]' : 'text-[#787878]'}`}></i>
                       </div>
 
@@ -90,41 +90,41 @@ function Page() {
           {activeTab === 'debit' && (
             <div className='flex flex-col'>
               <div className='flex justify-center items-center'>
-                <h1 className='text-[#333333] text-xs sm:text-sm font-bold'>Debit / Credit Card</h1>
+                <h1 className='text-[#333333] text-sm lg:text-lg font-bold'>Debit / Credit Card</h1>
               </div>
 
               <div className='mt-6 sm:mt-8'>
                 <div className='flex flex-col space-y-6 sm:space-y-8 lg:space-y-12 xl:space-y-16'>
 
                   <div className='flex flex-col space-y-2'>
-                    <h1 className='text-[#333333] font-regular text-xs sm:text-sm'>Card Number</h1>
-                    <p className='text-[#787878] font-regular text-xs'>Enter the 16 digit number on the card</p>
+                    <h1 className='text-[#333333] font-regular text-sm lg:text-lg'>Card Number</h1>
+                    <p className='text-[#787878] font-regular text-xs lg:text-base'>Enter the 16 digit number on the card</p>
 
                     <input className='border border-[#787878] h-10 sm:h-12 mt-3 sm:mt-4 rounded-full px-4' />
                   </div>
 
                   <div className='grid grid-cols-2 gap-4 sm:gap-6 lg:gap-8 xl:gap-10'>
                     <div className='flex flex-col space-y-2'>
-                      <h1 className='text-[#333333] font-regular text-xs sm:text-sm'>Expire Date</h1>
+                      <h1 className='text-[#333333] font-regular text-sm lg:text-lg'>Expire Date</h1>
 
                       <input className='border border-[#787878] h-10 sm:h-12 mt-3 sm:mt-4 rounded-full px-4' />
                     </div>
 
                     <div className='flex flex-col space-y-2'>
-                      <h1 className='text-[#333333] font-regular text-xs sm:text-sm'>CVV Number</h1>
+                      <h1 className='text-[#333333] font-regular text-sm lg:text-lg'>CVV Number</h1>
 
                       <input className='border border-[#787878] h-10 sm:h-12 mt-3 sm:mt-4 rounded-full px-4' />
                     </div>
                   </div>
 
                   <div className='flex flex-col space-y-2'>
-                    <h1 className='text-[#333333] font-regular text-xs sm:text-sm'>Card Number</h1>
+                    <h1 className='text-[#333333] font-regular text-sm lg:text-lg'>Card Number</h1>
 
                     <input className='border border-[#787878] h-10 sm:h-12 mt-3 sm:mt-4 rounded-full px-4' />
                   </div>
 
                   <div className='bg-[#43A047] h-10 sm:h-12 rounded-full flex justify-center items-center cursor-pointer'>
-                    <h1 className='text-white font-medium text-xs sm:text-sm'>Pay Now</h1>
+                    <h1 className='text-white font-medium text-xs lg:text-base'>Pay Now</h1>
                   </div>
 
                 </div>
@@ -135,27 +135,27 @@ function Page() {
           {activeTab === 'momo' && (
             <div className='flex flex-col'>
               <div className='flex justify-center items-center'>
-                <h1 className='text-[#333333] text-xs sm:text-sm font-bold'>Mobile Number</h1>
+                <h1 className='text-[#333333] text-sm lg:text-lg font-bold'>Mobile Number</h1>
               </div>
 
               <div className='mt-6 sm:mt-8'>
                 <div className='flex flex-col space-y-6 sm:space-y-8 lg:space-y-12 xl:space-y-16'>
 
                   <div className='flex flex-col space-y-2'>
-                    <h1 className='text-[#333333] font-regular text-xs sm:text-sm'>Mobile Number</h1>
-                    <p className='text-[#787878] font-regular text-xs'>Enter the mobile money number you want to pay with</p>
+                    <h1 className='text-[#333333] font-regular text-sm lg:text-lg'>Mobile Number</h1>
+                    <p className='text-[#787878] font-regular text-xs lg:text-base'>Enter the mobile money number you want to pay with</p>
 
                     <input className='border border-[#787878] h-10 sm:h-12 mt-3 sm:mt-4 rounded-full px-4' />
                   </div>
 
                   <div className='flex flex-col space-y-2'>
-                    <h1 className='text-[#333333] font-regular text-xs sm:text-sm'>Select Network</h1>
+                    <h1 className='text-[#333333] font-regular text-sm lg:text-lg'>Select Network</h1>
                     <button
                       type='button'
                       className='border border-[#787878] h-10 sm:h-12 mt-3 sm:mt-4 rounded-full px-4 flex items-center justify-between text-left'
                       onClick={() => setIsNetworkModalOpen(true)}
                     >
-                      <span className={`${selectedNetwork ? 'text-[#333333]' : 'text-[#787878]'} text-xs sm:text-sm`}>
+                      <span className={`${selectedNetwork ? 'text-[#333333]' : 'text-[#787878]'} text-xs lg:text-base`}>
                         {selectedNetwork || 'Tap to choose a network'}
                       </span>
                       <i className='ri-arrow-down-s-line text-base text-[#787878]'></i>
@@ -163,7 +163,7 @@ function Page() {
                   </div>
 
                   <div className='bg-[#43A047] h-10 sm:h-12 rounded-full flex justify-center items-center cursor-pointer'>
-                    <h1 className='text-white font-medium text-xs sm:text-sm'>Pay Now</h1>
+                    <h1 className='text-white font-medium text-xs lg:text-base'>Pay Now</h1>
                   </div>
 
                 </div>
@@ -174,9 +174,9 @@ function Page() {
 
           {activeTab === 'other' && (
             <div className='flex flex-col items-center justify-center text-center px-4 sm:px-6 lg:px-12 xl:px-16'>
-              <h1 className='text-[#333333] text-base sm:text-lg font-semibold'>Need a different payment option?</h1>
-              <p className='mt-3 sm:mt-4 text-[#787878] text-xs sm:text-sm'>Share your preferred method and our support team will help you complete the reservation.</p>
-              <button className='mt-6 sm:mt-8 border border-[#43A047] text-[#43A047] px-3 sm:px-4 lg:px-6 xl:px-8 h-8 sm:h-10 lg:h-12 xl:h-14 rounded-full font-medium hover:bg-[#43A047] hover:text-white transition-colors'>Contact Support</button>
+              <h1 className='text-[#333333] text-base lg:text-xl font-semibold'>Need a different payment option?</h1>
+              <p className='mt-3 sm:mt-4 text-[#787878] text-xs lg:text-base'>Share your preferred method and our support team will help you complete the reservation.</p>
+              <button className='mt-6 sm:mt-8 border border-[#43A047] text-[#43A047] px-3 sm:px-4 lg:px-6 xl:px-8 h-8 sm:h-10 lg:h-12 xl:h-14 rounded-full font-medium hover:bg-[#43A047] hover:text-white transition-colors text-xs lg:text-base'>Contact Support</button>
             </div>
           )}
         </section>
@@ -185,8 +185,8 @@ function Page() {
           <div className='fixed inset-0 bg-black/30 z-50 flex items-center justify-center px-4' onClick={() => setIsNetworkModalOpen(false)}>
             <div className='bg-white rounded-3xl w-full max-w-xs p-3 sm:p-4 space-y-3 sm:space-y-4 shadow-2xl' onClick={(e) => e.stopPropagation()}>
               <div>
-                <h2 className='text-[#333333] text-base sm:text-lg font-semibold'>Choose Network</h2>
-                <p className='text-[#787878] text-xs mt-1'>Select the mobile money provider you want to use.</p>
+                <h2 className='text-[#333333] text-base lg:text-xl font-semibold'>Choose Network</h2>
+                <p className='text-[#787878] text-xs lg:text-base mt-1'>Select the mobile money provider you want to use.</p>
               </div>
               <div className='space-y-2'>
                 {networks.map((network) => (
@@ -201,7 +201,7 @@ function Page() {
                 ))}
               </div>
               <button
-                className='w-full h-8 sm:h-10 rounded-full border border-[#D5D5D5] text-[#333333] font-medium hover:bg-[#F9F9F9]'
+                className='w-full h-8 sm:h-10 rounded-full border border-[#D5D5D5] text-[#333333] font-medium hover:bg-[#F9F9F9] text-xs lg:text-base'
                 onClick={() => setIsNetworkModalOpen(false)}
               >
                 Cancel

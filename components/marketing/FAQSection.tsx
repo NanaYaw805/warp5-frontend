@@ -53,7 +53,7 @@ const FAQSection: React.FC = () => {
   return (
     <div className='w-[80vw] sm:w-[65vw] mx-auto'>
       <div className='flex justify-center items-center'>
-        <h1 className='text-[#333333] text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-semibold'>FAQ</h1>
+        <h1 className='text-[#333333] text-base lg:text-xl font-semibold'>FAQ</h1>
       </div>
 
       <div className='mt-6 sm:mt-8 lg:mt-12 xl:mt-16 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 xl:gap-10'>
@@ -64,10 +64,10 @@ const FAQSection: React.FC = () => {
               className='flex justify-between items-center w-full cursor-pointer'
               onClick={() => toggleFaq(faq.id)}
             >
-              <span className='text-[#333333] text-xs sm:text-sm lg:text-base xl:text-lg font-semibold text-left'>{faq.question}</span>
-              <i className={`ri-arrow-down-s-line text-sm sm:text-base lg:text-lg xl:text-xl transition-transform ${openFaqs.has(faq.id) ? 'rotate-180' : ''}`}></i>
+              <span className='text-[#333333] text-sm lg:text-lg font-semibold text-left'>{faq.question}</span>
+              <i className={`ri-arrow-down-s-line text-xs lg:text-base transition-transform ${openFaqs.has(faq.id) ? 'rotate-180' : ''}`}></i>
             </button>
-            {openFaqs.has(faq.id) && <p className='text-[#333333] text-xs sm:text-xs lg:text-sm xl:text-base mt-1 sm:mt-2 lg:mt-3 xl:mt-4'>{faq.answer}</p>}
+            {openFaqs.has(faq.id) && <p className='text-[#333333] text-xs lg:text-base mt-1 sm:mt-2 lg:mt-3 xl:mt-4'>{faq.answer}</p>}
           </div>
         ))}
       </div>

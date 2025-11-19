@@ -10,7 +10,7 @@ const PublicPageHeader: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const isUser = true;
+  const isUser = false;
   const [showUserModal, setShowUserModal] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -50,15 +50,15 @@ const PublicPageHeader: React.FC = () => {
 
   return (
     <>
-      <header className="relative h-20 bg-white flex items-center px-4 shadow-sm">
-        <div className="flex w-[85vw] mx-auto items-center justify-between">
+      <header className="relative h-18 xl:h-20 bg-white flex items-center px-4 shadow-sm">
+        <div className="flex w-[90vw] mx-auto items-center justify-between xl:w-[85vw]">
           <div className="flex items-center">
             <Image
               src={WarpLogo}
               alt="Warp Logo"
               width={100}
               height={100}
-              className="w-24 lg:w-28 xl:w-32 cursor-pointer hover:scale-105 transition-transform duration-300"
+              className="w-20 lg:w-28 xl:w-32 cursor-pointer hover:scale-105 transition-transform duration-300"
               onClick={() => router.push('/home')}
             />
           </div>
@@ -70,7 +70,7 @@ const PublicPageHeader: React.FC = () => {
                 className={`${pathname === path ? 'bg-[#43A047] text-white' : 'text-[#333333] bg-white'} flex items-center justify-center w-32 h-12 rounded-full transition-all duration-300 hover:scale-105`}
                 onClick={() => router.push(path)}
               >
-                <span className="text-xs lg:text-sm xl:text-base font-medium">{label}</span>
+                <span className="text-xs lg:text-base font-medium">{label}</span>
               </button>
             ))}
           </nav>
@@ -93,19 +93,19 @@ const PublicPageHeader: React.FC = () => {
                         <div className="flex items-center justify-center bg-[#F2F2F2] w-12 h-12 rounded-full">
                           <i className="ri-user-6-line text-[#333333] text-lg font-medium"></i>
                         </div>
-                        <h1 className="font-medium text-[#333333] text-base">User Name</h1>
+                        <h1 className="font-medium text-[#333333] text-base lg:text-xl">User Name</h1>
                       </div>
                       <div className="mt-4">
                         <button
                           type="button"
-                          className="flex items-center justify-center w-full font-medium text-[#333333] text-base"
+                          className="flex items-center justify-center w-full font-medium text-[#333333] text-sm lg:text-lg"
                           onClick={() => router.push('/profile')}
                         >
                           Account Management
                         </button>
                       </div>
                       <div className="mt-6 border-t border-[#E4E4E4] pt-3">
-                        <button type="button" className="flex items-center justify-center w-full font-medium text-[#333333] text-base">
+                        <button type="button" className="flex items-center justify-center w-full font-medium text-[#333333] text-sm lg:text-lg">
                           Sign Out
                         </button>
                       </div>
@@ -119,7 +119,7 @@ const PublicPageHeader: React.FC = () => {
                 className="flex items-center justify-center border border-[#333333] w-28 h-12 rounded-full hover:bg-gray-100 hover:scale-105 transition-all duration-300"
                 onClick={handleLoginClick}
               >
-                <span className="text-[#333333] text-base font-medium">Log In</span>
+                <span className="text-[#333333] text-xs lg:text-base font-medium">Log In</span>
               </button>
             )}
           </div>
@@ -131,9 +131,9 @@ const PublicPageHeader: React.FC = () => {
               className="flex items-center justify-center w-10 h-10 rounded-md hover:bg-gray-100 transition-colors duration-200"
             >
               {mobileMenuOpen ? (
-                <i className="ri-close-line text-2xl"></i>
+                <i className="ri-close-line text-xl"></i>
               ) : (
-                <i className="ri-menu-line text-2xl"></i>
+                <i className="ri-menu-line text-xl"></i>
               )}
             </button>
           </div>
@@ -146,19 +146,19 @@ const PublicPageHeader: React.FC = () => {
                 <div className="flex items-center justify-center bg-[#F2F2F2] w-12 h-12 rounded-full">
                   <i className="ri-user-6-line text-[#333333] text-lg font-medium"></i>
                 </div>
-                <h1 className="font-medium text-[#333333] text-sm">User Name</h1>
+                <h1 className="font-medium text-[#333333] text-base">User Name</h1>
               </div>
               <div className="mt-4">
                 <button
                   type="button"
-                  className="flex items-center justify-center w-full font-medium text-[#333333] text-sm"
+                  className="flex items-center justify-center w-full font-medium text-[#333333] text-sm lg:text-lg"
                   onClick={() => { router.push('/profile'); setShowUserModal(false); }}
                 >
                   Account Management
                 </button>
               </div>
               <div className="mt-6 border-t border-[#E4E4E4] pt-3">
-                <button type="button" className="flex items-center justify-center w-full font-medium text-[#333333] text-base">
+                <button type="button" className="flex items-center justify-center w-full font-medium text-[#333333] text-xs lg:text-base">
                   Sign Out
                 </button>
               </div>
@@ -167,7 +167,7 @@ const PublicPageHeader: React.FC = () => {
         )}
         {/* Mobile menu dropdown */}
         {mobileMenuOpen && (
-          <div className="sm:hidden absolute left-0 right-0 top-full mt-2 bg-white z-50 shadow-lg">
+          <div className="sm:hidden absolute left-0 right-0 top-full bg-white z-50 shadow-lg">
             <div className="px-4 py-4 space-y-3">
               {navItems.map(({ label, path }) => (
                 <button
@@ -176,18 +176,18 @@ const PublicPageHeader: React.FC = () => {
                   onClick={() => { router.push(path); setMobileMenuOpen(false); }}
                   className={`${pathname === path ? 'bg-[#43A047] text-white' : 'text-[#333333] bg-white'} w-full text-left px-4 py-3 rounded-md transition-colors duration-200`}
                 >
-                  <span className="font-medium">{label}</span>
+                  <span className="font-medium text-xs">{label}</span>
                 </button>
               ))}
 
               <div className="pt-2 border-t border-gray-100">
                 {isUser ? (
                   <div className="space-y-2">
-                    <button onClick={() => { router.push('/profile'); setMobileMenuOpen(false); }} className="w-full text-left px-4 py-3">Account Management</button>
-                    <button className="w-full text-left px-4 py-3">Sign Out</button>
+                    <button onClick={() => { router.push('/profile'); setMobileMenuOpen(false); }} className="w-full text-left px-4 py-3 text-xs">Account Management</button>
+                    <button className="w-full text-left px-4 py-3 text-xs">Sign Out</button>
                   </div>
                 ) : (
-                  <button onClick={() => { handleLoginClick(); setMobileMenuOpen(false); }} className="w-full text-left px-4 py-3 font-medium">Log In</button>
+                  <button onClick={() => { handleLoginClick(); setMobileMenuOpen(false); }} className="w-full text-left px-4 py-3 font-medium text-xs">Log In</button>
                 )}
               </div>
             </div>

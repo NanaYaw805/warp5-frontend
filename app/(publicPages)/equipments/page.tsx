@@ -33,11 +33,11 @@ function Page() {
       <main className='h-screen bg-white'>
         <PublicPageHeader />
 
-        <section className='mt-8 sm:mt-12 lg:mt-16 xl:mt-20'>
+        <section className='mt-8 lg:mt-20'>
           <ReservationSearch />
         </section>
 
-        <section className='mt-8 sm:mt-12 lg:mt-16 xl:mt-20'>
+        <section className='mt-8 lg:mt-4'>
           <EquipmentGrid title="" cars={cars} />
         </section>
 

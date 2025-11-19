@@ -31,7 +31,7 @@ function Page() {
       <main className='h-screen bg-white'>
         <PublicPageHeader />
 
-          <EquipmentSearch />
+        <EquipmentSearch />
 
         <section className='mt-16 sm:mt-20 lg:mt-28 xl:mt-36'>
           <CarGrid title='Highly Rated By Customers' cars={highlyRatedCars} />

@@ -43,7 +43,8 @@ const LoginForm: React.FC<LoginFormProps> = ({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          formData
+          email: formData.email,
+          password: formData.password
         })
       });
 
@@ -73,14 +74,16 @@ const LoginForm: React.FC<LoginFormProps> = ({
           <h2 className='text-lg lg:text-xl xl:text-2xl font-bold text-[#333333]'>{heading}</h2>
         </div>
 
-        <form className='space-y-4 lg:space-y-6'>
+        <form className='space-y-4 lg:space-y-6' onClick={handleSignIn}>
           <div>
             <label htmlFor='email' className='mb-2 lg:mb-4 block text-xs lg:text-sm font-regular text-[#333333]'>
               Email
             </label>
             <input
               type='email'
-              id='email'
+              name='email'
+              onChange={handleChangeInput}
+              value={formData.email}
               className='w-full h-10 lg:h-12 xl:h-14 px-4 lg:px-6 border border-[#787878] text-xs lg:text-sm text-[#333333] rounded-full transition-all focus:outline-none'
             />
           </div>
@@ -91,7 +94,9 @@ const LoginForm: React.FC<LoginFormProps> = ({
             </label>
             <input
               type='password'
-              id='password'
+              name='password'
+              onChange={handleChangeInput}
+              value={formData.password}
               className='w-full h-10 lg:h-12 xl:h-14 px-4 lg:px-6 border border-[#787878] text-xs lg:text-sm text-[#333333] rounded-full transition-all focus:outline-none'
             />
           </div>

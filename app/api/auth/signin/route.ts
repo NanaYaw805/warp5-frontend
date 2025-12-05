@@ -12,8 +12,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const baseUrl =
-    "https://warp5-construction-backend-v2-134fa1681ed7.herokuapp.com";
+  const baseUrl = process.env.BASE_URL;
 
   try {
     const apiRes = await fetch(`${baseUrl}/auth/login`, {
@@ -25,6 +24,8 @@ export async function POST(request: NextRequest) {
     });
 
     const apiData = await apiRes.json();
+    console.log('login data', apiData);
+    console.log('login response', apiRes);
 
     if (!apiRes.ok) {
       return NextResponse.json(
@@ -33,10 +34,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    return NextResponse.json(
+    // Create response with success message
+    const response = NextResponse.json(
       { message: "Sign-in successful.", data: apiData },
       { status: 200 }
     );
+
+    // Save token in httpOnly cookie
+    response.cookies.set('auth_token', apiData.token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: '/',
+    });
+
+    return response;
   } catch (error) {
     console.error("Signup error:", error);
     return NextResponse.json(

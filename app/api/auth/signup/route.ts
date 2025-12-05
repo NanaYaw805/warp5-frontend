@@ -31,8 +31,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const baseUrl =
-    "https://warp5-construction-backend-v2-134fa1681ed7.herokuapp.com";
+  const baseUrl = process.env.BASE_URL;
 
   try {
     const apiRes = await fetch(`${baseUrl}/auth/register`, {

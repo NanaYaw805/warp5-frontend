@@ -1,24 +1,21 @@
 'use client'
 
 import Image from "next/image";
-import { useRouter, usePathname } from 'next/navigation';
 import { useState } from 'react';
-import Link from 'next/link';
-import Logo from '../public/logo/warp-logo.svg';
 import BannerImage from '../public/images/banner.jpg';
 import Car1Image from '../public/cars/car1.jpg';
 import Car2Image from '../public/cars/car3.jpg';
 import CTAImage from '../public/images/cta.png';
 import AboutUsImage from '@/public/images/about-us.png';
-import WarpLogoWhite from '@/public/logo/warp-logo-white.svg';
-import LoginForm from "@/components/auth/LoginForm";
+import LocationModal from "@/components/public/LocationModal";
+import EquipmentModal from "@/components/public/EquipmentModal";
+import PriceModal from "@/components/public/PriceModal";
+import DateModal from "@/components/public/DateModal";
+import Footer from "@/components/public/Footer";
+import PageHeader from "@/components/public/PageHeader";
 
 
 export default function Page() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const isUser = false;
-
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [showEquipmentModal, setShowEquipmentModal] = useState(false);
   const [showPriceRangeModal, setShowPriceRangeModal] = useState(false);
@@ -30,16 +27,6 @@ export default function Page() {
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
   const [openFaqs, setOpenFaqs] = useState<Set<number>>(new Set());
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const closeModal = () => setShowLoginModal(false);
-  const handleLoginClick = () => setShowLoginModal(true);
-
-  const handleForgotPassword = () => {
-    setShowLoginModal(false);
-    router.push('/forgotpassword');
-  };
 
   const toggleFaq = (id: number) => {
     setOpenFaqs((prev) => {
@@ -52,55 +39,6 @@ export default function Page() {
       return next;
     });
   };
-
-
-  const navItems = [
-    { label: 'Home', path: '/' },
-    { label: 'Dashboard', path: '/renter/dashboard' },
-    { label: 'Help', path: '/help' },
-  ];
-
-  const renterLinks = [
-    { label: 'Overview', path: '/renter/dashboard' },
-    { label: 'My Reservations', path: '/renter/reservations' },
-    { label: 'Payment', path: '/renter/payment' },
-    { label: 'Notifications', path: '/renter/notifications' },
-    { label: 'Manage Profile', path: '/renter/profile' },
-  ];
-
-  const cities = [
-    'Kumasi',
-    'Accra',
-    'Takoradi',
-    'Cape Coast',
-    'Tamale',
-    'Bolga',
-    'Sunyani',
-    'Obuasi',
-    'Techiman',
-    'Ho',
-  ];
-
-  const equipmentTypes = [
-    'Dragline Excavator',
-    'Continuous Miner',
-    'Bucket Wheel Excavator',
-    'Longwall Miner',
-    'Hydraulic Mining Shovel',
-    'Roadheader',
-    'Electric Rope Shovel',
-    'Load-Haul Dump (LHD) Loader',
-    'Wheel Loader',
-    'Underground Mining Truck',
-    'Bulldozer',
-    'Rotary Drill',
-    'Grader',
-    'Blasthole Drill',
-    'Haul Truck',
-    'Rock Bolter',
-    'Crusher',
-    'Shotcrete Machine',
-  ];
 
   const highlyRatedCars = [
     { id: 1, image: Car1Image, name: 'Bucket Wheel Excavator', location: 'Kumasi, Ghana', rating: '4.8', price: 'GHC1,123' },
@@ -195,104 +133,7 @@ export default function Page() {
   return (
     <>
       <main className="h-screen bg-white">
-        <header className="fixed right-0 left-0 top-0 h-20 z-[9999] bg-white xl:h-24">
-          <div className="max-w-[90vw] mx-auto grid grid grid-cols-2 items-center h-full xl:grid-cols-3 xl:max-w-[85vw]">
-            <div className="flex items-center">
-              <Image
-                src={Logo}
-                alt="Warp Logo"
-                width={100}
-                height={100}
-                className="w-20 xl:w-30 cursor-pointer"
-              />
-            </div>
-
-            <nav className="hidden xl:flex justify-center items-center space-x-6">
-              {navItems.map(({ label, path }) => (
-                <div
-                  onClick={() => router.push(path)}
-                  key={path}
-                  className={`${pathname === path ? 'bg-[#43A047] text-white' : 'text-[#333333] bg-white'} cursor-pointer flex items-center justify-center w-32 h-12 rounded-full`}
-                >
-                  <h1 className="text-base font-medium">{label}</h1>
-                </div>
-              ))}
-            </nav>
-
-            <div className="flex justify-end items-center space-x-8">
-              <div className="hidden justify-center items-center bg-[#FFF0F6] w-16 h-16 rounded-full xl:flex">
-                <i className="ri-heart-3-fill text-[#FF0063] text-2xl"></i>
-              </div>
-
-              <div className="hidden justify-center items-center xl:flex">
-                <i className="ri-notification-2-line text-[#000000] text-2xl"></i>
-              </div>
-
-              {isUser ? (
-                <div className="hidden justify-center items-center bg-[#000]/10 w-16 h-16 rounded-full xl:flex">
-                  <i className="ri-user-3-line text-2xl"></i>
-                </div>
-              ) : (
-                <div className="hidden justify-center items-center border border-[#333333] px-12 py-3 rounded-full xl:flex" onClick={() => setShowLoginModal(true)}>
-                  <h1 className="text-base text-[#333333] font-semibold">Log In</h1>
-                </div>
-              )}
-
-
-              <div className="flex justify-end items-center xl:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-                {mobileMenuOpen ? (
-                  <i className="ri-close-line text-xl"></i>
-                ) : (
-                  <i className="ri-menu-line text-xl"></i>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {mobileMenuOpen && (
-            <div className="sm:hidden absolute left-0 right-0 top-full bg-white z-50 shadow-lg">
-              <div className="px-4 py-4 space-y-3">
-                {navItems.map(({ label, path }) => (
-                  <button
-                    key={path}
-                    type="button"
-                    onClick={() => { router.push(path); setMobileMenuOpen(false); }}
-                    className={`${pathname === path ? 'bg-[#43A047] text-white' : 'text-[#333333] bg-white'} w-full text-left px-4 py-3 rounded-md transition-colors duration-200`}
-                  >
-                    <span className="font-medium text-xs">{label}</span>
-                  </button>
-                ))}
-
-                <div className="pt-2">
-                  <h2 className="text-xs font-semibold text-[#333333] mb-2">Renter</h2>
-                  {renterLinks.map(({ label, path }) => (
-                    <button
-                      key={path}
-                      type="button"
-                      onClick={() => { router.push(path); setMobileMenuOpen(false); }}
-                      className={`${pathname === path ? 'bg-[#43A047] text-white' : 'text-[#333333] bg-white'} w-full text-left px-4 py-2 rounded-md transition-colors duration-200`}
-                    >
-                      <span className="text-xs">{label}</span>
-                    </button>
-                  ))}
-                </div>
-
-                <div className="pt-2 border-t border-gray-100">
-                  {isUser ? (
-                    <div className="space-y-2">
-                      <button onClick={() => { router.push('/profile'); setMobileMenuOpen(false); }} className="w-full text-left px-4 py-3 text-xs">Account Management</button>
-                      <button className="w-full text-left px-4 py-3 text-xs">Sign Out</button>
-                    </div>
-                  ) : (
-                    <button onClick={() => { handleLoginClick(); setMobileMenuOpen(false); }} className="w-full text-left px-4 py-3 font-medium text-xs">Log In</button>
-                  )}
-
-                  <button className='w-full text-left px-4 py-3 font-medium text-xs' onClick={() => router.push('/profile')}>Account Management</button>
-                </div>
-              </div>
-            </div>
-          )}
-        </header>
+        <PageHeader />
 
         <section className="h-[600px] bg-black">
           <div className="relative h-full">
@@ -306,63 +147,58 @@ export default function Page() {
                   <h1 className="font-medium text-white text-sm mb-2 xl:text-lg">Location</h1>
                   <div
                     className="flex items-center cursor-pointer"
-                    onClick={() => setShowLocationModal(!showLocationModal)}
+                    onClick={() => {
+                      setShowLocationModal(!showLocationModal);
+                      setShowEquipmentModal(false);
+                      setShowPriceRangeModal(false);
+                      setShowDateRangeModal(false);
+                    }}
                   >
                     <h1 className="text-[#DDDDDD] text-xs xl:text-base">{selectedLocation}</h1>
                     <i className="ri-arrow-down-s-line text-[#DDDDDD] hidden text-2xl ml-2 xl:flex"></i>
                   </div>
 
-                  {showLocationModal && (
-                    <div className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl p-4 w-auto max-h-60 overflow-y-auto z-50 xl:w-64">
-                      {cities.map((city) => (
-                        <div
-                          key={city}
-                          className="px-4 py-2 text-xs hover:bg-gray-100 cursor-pointer rounded text-gray-800 xl:text-base"
-                          onClick={() => {
-                            setSelectedLocation(city);
-                            setShowLocationModal(false);
-                          }}
-                        >
-                          {city}
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  <LocationModal
+                    show={showLocationModal}
+                    selectedLocation={selectedLocation}
+                    onSelect={setSelectedLocation}
+                    onClose={() => setShowLocationModal(false)}
+                  />
                 </div>
 
                 <div className="relative flex flex-col border-r border-[#DDDDDDB2] pr-6">
                   <h1 className="font-medium text-white text-sm mb-2 xl:text-lg">Equipment</h1>
                   <div
                     className="flex items-center cursor-pointer"
-                    onClick={() => setShowEquipmentModal(!showEquipmentModal)}
+                    onClick={() => {
+                      setShowEquipmentModal(!showEquipmentModal);
+                      setShowLocationModal(false);
+                      setShowPriceRangeModal(false);
+                      setShowDateRangeModal(false);
+                    }}
                   >
                     <h1 className="text-[#DDDDDD] text-xs xl:text-base">{selectedEquipment}</h1>
                     <i className="ri-arrow-down-s-line text-[#DDDDDD] hidden text-2xl ml-2 xl:flex"></i>
                   </div>
 
-                  {showEquipmentModal && (
-                    <div className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl p-4 w-auto max-h-60 overflow-y-auto z-50 xl:w-72">
-                      {equipmentTypes.map((equipment) => (
-                        <div
-                          key={equipment}
-                          className="px-4 py-2 text-xs hover:bg-gray-100 cursor-pointer rounded text-gray-800 xl:text-base"
-                          onClick={() => {
-                            setSelectedEquipment(equipment);
-                            setShowEquipmentModal(false);
-                          }}
-                        >
-                          {equipment}
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  <EquipmentModal
+                    show={showEquipmentModal}
+                    selectedEquipment={selectedEquipment}
+                    onSelect={setSelectedEquipment}
+                    onClose={() => setShowEquipmentModal(false)}
+                  />
                 </div>
 
                 <div className="relative flex flex-col border-r border-[#DDDDDDB2] pr-6">
                   <h1 className="font-medium text-white text-sm mb-2 xl:text-lg">Price Range</h1>
                   <div
                     className="flex items-center cursor-pointer"
-                    onClick={() => setShowPriceRangeModal(!showPriceRangeModal)}
+                    onClick={() => {
+                      setShowPriceRangeModal(!showPriceRangeModal);
+                      setShowLocationModal(false);
+                      setShowEquipmentModal(false);
+                      setShowDateRangeModal(false);
+                    }}
                   >
                     <h1 className="text-[#DDDDDD] text-xs xl:text-base">
                       {minPrice && maxPrice ? `$${minPrice} - $${maxPrice}` : 'Select Range'}
@@ -370,90 +206,45 @@ export default function Page() {
                     <i className="ri-arrow-down-s-line text-[#DDDDDD] hidden text-2xl ml-2 xl:flex"></i>
                   </div>
 
-                  {showPriceRangeModal && (
-                    <div className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl p-6 w-auto z-50 xl:w-80">
-                      <h3 className="text-gray-800 text-xs font-medium mb-4 xl:text-base">Select Price Range</h3>
-                      <div className="flex items-center gap-3">
-                        <input
-                          type="number"
-                          placeholder="Min"
-                          value={minPrice}
-                          onChange={(e) => setMinPrice(e.target.value)}
-                          className="w-[90px] text-sm px-3 py-2 border border-gray-300 rounded-lg text-sm xl:text-base xl:w-[120px]"
-                        />
-                        <span className="text-gray-500">-</span>
-                        <input
-                          type="number"
-                          placeholder="Max"
-                          value={maxPrice}
-                          onChange={(e) => setMaxPrice(e.target.value)}
-                          className="w-[90px] text-sm px-3 py-2 border border-gray-300 rounded-lg text-sm xl:text-base xl:w-[120px]"
-                        />
-                      </div>
-                      <button
-                        onClick={() => setShowPriceRangeModal(false)}
-                        className="w-full mt-4 bg-[#43A047] text-white py-2 text-sm rounded-lg xl:text-base"
-                      >
-                        Apply
-                      </button>
-                    </div>
-                  )}
+                  <PriceModal
+                    show={showPriceRangeModal}
+                    minPrice={minPrice}
+                    maxPrice={maxPrice}
+                    onMinPriceChange={setMinPrice}
+                    onMaxPriceChange={setMaxPrice}
+                    onClose={() => setShowPriceRangeModal(false)}
+                  />
                 </div>
 
                 <div className="relative flex flex-col border-r border-[#DDDDDDB2] pr-6">
                   <h1 className="font-medium text-white text-sm mb-2 xl:text-lg">Date Range</h1>
                   <div
                     className="flex items-center cursor-pointer"
-                    onClick={() => setShowDateRangeModal(!showDateRangeModal)}
+                    onClick={() => {
+                      setShowDateRangeModal(!showDateRangeModal);
+                      setShowLocationModal(false);
+                      setShowEquipmentModal(false);
+                      setShowPriceRangeModal(false);
+                    }}
                   >
                     <h1 className="text-[#DDDDDD] text-xs xl:text-base">
                       {fromDate && toDate ? `${fromDate} - ${toDate}` : 'Select Dates'}
                     </h1>
                   </div>
 
-                  {showDateRangeModal && (
-                    <div className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl p-6 w-auto z-50 xl:w-80">
-                      <h3 className="text-gray-800 text-xs font-medium mb-4 xl:text-base">Select Date Range</h3>
-                      <div className="flex items-center gap-3">
-                        <div>
-                          <label className="block text-gray-700 text-xs font-medium mb-2 xl:text-sm">From</label>
-                          <input
-                            type="date"
-                            value={fromDate}
-                            onChange={(e) => setFromDate(e.target.value)}
-                            className="w-[90px] text-sm px-3 py-2 border border-gray-300 rounded-lg text-sm xl:text-base xl:w-[120px]"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-gray-700 text-xs font-medium mb-2 xl:text-sm">To</label>
-                          <input
-                            type="date"
-                            value={toDate}
-                            onChange={(e) => setToDate(e.target.value)}
-                            className="w-[90px] text-sm px-3 py-2 border border-gray-300 rounded-lg text-sm xl:text-base xl:w-[120px]"
-                          />
-                        </div>
-                      </div>
-                      <div className="flex gap-3 mt-6">
-                        <button
-                          onClick={() => {
-                            setFromDate('');
-                            setToDate('');
-                            setShowDateRangeModal(false);
-                          }}
-                          className="flex-1 text-sm py-2 border border-gray-300 rounded-lg text-sm xl:text-base"
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          onClick={() => setShowDateRangeModal(false)}
-                          className="flex-1 bg-[#43A047] text-white py-2 rounded-lg font-medium text-sm xl:text-base"
-                        >
-                          Done
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                  <DateModal
+                    show={showDateRangeModal}
+                    fromDate={fromDate}
+                    toDate={toDate}
+                    onFromDateChange={setFromDate}
+                    onToDateChange={setToDate}
+                    onClose={() => setShowDateRangeModal(false)}
+                    onCancel={() => {
+                      setFromDate('');
+                      setToDate('');
+                      setShowDateRangeModal(false);
+                    }}
+                  />
                 </div>
 
                 <div className="flex items-start justify-start xl:justify-center">
@@ -713,52 +504,7 @@ export default function Page() {
           </div>
         </section>
 
-
-        <footer className='mt-20 bg-[#43A047]'>
-          <div className="max-w-4xl mx-auto py-12">
-            <div className='grid grid-cols-1 gap-20 xl:grid-cols-[1fr_auto] xl:gap-6'>
-              <div className='flex flex-col items-center justify-center xl:items-start'>
-                <Image src={WarpLogoWhite} alt='Warp Logo' width={100} height={100} className='w-30 xl:w-50' />
-
-                <div className='mt-8 xl:mt-12'>
-                  <div className='flex justify-center items-center'>
-                    <h1 className='text-base text-[#FFFFFF] font-semibold xl:text-xl'>Quick Links</h1>
-                  </div>
-                  <div className='flex space-x-8 mt-4'>
-                    <Link href='#' className='text-[#FFFFFF] text-xs lg:text-base font-light'>
-                      About
-                    </Link>
-                    <Link href='#' className='text-[#FFFFFF] text-xs lg:text-base font-light'>
-                      Blog
-                    </Link>
-                    <Link href='#' className='text-[#FFFFFF] text-xs lg:text-base font-light'>
-                      Careers
-                    </Link>
-                  </div>
-                </div>
-              </div>
-
-              <div className='flex flex-col items-center justify-start text-start'>
-                <h1 className='text-base text-[#FFFFFF] font-semibold xl:text-xl'>Get In Touch</h1>
-
-                <div className='flex flex-col mt-4 space-y-4'>
-                  <p className='text-[#FFFFFF] text-sm font-light xl:text-base'>123 Main Street, Accra, Ghana</p>
-                  <p className='text-[#FFFFFF] text-sm font-light xl:text-base'>info@warp5.com</p>
-                  <p className='text-[#FFFFFF] text-sm font-light xl:text-base'>+233 123 456 789 / +233 *** ****</p>
-                </div>
-              </div>
-            </div>
-
-            <div className='mt-20'>
-              <div className='flex justify-center items-center'>
-                <p className='text-[#FFFFFF] text-sm xl:text-base'>&copy; {new Date().getFullYear()} Warp5. All rights reserved.</p>
-              </div>
-            </div>
-          </div>
-        </footer>
-        {showLoginModal && (
-          <LoginForm closeModal={closeModal} onForgotPassword={handleForgotPassword} />
-        )}
+        <Footer />
       </main>
     </>
   )

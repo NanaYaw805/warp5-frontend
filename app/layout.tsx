@@ -4,6 +4,8 @@ import 'remixicon/fonts/remixicon.css';
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import "./globals.css";
+import { TokenProvider } from "@/context/tokenContext";
+import { EquipmentProvider } from "@/context/equipmentContext";
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -24,7 +26,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.className} antialiased`}>
-        {children}
+        <TokenProvider>
+          <EquipmentProvider>
+            {children}
+          </EquipmentProvider>
+        </TokenProvider>
       </body>
     </html>
   );

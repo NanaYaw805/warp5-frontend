@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { DateRange } from 'react-date-range';
 import type { RangeKeyDict, Range } from 'react-date-range';
 import FooterSection from '@/components/layout/FooterSection';
-import PublicPageHeader from '@/components/layout/PublicPageHeader';
+import PageHeader from '@/components/public/PageHeader';
 import Car1Image from '../../../../public/cars/car1.jpg';
 import Car2Image from '../../../../public/cars/car2.jpg';
 import Car3Image from '../../../../public/cars/car3.jpg';
@@ -33,13 +33,12 @@ function Page() {
     { src: Car3Image, alt: 'Alternate view 2' },
   ];
 
-  const cars = [
-    { id: 1, image: Car1Image, name: 'Toyota Camry', location: 'Kumasi', rating: '4.8' },
-    { id: 2, image: Car3Image, name: 'Honda Accord', location: 'Accra', rating: '4.9' },
-    { id: 5, image: Car3Image, name: 'Audi A6', location: 'Kumasi', rating: '4.9' },
-    { id: 3, image: Car3Image, name: 'Mercedes Benz', location: 'Takoradi', rating: '5.0' },
-    { id: 4, image: Car1Image, name: 'BMW X5', location: 'Accra', rating: '4.7' },
-    { id: 5, image: Car3Image, name: 'Audi A6', location: 'Kumasi', rating: '4.9' },
+
+  const highlyRatedCars = [
+    { id: 1, image: Car1Image, name: 'Bucket Wheel Excavator', location: 'Kumasi, Ghana', rating: '4.8', price: 'GHC1,123' },
+    { id: 2, image: Car2Image, name: 'Honda Accord', location: 'Accra', rating: '4.9', price: 'GHC1,123' },
+    { id: 3, image: Car1Image, name: 'Mercedes Benz', location: 'Takoradi', rating: '5.0', price: 'GHC1,123' },
+    { id: 5, image: Car2Image, name: 'Audi A6', location: 'Kumasi', rating: '4.9', price: 'GHC1,123' },
   ];
 
 
@@ -86,10 +85,10 @@ function Page() {
   return (
     <>
       <main className='bg-white'>
-        <PublicPageHeader />
+        <PageHeader />
 
-        <section className='mt-4 w-[85vw] mx-auto grid grid-cols-1 lg:grid-cols-[2.5fr_1fr] gap-6 lg:gap-8 xl:gap-10'>
-          <div className='flex flex-col gap-4 lg:gap-6'>
+        <section className='mt-20 w-[90vw] mx-auto grid grid-cols-1 xl:w-[85vw] xl:grid-cols-[2.5fr_1fr] xl:gap-10'>
+          <div className='flex flex-col gap-4'>
             <div className='relative w-full aspect-[6/4] bg-gray-100 overflow-hidden'>
               <Image
                 src={images[selectedImage].src}
@@ -125,8 +124,8 @@ function Page() {
             <div className='mt-6 lg:mt-8'>
               <div className='flex flex-col'>
                 <div className='flex flex-col justify-center items-start'>
-                  <h1 className='text-[#43A047] font-bold text-sm lg:text-lg'>Excavators</h1>
-                  <div className='mt-2 flex space-x-4 lg:space-x-6'>
+                  <h1 className='text-[#43A047] font-bold text-sm xl:text-lg'>Excavators</h1>
+                  <div className='mt-2 flex space-x-4'>
                     <div className='flex items-center'>
                       <i className="ri-map-pin-2-line"></i>
                       <h1 className='text-[#333333] text-xs lg:text-base font-regular'>Takoradi</h1>
@@ -206,44 +205,43 @@ function Page() {
               </div>
             </div>
 
-            <div className='mt-8 lg:mt-12'>
-              <div className='flex justify-start items-center'>
-                <h1 className='text-[#333333] text-sm lg:text-lg font-medium'>Related equipment</h1>
-              </div>
+            <div className="mt-20">
+              <div className="max-w-[85vw] mx-auto">
+                <h1 className="text-[#333333] font-medium text-base xl:text-xl">Highly Rated By Customers</h1>
 
-              <div className='relative mt-6 lg:mt-8'>
-                <div className='grid grid-cols-2 gap-6 lg:grid-cols-6 lg:gap-10'>
-                  {cars.map((car) => (
-                    <div key={car.id} className='flex flex-col'>
-                      <div className='group relative mb-1 sm:mb-2 lg:mb-3 xl:mb-4 w-full overflow-hidden rounded-2xl xl:rounded-4xl bg-gray-50 shadow-sm'>
-                        <div className='relative w-full pb-[100%]'>
-                          <Image
-                            src={car.image}
-                            alt={car.name}
-                            fill
-                            className='object-cover transition-transform duration-300 group-hover:scale-[1.03]'
-                          />
-                        </div>
-
-                        <button className='absolute top-6 right-6 sm:top-4 lg:top-4 xl:top-5 right-2 sm:right-3 lg:right-4 xl:right-5 flex justify-center items-center w-8 sm:w-6 lg:w-8 xl:w-10 h-8 sm:h-6 lg:h-8 xl:h-10 rounded-full bg-white/50 hover:bg-[#FFF0F6] transition-colors shadow-md'>
-                          <i className='ri-heart-line text-[#FF0063] text-xs lg:text-base'></i>
-                        </button>
+                <div className="mt-8 grid grid-cols-1 gap-12 xl:grid-cols-4">
+                  {highlyRatedCars.map((item, index) => (
+                    <div className="flex flex-col" key={index}>
+                      <div className="relative w-full h-[300px] overflow-hidden rounded-3xl">
+                        <Image src={item.image} alt='Car' fill className='object-cover' />
                       </div>
 
-                      <div className='flex flex-col justify-center items-center'>
-                        <h1 className='text-xs text-[#333333] font-semibold lg:text-base'>{car.name}</h1>
-                        <div className='flex items-center space-x-1'>
-                          <i className='ri-map-pin-2-line text-[#787878] text-xs lg:text-base'></i>
-                          <span className='text-[#787878] text-xs lg:text-base font-regular'>{car.location}</span>
-                        </div>
+                      <div className="flex flex-col items-center mt-4">
+                        <h1 className="text-[#333333] font-medium text-sm mt-2 xl:text-base">{item.name}</h1>
+                        <h1 className="text-[#787878] text-xs xl:text-sm">
+                          <i className="ri-map-pin-2-line text-base mr-1"></i>
+                          {item.location}
+                        </h1>
+                        <h1 className="text-[#787878] text-xs xl:text-sm mt-1">
+                          <i className="ri-star-fill text-base mr-1"></i>
+                          {item.rating}
+                        </h1>
 
-                        <div className='flex items-center space-x-1 mt-1'>
-                          <i className='ri-star-fill text-[#FFB800] text-sm lg:text-base'></i>
-                          <span className='text-[#787878] text-xs lg:text-base font-medium'>{car.rating}</span>
+                        <div className="w-full flex justify-between items-center">
+                          <div className="flex space-x-1 items-center">
+                            <h1 className="text-[#333333] font-semibold text-sm xl:text-base">{item.price}/</h1>
+                            <h1 className="text-[#787878] text-xs xl:text-base">day</h1>
+                          </div>
+
+                          <div className="flex justify-center items-center bg-[#43A047] px-4 py-3 rounded-2xl cursor-pointer">
+                            <h1 className="text-white text-xs xl:text-sm">View Details</h1>
+                          </div>
+
                         </div>
                       </div>
                     </div>
                   ))}
+
                 </div>
               </div>
             </div>

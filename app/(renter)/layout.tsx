@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import 'remixicon/fonts/remixicon.css';
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import PublicPageHeader from '@/components/layout/PublicPageHeader';
+import PageHeader from '@/components/public/PageHeader';
 import SidebarMenu from '@/components/layout/renter/SidebarMenu';
 
 const poppins = Poppins({
@@ -26,7 +26,7 @@ export default function RenterLayout({
   return (
     <html lang="en" className={poppins.variable}>
       <body className={`${poppins.className} antialiased`}>
-        <PublicPageHeader />
+        <PageHeader />
 
         <aside className="hidden lg:block fixed top-20 left-0 bottom-0 z-40 w-64 shadow-sm lg:w-80">
           <SidebarMenu />

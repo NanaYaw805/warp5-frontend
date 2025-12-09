@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import Image from 'next/image';
-import PublicPageHeader from '@/components/layout/PublicPageHeader';
+import PageHeader from '@/components/public/PageHeader';
 import FooterSection from '@/components/layout/FooterSection';
 import BannerImage from '../../../public/images/help.png'
 
@@ -47,7 +47,7 @@ function Page() {
   return (
     <>
       <main className='h-screen bg-white'>
-        <PublicPageHeader />
+        <PageHeader />
 
         <section className='relative h-130 w-full xl:h-155'>
           <Image

@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useState } from 'react'
-import PublicPageHeader from '@/components/layout/PublicPageHeader';
+import { useState } from 'react'
 import FooterSection from '@/components/layout/FooterSection';
+import PageHeader from '@/components/public/PageHeader';
 
 function Page() {
   const [activeTab, setActiveTab] = useState<'momo' | 'debit' | 'other'>('momo');
@@ -29,7 +29,7 @@ function Page() {
   return (
     <>
       <main className='h-screen bg-white'>
-        <PublicPageHeader />
+        <PageHeader />
 
         <section className='mt-16 w-[90vw] lg:max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-20'>
 

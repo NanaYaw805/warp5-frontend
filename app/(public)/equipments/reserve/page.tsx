@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import PublicPageHeader from '@/components/layout/PublicPageHeader';
+import PageHeader from '@/components/public/PageHeader';
 import FooterSection from '@/components/layout/FooterSection';
 import Car1Image from '../../../../public/cars/car1.jpg';
 
@@ -11,22 +11,22 @@ function Page() {
   return (
     <>
       <main className='h-screen bg-white'>
-        <PublicPageHeader />
+        <PageHeader />
 
-        <section className='mt-6 lg:mt-8 w-[85vw] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8'>
+        <section className='mt-8 w-[90vw] mx-auto grid grid-cols-1 gap-8 xl:w-[85vw] xl:grid-cols-2 xl:gap-8 xl:mt-20'>
 
-          <div className='shadow-xl px-6 lg:px-12 xl:px-20 py-6 lg:py-8 rounded-4xl'>
+          <div className='px-6 py-6 xl:py-8 xl:px-20'>
             <div className='relative w-full aspect-[5/3] bg-gray-100 overflow-hidden'>
               <Image
                 src={Car1Image}
                 alt=''
                 fill
-                sizes="(max-width: 768px) 33vw, 20vw"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 85vw, 60vw"
                 className='object-cover'
               />
             </div>
 
-            <div className='mt-6 lg:mt-8'>
+            <div className='mt-6 xl:mt-8'>
               <div className='flex flex-col'>
                 <div className='flex flex-col justify-center items-start'>
                   <h1 className='text-[#43A047] font-bold text-base lg:text-xl'>Excavators</h1>

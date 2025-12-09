@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import PublicPageHeader from '@/components/layout/PublicPageHeader';
+import PageHeader from '@/components/public/PageHeader';
 import FooterSection from '@/components/layout/FooterSection';
 
 function Page() {
@@ -52,7 +52,7 @@ function Page() {
   return (
     <>
       <div className='h-screen bg-white'>
-        <PublicPageHeader />
+        <PageHeader />
 
         <div className='mt-12 sm:mt-16'>
           <div className='flex justify-center items-center space-x-4 sm:space-x-6 lg:space-x-10 xl:space-x-14'>

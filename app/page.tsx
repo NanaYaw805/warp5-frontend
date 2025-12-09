@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from 'react';
+import { useRouter } from "next/navigation";
 import BannerImage from '../public/images/banner.jpg';
 import Car1Image from '../public/cars/car1.jpg';
 import Car2Image from '../public/cars/car3.jpg';
@@ -16,6 +17,7 @@ import PageHeader from "@/components/public/PageHeader";
 
 
 export default function Page() {
+  const router = useRouter();
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [showEquipmentModal, setShowEquipmentModal] = useState(false);
   const [showPriceRangeModal, setShowPriceRangeModal] = useState(false);
@@ -135,7 +137,7 @@ export default function Page() {
       <main className="h-screen bg-white">
         <PageHeader />
 
-        <section className="h-[600px] bg-black">
+        <section className="h-[600px]">
           <div className="relative h-full">
             <Image src={BannerImage} alt='Banner' fill className='object-cover' priority />
             <div className='absolute inset-0 bg-black/30'></div>
@@ -286,7 +288,7 @@ export default function Page() {
                         <h1 className="text-[#787878] text-xs xl:text-base">day</h1>
                       </div>
 
-                      <div className="flex justify-center items-center bg-[#43A047] px-4 py-3 rounded-2xl cursor-pointer">
+                      <div className="flex justify-center items-center bg-[#43A047] px-4 py-3 rounded-2xl cursor-pointer" onClick={() => router.push('/equipments/details')}>
                         <h1 className="text-white text-xs xl:text-sm">View Details</h1>
                       </div>
 
@@ -381,7 +383,7 @@ export default function Page() {
         </section>
 
         <section className="mt-20 pb-4">
-          <div className="flex justify-center items-center space-x-1 border border-[#333333] w-30 h-11 mx-auto rounded-full cursor-pointer xl:w-40 xl:h-12">
+          <div className="flex justify-center items-center space-x-1 border border-[#333333] w-30 h-11 mx-auto rounded-full cursor-pointer xl:w-40 xl:h-12" onClick={() => router.push('/equipments')}>
             <h1 className="text-sm xl:text-base">See More</h1>
             <i className="ri-arrow-right-double-line text-base"></i>
           </div>

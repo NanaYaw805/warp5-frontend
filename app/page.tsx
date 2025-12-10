@@ -147,7 +147,7 @@ export default function Page() {
               <div className="grid grid-cols-2 md:grid-cols-3 bg-white/40 backdrop-blur-md rounded-2xl shadow-2xl p-8 w-full max-w-7xl border border-[#DDDDDDB2]/70 gap-6 xl:grid-cols-5">
 
                 <div className="relative flex flex-col border-r border-[#DDDDDDB2] pr-6">
-                  <h1 className="font-medium text-white text-sm md:text-base mb-2 xl:text-lg">Location</h1>
+                  <h1 className="font-medium text-white text-sm md:text-base mb-2 xl:text-base">Location</h1>
                   <div
                     className="flex items-center cursor-pointer"
                     onClick={() => {
@@ -157,8 +157,8 @@ export default function Page() {
                       setShowDateRangeModal(false);
                     }}
                   >
-                    <h1 className="text-[#DDDDDD] text-xs md:text-sm xl:text-base">{selectedLocation}</h1>
-                    <i className="ri-arrow-down-s-line text-[#DDDDDD] hidden text-2xl ml-2 xl:flex"></i>
+                    <h1 className="text-[#DDDDDD] text-xs md:text-sm xl:text-sm">{selectedLocation}</h1>
+                    <i className="ri-arrow-down-s-line text-[#DDDDDD] hidden text-xl ml-2 xl:flex"></i>
                   </div>
 
                   <LocationModal
@@ -170,7 +170,7 @@ export default function Page() {
                 </div>
 
                 <div className="relative flex flex-col border-r border-[#DDDDDDB2] pr-6">
-                  <h1 className="font-medium text-white text-sm md:text-base mb-2 xl:text-lg">Equipment</h1>
+                  <h1 className="font-medium text-white text-sm md:text-base mb-2 xl:text-base">Equipment</h1>
                   <div
                     className="flex items-center cursor-pointer"
                     onClick={() => {
@@ -180,8 +180,8 @@ export default function Page() {
                       setShowDateRangeModal(false);
                     }}
                   >
-                    <h1 className="text-[#DDDDDD] text-xs md:text-sm xl:text-base">{selectedEquipment}</h1>
-                    <i className="ri-arrow-down-s-line text-[#DDDDDD] hidden text-2xl ml-2 xl:flex"></i>
+                    <h1 className="text-[#DDDDDD] text-xs md:text-sm xl:text-sm">{selectedEquipment}</h1>
+                    <i className="ri-arrow-down-s-line text-[#DDDDDD] hidden text-xl ml-2 xl:flex"></i>
                   </div>
 
                   <EquipmentModal
@@ -193,7 +193,7 @@ export default function Page() {
                 </div>
 
                 <div className="relative flex flex-col border-r border-[#DDDDDDB2] pr-6">
-                  <h1 className="font-medium text-white text-sm md:text-base mb-2 xl:text-lg">Price Range</h1>
+                  <h1 className="font-medium text-white text-sm md:text-base mb-2 xl:text-base">Price Range</h1>
                   <div
                     className="flex items-center cursor-pointer"
                     onClick={() => {
@@ -203,10 +203,10 @@ export default function Page() {
                       setShowDateRangeModal(false);
                     }}
                   >
-                    <h1 className="text-[#DDDDDD] text-xs md:text-sm xl:text-base">
+                    <h1 className="text-[#DDDDDD] text-xs md:text-sm xl:text-sm">
                       {minPrice && maxPrice ? `$${minPrice} - $${maxPrice}` : 'Select Range'}
                     </h1>
-                    <i className="ri-arrow-down-s-line text-[#DDDDDD] hidden text-2xl ml-2 xl:flex"></i>
+                    <i className="ri-arrow-down-s-line text-[#DDDDDD] hidden text-xl ml-2 xl:flex"></i>
                   </div>
 
                   <PriceModal
@@ -220,7 +220,7 @@ export default function Page() {
                 </div>
 
                 <div className="relative flex flex-col border-r border-[#DDDDDDB2] pr-6">
-                  <h1 className="font-medium text-white text-sm md:text-base mb-2 xl:text-lg">Date Range</h1>
+                  <h1 className="font-medium text-white text-sm md:text-base mb-2 xl:text-base">Date Range</h1>
                   <div
                     className="flex items-center cursor-pointer"
                     onClick={() => {
@@ -230,7 +230,7 @@ export default function Page() {
                       setShowPriceRangeModal(false);
                     }}
                   >
-                    <h1 className="text-[#DDDDDD] text-xs md:text-sm xl:text-base">
+                    <h1 className="text-[#DDDDDD] text-xs md:text-sm xl:text-sm">
                       {fromDate && toDate ? `${fromDate} - ${toDate}` : 'Select Dates'}
                     </h1>
                   </div>
@@ -251,7 +251,7 @@ export default function Page() {
                 </div>
 
                 <div className="flex items-start justify-start xl:justify-center">
-                  <button className="bg-[#000] text-xs md:text-sm text-white px-8 py-3 rounded-lg font-semibold flex items-center cursor-pointer xl:text-base">
+                  <button className="bg-[#000] text-xs md:text-sm text-white px-8 py-3 rounded-lg font-semibold flex items-center cursor-pointer xl:text-sm">
                     Search
                   </button>
                 </div>
@@ -263,7 +263,7 @@ export default function Page() {
 
         <section className="mt-12 md:mt-16 xl:mt-20">
           <div className="max-w-[85vw] mx-auto">
-            <h1 className="text-[#333333] font-medium text-lg md:text-xl xl:text-2xl">Highly Rated By Customers</h1>
+            <h1 className="text-[#333333] font-medium text-base md:text-lg xl:text-xl">Highly Rated By Customers</h1>
 
             <div className="mt-6 md:mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 lg:grid-cols-4 xl:grid-cols-5 xl:gap-10">
               {highlyRatedCars.map((item, index) => (
@@ -275,7 +275,7 @@ export default function Page() {
 
         <section className="mt-12 md:mt-16 xl:mt-20">
           <div className="max-w-[85vw] mx-auto">
-            <h1 className="text-[#333333] font-medium text-lg md:text-xl xl:text-2xl">Most View Equipment</h1>
+            <h1 className="text-[#333333] font-medium text-base md:text-lg xl:text-xl">Most View Equipment</h1>
 
             <div className="mt-6 md:mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 lg:grid-cols-4 xl:grid-cols-5 xl:gap-10">
               {highlyRatedCars.map((item, index) => (
@@ -287,7 +287,7 @@ export default function Page() {
 
         <section className="mt-12 md:mt-16 xl:mt-20">
           <div className="max-w-[85vw] mx-auto">
-            <h1 className="text-[#333333] font-medium text-lg md:text-xl xl:text-2xl">You may Also Like</h1>
+            <h1 className="text-[#333333] font-medium text-base md:text-lg xl:text-xl">You may Also Like</h1>
 
             <div className="mt-6 md:mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 lg:grid-cols-4 xl:grid-cols-5 xl:gap-10">
               {highlyRatedCars.map((item, index) => (
@@ -312,7 +312,7 @@ export default function Page() {
             <div className='relative z-10 flex items-center h-full'>
               <div className='w-full pl-5 md:pl-10 xl:pl-20'>
                 <div className='flex flex-col items-start space-y-2 md:space-y-3'>
-                  <h1 className='text-lg md:text-2xl lg:text-3xl font-semibold text-white leading-tight xl:text-5xl'>
+                  <h1 className='text-base md:text-xl lg:text-2xl font-semibold text-white leading-tight xl:text-4xl'>
                     Reserve Your Mining or Construction
                     <br /><span className='text-[#43A047]'>Equipment </span>
                     from us

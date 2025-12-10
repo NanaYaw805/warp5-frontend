@@ -31,7 +31,6 @@ function PageHeader() {
     { label: 'My Reservations', path: '/renter/reservations' },
     { label: 'Payment', path: '/renter/payment' },
     { label: 'Notifications', path: '/renter/notifications' },
-    { label: 'Manage Profile', path: '/renter/profile' },
   ];
 
   const handleForgotPassword = () => {
@@ -56,42 +55,42 @@ function PageHeader() {
 
           <nav className="hidden xl:flex justify-center items-center space-x-6">
             {navItems.map(({ label, path }) => (
-              <div
+              <button
                 onClick={() => router.push(path)}
                 key={path}
-                className={`${pathname === path ? 'bg-[#43A047] text-white' : 'text-[#333333] bg-white'} cursor-pointer flex items-center justify-center px-6 py-3 rounded-full transition-all hover:shadow-md`}
+                className={`${pathname === path ? 'bg-[#43A047] text-white' : 'text-[#333333] bg-white hover:bg-gray-50'} cursor-pointer flex items-center justify-center px-6 py-3 rounded-full transition-all active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50`}
               >
                 <h1 className="text-base font-medium">{label}</h1>
-              </div>
+              </button>
             ))}
           </nav>
 
           <div className="flex justify-end items-center space-x-8">
-            <div className="hidden justify-center items-center bg-[#FFF0F6] w-16 h-16 rounded-full xl:flex">
+            <div className="hidden justify-center items-center bg-[#FFF0F6] w-16 h-16 rounded-full xl:flex cursor-pointer hover:bg-[#FFE6F1] transition-all">
               <i className="ri-heart-3-fill text-[#FF0063] text-2xl"></i>
             </div>
 
-            <div className="hidden justify-center items-center xl:flex">
+            <button className="hidden justify-center items-center xl:flex hover:bg-gray-100 rounded-full p-2 transition-all focus:outline-none">
               <i className="ri-notification-2-line text-[#000000] text-2xl"></i>
-            </div>
+            </button>
 
             {isUser ? (
               <div className="relative hidden xl:flex">
-                <div
-                  className="flex justify-center items-center bg-[#000]/10 w-16 h-16 rounded-full cursor-pointer"
+                <button
+                  className="flex justify-center items-center bg-[#000]/10 w-16 h-16 rounded-full cursor-pointer hover:bg-[#000]/20 transition-all focus:outline-none"
                   onClick={() => setShowUserModal(!showUserModal)}
                 >
                   <i className="ri-user-3-line text-2xl"></i>
-                </div>
+                </button>
 
                 {showUserModal && (
                   <UserModal setShowUserModal={setShowUserModal} />
                 )}
               </div>
             ) : (
-              <div className="hidden justify-center items-center border border-[#333333] px-12 py-3 rounded-full xl:flex" onClick={() => setShowLoginModal(true)}>
-                <h1 className="text-base text-[#333333] font-semibold">Log In</h1>
-              </div>
+              <button className="hidden justify-center items-center border-2 border-[#333333] hover:bg-[#333333] hover:text-white px-12 py-3 rounded-full xl:flex transition-all active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#333333] focus:ring-offset-2" onClick={() => setShowLoginModal(true)}>
+                <h1 className="text-base font-semibold">Log In</h1>
+              </button>
             )}
 
 

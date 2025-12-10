@@ -26,7 +26,7 @@ export default function DateModal({
   return (
     <>
       <div className="fixed inset-0 bg-black/50 z-40" onClick={onCancel}></div>
-      <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white rounded-lg shadow-xl p-6 w-auto z-50 xl:left-1/2 xl:-translate-x-1/2 xl:w-80">
+      <div className="absolute top-full left-1/3 -translate-x-1/2 mt-2 bg-white rounded-lg shadow-xl p-6 w-auto z-50 xl:left-1/2 xl:-translate-x-1/2 xl:w-80">
         <h3 className="text-gray-800 text-xs font-medium mb-4 xl:text-base">Select Date Range</h3>
         <div className="flex items-center gap-3">
           <div>

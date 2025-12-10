@@ -34,53 +34,54 @@ function Page() {
         <DashboardHeader title='Overview' />
         <DashboardAlert />
 
-
-        <section className='mt-6 lg:mt-12'>
-          <div className='grid grid-cols-1 gap-10 lg:grid-cols-[1.5fr_1fr] lg:gap-20'>
+        <section className='mt-6 md:mt-8 lg:mt-10'>
+          <div className='grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-[1.6fr_1fr] lg:gap-10 xl:gap-12'>
             <div className='flex flex-col'>
-              <div className='bg-white flex flex-col py-8 px-4 gap-12 lg:flex-row lg:justify-around lg:py-12 lg:px-4 lg:gap-0'>
+              <div className='bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col py-6 md:py-8 px-5 md:px-6 gap-8 md:gap-10 lg:flex-row lg:justify-around lg:py-10 lg:px-6 lg:gap-0'>
 
-                <div className='flex flex-col space-y-3 lg:space-y-4'>
-                  <h1 className='text-[#333333] font-semibold text-sm lg:text-base'>Upcoming Reservation</h1>
-                  <p className='text-[#333333] font-regular text-xs lg:text-base'>Equipment Name: Excavator | Nov 15 - 20, 2025</p>
+                <div className='flex flex-col space-y-3 md:space-y-4'>
+                  <h1 className='text-[#333333] font-semibold text-sm md:text-base lg:text-lg'>Upcoming Reservation</h1>
+                  <p className='text-[#666666] font-regular text-xs md:text-sm lg:text-base'>Equipment Name: <span className='font-medium text-[#333333]'>Excavator</span></p>
+                  <p className='text-[#666666] font-regular text-xs md:text-sm lg:text-base'>Nov 15 - 20, 2025</p>
 
-                  <button className='flex w-34 h-10 justify-center items-center border border-[#333333]/90 rounded-full text-[#333333] font-regular text-xs lg:text-base lg:w-44 lg:h-13'>View Details</button>
+                  <button className='flex w-36 md:w-40 h-10 md:h-11 justify-center items-center border-2 border-[#43A047] rounded-full text-[#43A047] hover:bg-[#43A047] hover:text-white font-medium text-xs md:text-sm transition-all active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-offset-2'>View Details</button>
                 </div>
 
-                <div className='hidden lg:block border-l border-[#E8E8E8] h-16 lg:h-full' />
+                <div className='hidden lg:block border-l border-gray-200 h-auto' />
 
-                <div className='flex flex-col space-y-3 lg:space-y-4'>
-                  <h1 className='text-[#333333] font-semibold text-sm lg:text-base'>Upcoming Reservation</h1>
-                  <p className='text-[#333333] font-regular text-xs lg:text-base'>Equipment Name: Excavator | Nov 15 - 20, 2025</p>
+                <div className='flex flex-col space-y-3 md:space-y-4'>
+                  <h1 className='text-[#333333] font-semibold text-sm md:text-base lg:text-lg'>Upcoming Reservation</h1>
+                  <p className='text-[#666666] font-regular text-xs md:text-sm lg:text-base'>Equipment Name: <span className='font-medium text-[#333333]'>Crane</span></p>
+                  <p className='text-[#666666] font-regular text-xs md:text-sm lg:text-base'>Nov 22 - 27, 2025</p>
 
-                  <button className='flex w-34 h-10 justify-center items-center border border-[#333333]/90 rounded-full text-[#333333] font-regular text-xs lg:text-base lg:w-44 lg:h-13'>View Details</button>
+                  <button className='flex w-36 md:w-40 h-10 md:h-11 justify-center items-center border-2 border-[#43A047] rounded-full text-[#43A047] hover:bg-[#43A047] hover:text-white font-medium text-xs md:text-sm transition-all active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-offset-2'>View Details</button>
                 </div>
               </div>
 
-              <div className='mt-6 bg-white p-4 rounded-lg lg:mt-12 lg:p-12'>
-                <h1 className='text-[#000000] font-medium text-sm lg:text-xl'>Reservation History</h1>
-                <div className='mt-8 lg:mt-12 overflow-x-auto'>
-                  <div className='grid grid-cols-[1fr_1fr_1fr_1fr_1fr_auto] items-center min-w-[600px]'>
-                    <h1 className='text-[#1C1D21] font-medium text-xs lg:text-base'>ID</h1>
-                    <h1 className='text-[#1C1D21] font-medium text-xs lg:text-base'>Equipment</h1>
-                    <h1 className='text-[#1C1D21] font-medium text-xs lg:text-base'>Vendor</h1>
-                    <h1 className='text-[#1C1D21] font-medium text-xs lg:text-base'>Dates</h1>
-                    <h1 className='text-[#1C1D21] font-medium text-xs lg:text-base'>Cost</h1>
+              <div className='mt-6 p-4 md:mt-8 lg:mt-10 bg-white rounded-xl shadow-sm border border-gray-100 md:p-6 lg:p-8'>
+                <h1 className='text-[#000000] font-semibold text-base md:text-lg lg:text-xl'>Reservation History</h1>
+                <div className='mt-6 md:mt-7 lg:mt-8 overflow-x-auto'>
+                  <div className='grid grid-cols-[1fr_1fr_1fr_1fr_1fr_auto] items-center min-w-[600px] pb-3 border-b border-gray-200'>
+                    <h1 className='text-[#1C1D21] font-semibold text-xs md:text-sm lg:text-base'>ID</h1>
+                    <h1 className='text-[#1C1D21] font-semibold text-xs md:text-sm lg:text-base'>Equipment</h1>
+                    <h1 className='text-[#1C1D21] font-semibold text-xs md:text-sm lg:text-base'>Vendor</h1>
+                    <h1 className='text-[#1C1D21] font-semibold text-xs md:text-sm lg:text-base'>Dates</h1>
+                    <h1 className='text-[#1C1D21] font-semibold text-xs md:text-sm lg:text-base'>Cost</h1>
                     <span />
                   </div>
                 </div>
 
-                <div className='mt-4 space-y-3 overflow-y-auto pb-9'>
+                <div className='mt-2 space-y-0 overflow-y-auto'>
                   {reservationHistory.map((reservation) => (
-                    <div key={reservation.id} className='overflow-x-auto'>
-                      <div className='grid grid-cols-[1fr_1fr_1fr_1fr_1fr_auto] items-center h-10 lg:h-12 min-w-[600px]'>
-                        <h1 className='text-[#1C1D21] font-regular text-xs lg:text-sm'>{reservation.id}</h1>
-                        <h1 className='text-[#1C1D21] font-regular text-xs lg:text-sm'>{reservation.equipment}</h1>
-                        <h1 className='text-[#1C1D21] font-regular text-xs lg:text-sm'>{reservation.vendor}</h1>
-                        <h1 className='text-[#1C1D21] font-regular text-xs lg:text-sm'>{reservation.dates}</h1>
-                        <h1 className='text-[#1C1D21] font-regular text-xs lg:text-sm'>{reservation.cost}</h1>
-                        <i className="ri-arrow-right-up-long-line text-[#1C1D21] text-sm lg:text-base"></i>
-                      </div>
+                    <div key={reservation.id} className='overflow-x-auto border-b border-gray-100 last:border-b-0'>
+                      <button className='grid grid-cols-[1fr_1fr_1fr_1fr_1fr_auto] items-center h-14 md:h-16 lg:h-16 min-w-[600px] w-full text-left hover:bg-gray-50 transition-colors px-0 focus:outline-none focus:bg-gray-50'>
+                        <h1 className='text-[#1C1D21] font-medium text-xs md:text-sm lg:text-sm'>{reservation.id}</h1>
+                        <h1 className='text-[#1C1D21] font-regular text-xs md:text-sm lg:text-sm'>{reservation.equipment}</h1>
+                        <h1 className='text-[#666666] font-regular text-xs md:text-sm lg:text-sm'>{reservation.vendor}</h1>
+                        <h1 className='text-[#666666] font-regular text-xs md:text-sm lg:text-sm'>{reservation.dates}</h1>
+                        <h1 className='text-[#1C1D21] font-semibold text-xs md:text-sm lg:text-sm'>{reservation.cost}</h1>
+                        <i className="ri-arrow-right-line text-[#43A047] text-base md:text-lg lg:text-xl"></i>
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -88,7 +89,7 @@ function Page() {
             </div>
 
             <div className='flex flex-col'>
-              <div className='w-full flex justify-center items-center'>
+              <div className='w-full flex justify-center items-center bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-5'>
                 <DateRange
                   ranges={dateRange}
                   onChange={handleDateRangeChange}
@@ -99,17 +100,19 @@ function Page() {
                 />
               </div>
 
-              <div className='mt-4 lg:mt-6'>
-                <h1 className='text-[#333333] font-medium text-sm lg:text-xl'>Updates</h1>
-                <div className='mt-4 flex justify-start items-center bg-[#F7E6E6] py-6 px-4 rounded-lg lg:py-10 lg:px-6'>
-                  <h1 className='text-xs lg:text-base'>Rent of excavator will end this
-                    thursday Nov 20</h1>
-                </div>
+              <div className='mt-6 md:mt-8 lg:mt-10'>
+                <h1 className='text-[#333333] font-semibold text-base md:text-lg lg:text-xl mb-4'>Updates</h1>
+                <div className='flex flex-col space-y-4'>
+                  <div className='flex justify-start items-start bg-[#FFF4E6] border-l-4 border-[#F59E0B] py-4 md:py-5 px-4 md:px-5 rounded-lg shadow-sm'>
+                    <i className="ri-notification-3-line text-[#F59E0B] text-lg md:text-xl mr-3 mt-0.5"></i>
+                    <h1 className='text-[#333333] font-medium text-xs md:text-sm lg:text-base'>Rent of excavator will end this Thursday Nov 20</h1>
+                  </div>
 
-                <div className='mt-4 flex justify-start items-center bg-[#F7E6E6] py-6 px-4 rounded-lg lg:py-10 lg:px-6'>
-                  <h1 className='text-xs lg:text-base'>Other relevant booking info here</h1>
+                  <div className='flex justify-start items-start bg-[#E8F5E9] border-l-4 border-[#43A047] py-4 md:py-5 px-4 md:px-5 rounded-lg shadow-sm'>
+                    <i className="ri-check-double-line text-[#43A047] text-lg md:text-xl mr-3 mt-0.5"></i>
+                    <h1 className='text-[#333333] font-medium text-xs md:text-sm lg:text-base'>Payment confirmed for Crane rental</h1>
+                  </div>
                 </div>
-
               </div>
             </div>
           </div>

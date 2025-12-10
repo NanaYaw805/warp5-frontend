@@ -27,12 +27,9 @@ export default function RenterLayout({
     <html lang="en" className={poppins.variable}>
       <body className={`${poppins.className} antialiased`}>
         <PageHeader />
+        <SidebarMenu />
 
-        <aside className="hidden lg:block fixed top-20 left-0 bottom-0 z-40 w-64 shadow-sm lg:w-80">
-          <SidebarMenu />
-        </aside>
-
-        <main className="min-h-screen bg-[#E4E4E4]/30 pt-10 pb-6 pl-4 pr-4 lg:pr-5 lg:ml-80 lg:pl-5 lg:pb-8 lg:pt-20">
+        <main className="min-h-screen bg-[#E4E4E4]/30 pt-20 pb-6 px-4 md:px-6 lg:ml-64 xl:ml-72 lg:px-8 xl:px-10 lg:pb-8 lg:pt-24">
           {children}
         </main>
       </body>

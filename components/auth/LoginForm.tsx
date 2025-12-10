@@ -73,7 +73,10 @@ export default function LoginForm({ closeModal, onForgotPassword }: LoginFormPro
   return (
     <div className='fixed top-8 inset-0 bg-black/70 bg-opacity-50 flex items-center justify-center z-50'>
       <div className='bg-white relative rounded-3xl px-6 py-4 w-full max-w-xs xl:max-w-md xl:px-16 xl:py-8'>
-        <button onClick={closeModal} className='absolute top-4 right-4 cursor-pointer'>
+        <button
+          onClick={closeModal}
+          className='absolute top-4 right-4 cursor-pointer hover:bg-gray-100 rounded-full p-1 transition-all focus:outline-none'
+        >
           <i className='ri-close-line text-[#333333] text-2xl xl:text-3xl'></i>
         </button>
 
@@ -84,15 +87,17 @@ export default function LoginForm({ closeModal, onForgotPassword }: LoginFormPro
         <form className='space-y-4 lg:space-y-6' onSubmit={handleSignIn}>
           {signInInput.map((input, index) => (
             <div key={index}>
-              <label htmlFor='email' className='mb-2 lg:mb-4 block text-xs lg:text-sm font-regular text-[#333333]'>
+              <label htmlFor={input.name} className='mb-2 lg:mb-4 block text-xs lg:text-sm font-regular text-[#333333]'>
                 {input.label}
               </label>
               <input
                 type={input.type}
                 name={input.name}
+                id={input.name}
                 onChange={handleChangeInput}
                 value={formData[input.name as keyof typeof formData]}
-                className='w-full h-10 px-4 border border-[#787878] text-xs text-[#333333] rounded-full xl:h-14'
+                placeholder={`Enter your ${input.label.toLowerCase()}`}
+                className='w-full h-10 px-4 border border-[#787878] text-xs text-[#333333] rounded-full xl:h-14 transition-all focus:outline-none focus:border-[#43A047] focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50'
               />
             </div>
           ))}

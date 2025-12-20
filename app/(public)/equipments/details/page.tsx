@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import Footer from '@/components/public/Footer'
+import Image, { StaticImageData } from 'next/image';
+import Footer from '@/components/public/Footer';
 import PageHeader from '@/components/public/PageHeader';
 import EquipmentCard from '@/components/public/EquipmentCard';
 import Car1Image from '../../../../public/cars/car1.jpg';
@@ -15,16 +15,31 @@ function Page() {
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [showDateDropdown, setShowDateDropdown] = useState(false);
-  const [startDate, setStartDate] = useState('')
-  const [endDate, setEndDate] = useState('')
-  const [activeTab, setActiveTab] = useState('description');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [activeTab, setActiveTab] = useState<'description' | 'specs' | 'reivews'>('description');
 
   const images = [
-    { src: Car1Image, alt: 'Main product view' },
-    { src: Car2Image, alt: 'Alternate view 1' },
-    { src: Car3Image, alt: 'Alternate view 2' },
+    { src: Car2Image, alt: 'Side view of excavator' },
+    { src: Car1Image, alt: 'Front view of excavator' },
+    { src: Car3Image, alt: 'Cabin view' },
   ];
 
+  // Mock Data
+  const equipmentDetails = {
+    name: 'CAT 320 GC Hydraulic Excavator',
+    price: 1200,
+    rating: 4.9,
+    reviews: 124,
+    location: 'Accra, Ghana',
+    specs: [
+      { label: 'Operating Weight', value: '21,300 kg' },
+      { label: 'Net Power', value: '107 kW' },
+      { label: 'Dig Depth', value: '6,720 mm' },
+      { label: 'Bucket Capacity', value: '1.0 m³' },
+    ],
+    features: ['Air Conditioning', 'GPS Tracking', 'Safety Camera', 'Quick Coupler']
+  };
 
   const highlyRatedCars = [
     { id: 1, image: Car1Image, name: 'Bucket Wheel Excavator', location: 'Kumasi, Ghana', rating: '4.8', price: 'GHC1,123' },
@@ -33,257 +48,221 @@ function Page() {
     { id: 5, image: Car2Image, name: 'Audi A6', location: 'Kumasi', rating: '4.9', price: 'GHC1,123' },
   ];
 
-
   const handleDateClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setShowDateDropdown(!showDateDropdown);
   };
 
-  const handleDateDone = () => {
-    setShowDateDropdown(false);
-  };
-
-  const handleDateCancel = () => {
-    setStartDate('');
-    setEndDate('');
-    setShowDateDropdown(false);
-  };
-
-  const description = `consectetur adipiscing elit. Nullam volutpat dolor lobortis, interdum turpis et, interdum leo. Nunc hendrerit
-                      volutpat risus sit amet ornare. Vestibulum sollicitudin lectus eu purus varius molestie vel at velit. Pellentesque habitant morbi tristique
-                      senectus et netus et malesuada fames ac turpis egestas. enean tellus lacus, sagittis quis sollicitudin nec, placerat at sem. Curabitur
-                      pellentesque ligula id dolor cursus imperdiet. Mauris magna diam, scelerisque lobortis molestie a, viverra a arcu. Sed ut purus arcu.
-                      sque habitant morbi tristique
-                      senectus et netus et malesuada fames ac turpis egestas. enean tellus lacus, sagittis quis sollicitudin nec, placerat at sem. Curabitur
-                      pellentesque ligula id dolor cursus imperdiet. Mauris magna diam, scelerisque lobortis molestie a, viverra a arcu. Sed ut purus arcu.`;
-
-
   return (
-    <>
-      <main className='min-h-screen bg-white'>
-        <PageHeader />
+    <main className="min-h-screen bg-gray-50/50 font-sans text-gray-900">
+      <PageHeader />
 
-        <section className='mt-20 md:mt-24 xl:mt-28 w-[90vw] mx-auto grid grid-cols-1 gap-8 xl:w-[85vw] xl:grid-cols-[2.5fr_1fr] xl:gap-10'>
-          <div className='flex flex-col gap-4'>
-            <div className='relative w-full aspect-[6/4] bg-gray-100 overflow-hidden'>
-              <Image
-                src={images[selectedImage].src}
-                alt={images[selectedImage].alt}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 85vw, 60vw"
-                className='object-cover'
-                priority
-              />
-            </div>
+      {/* Main Content Wrapper */}
+      <div className="pt-28 pb-12 md:pb-20 max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
 
-            <div className='grid grid-cols-3 gap-2 lg:gap-3'>
-              {images.map((image, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSelectedImage(index)}
-                  className={`relative w-full aspect-[4/3] bg-gray-100 overflow-hidden transition-all ${selectedImage === index
-                    ? 'ring-2 ring-blue-500 opacity-100'
-                    : 'opacity-70 hover:opacity-100'
-                    }`}
-                >
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    sizes="(max-width: 768px) 33vw, 20vw"
-                    className='object-cover'
-                  />
-                </button>
-              ))}
-            </div>
+        {/* Breadcrumb / Back Button */}
+        <div className="mb-6 flex items-center gap-2 text-sm text-gray-500">
+          <button onClick={() => router.back()} className="hover:text-green-600 transition-colors flex items-center gap-1">
+            <i className="ri-arrow-left-s-line text-lg"></i> Back to Inventory
+          </button>
+          <span>/</span>
+          <span className="text-gray-900 font-medium">Excavators</span>
+        </div>
 
-            <div className='mt-6 lg:mt-8'>
-              <div className='flex flex-col'>
-                <div className='flex flex-col justify-center items-start'>
-                  <h1 className='text-[#43A047] font-bold text-sm xl:text-lg'>Excavators</h1>
-                  <div className='mt-2 flex space-x-4'>
-                    <div className='flex items-center'>
-                      <i className="ri-map-pin-2-line"></i>
-                      <h1 className='text-[#333333] text-xs lg:text-base font-regular'>Takoradi</h1>
-                    </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
 
-                    <div className='flex space-x-1 items-center'>
-                      <i className="ri-star-s-line"></i>
-                      <i className="ri-star-s-line"></i>
-                      <i className="ri-star-s-line"></i>
-                      <i className="ri-star-s-line"></i>
-                      <h1 className='text-[#333333] text-xs lg:text-base'>4.9</h1>
-                    </div>
-                  </div>
+          {/* LEFT COLUMN: Gallery & Info (8 cols) */}
+          <div className="lg:col-span-8 space-y-8">
+
+            {/* Image Gallery */}
+            <div className="space-y-4">
+              <div className="relative w-full aspect-[16/10] bg-gray-200 rounded-3xl overflow-hidden shadow-sm">
+                <Image
+                  src={images[selectedImage].src}
+                  alt={images[selectedImage].alt}
+                  fill
+                  className="object-cover transition-transform duration-700 hover:scale-105"
+                  priority
+                />
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-gray-900 uppercase tracking-wide">
+                  Available Now
                 </div>
               </div>
-            </div>
-
-            <div className='mt-4 lg:mt-6'>
-              <div className='flex flex-col'>
-                <div className='flex items-center space-x-1'>
-                  <button className={`flex justify-center items-center ${activeTab === 'description' ? 'bg-[#F4F4F4] text-[#333333]' : 'bg-[#333333] text-white'} text-xs md:text-sm lg:text-base font-medium w-24 md:w-28 lg:w-32 h-10 lg:h-12 transition-all hover:opacity-90 cursor-pointer`} onClick={() => setActiveTab('description')}>Description</button>
-                  <button className={`flex justify-center items-center ${activeTab === 'rate' ? 'bg-[#F4F4F4] text-[#333333]' : 'bg-[#333333] text-white'} text-xs md:text-sm lg:text-base font-medium w-20 md:w-24 lg:w-28 h-10 lg:h-12 transition-all hover:opacity-90 cursor-pointer`} onClick={() => setActiveTab('rate')}>Rate</button>
-                  <button className={`flex justify-center items-center ${activeTab === 'availability' ? 'bg-[#F4F4F4] text-[#333333]' : 'bg-[#333333] text-white'} text-xs md:text-sm lg:text-base font-medium w-24 md:w-28 lg:w-32 h-10 lg:h-12 transition-all hover:opacity-90 cursor-pointer`} onClick={() => setActiveTab('availability')}>Availability</button>
-                </div>
-
-                {activeTab === 'description' && (
-                  <div className='bg-[#F4F4F4] min-h-[10vh] max-h-96 rounded-b-3xl p-6 lg:p-8 xl:p-10 overflow-y-auto'>
-                    <h1 className='text-[#333333] text-xs lg:text-base tracking-wider font-regular'>Lorem ipsum dolor sit amet, {description}
-                    </h1>
-                  </div>
-                )}
-
-                {activeTab === 'rate' && (
-                  <div className='bg-[#fff] min-h-[10vh] max-h-96 shadow-md rounded-b-3xl p-8 lg:p-12 xl:p-16 overflow-y-auto'>
-                    <div className='flex flex-col lg:flex-row justify-around items-center space-y-4 lg:space-y-0'>
-                      <div className='flex flex-col'>
-                        <h1 className='text-[#333333] text-sm lg:text-lg font-medium'>Daily</h1>
-                        <h1 className='text-[#333333] text-lg lg:text-xl font-bold'>GH 1000.00</h1>
-                      </div>
-
-                      <div className='border-l border-[#333333] h-8 lg:h-10 hidden lg:block' />
-
-                      <div className='flex flex-col'>
-                        <h1 className='text-[#333333] text-sm lg:text-lg font-medium'>3 Days</h1>
-                        <h1 className='text-[#333333] text-lg lg:text-xl font-bold'>GH 2500.00</h1>
-                      </div>
-
-                      <div className='border-l border-[#333333] h-8 lg:h-10 hidden lg:block' />
-
-                      <div className='flex flex-col'>
-                        <h1 className='text-[#333333] text-sm lg:text-lg font-medium'>Weekly</h1
-                        >
-                        <h1 className='text-[#333333] text-lg lg:text-xl font-bold'>GH 7020.00</h1>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === 'availability' && (
-                  <div className='bg-[#F4F4F4] min-h-[10vh] max-h-96 rounded-b-3xl p-6 lg:p-8 xl:p-10 overflow-y-auto'>
-                    <h1 className='text-[#333333] text-xs lg:text-base tracking-wider font-regular'>Availability content goes here.</h1>
-                  </div>
-                )}
-
-              </div>
-            </div>
-
-            <div className='mt-8 lg:mt-12'>
-              <div className='flex flex-col space-y-4'>
-                <div className='flex justify-start items-center'>
-                  <h1 className='text-[#333333] font-medium text-sm lg:text-lg'>Equipment Location On Map</h1>
-                </div>
-
-                <div className='flex justify-center items-center bg-[#F4F4F4] min-h-24 lg:min-h-32 xl:min-h-40'>
-                  <h1>Map Here</h1>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-12 md:mt-16 xl:mt-20">
-              <div className="max-w-[85vw] mx-auto">
-                <h1 className="text-[#333333] font-medium text-base md:text-lg xl:text-xl">Highly Rated By Customers</h1>
-
-                <div className="mt-6 md:mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 lg:grid-cols-4 xl:grid-cols-4 xl:gap-10">
-                  {highlyRatedCars.map((item, index) => (
-                    <EquipmentCard key={index} item={item} />
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className='flex flex-col'>
-            <div className='pt-8 lg:pt-12 xl:pt-16 flex justify-center items-center space-x-3'>
-              <div className='flex items-center space-x-2 cursor-pointer'>
-                <i className="ri-share-2-line text-[#333333] text-base lg:text-lg"></i>
-                <h1 className='text-[#333333] text-xs lg:text-base font-medium'>Share</h1>
-              </div>
-
-              <div className='h-6 border-l border-[#333333]'></div>
-
-              <div className='flex items-center space-x-2 cursor-pointer'>
-                <i className="ri-heart-line text-[#333333] text-base lg:text-lg"></i>
-                <h1 className='text-[#333333] text-xs lg:text-base font-medium'>Save</h1>
-              </div>
-            </div>
-
-            <div className='mt-8 lg:mt-12 xl:mt-16 py-6 lg:py-8 xl:py-10 flex flex-col justify-center shadow-xl rounded-b-4xl'>
-              <div className='flex justify-center items-center'>
-                <h1 className='text-[#000000] text-sm lg:text-lg font-medium'>Rental Period</h1>
-              </div>
-
-              <div className='relative mt-6 lg:mt-8 xl:mt-10 flex justify-center'>
-                <div
-                  className='flex justify-center items-center border border-[#787878] w-40 lg:w-48 xl:w-56 mx-auto h-10 lg:h-12 rounded-full space-x-2 cursor-pointer bg-white'
-                  onClick={handleDateClick}
-                >
-                  <i className="ri-calendar-2-line text-[#787878] text-xs lg:text-base"></i>
-                  <h1 className='text-[#787878] text-xs lg:text-base font-regular'>
-                    {startDate && endDate ? `${startDate} - ${endDate}` : 'Select Rental Dates'}
-                  </h1>
-                </div>
-
-                {showDateDropdown && (
-                  <div
-                    className='absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-white rounded-2xl shadow-xl border border-gray-200 p-4 lg:p-6 z-[100] min-w-[280px]'
-                    onClick={(e) => e.stopPropagation()}
+              <div className="flex gap-4 overflow-x-auto pb-2">
+                {images.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedImage(idx)}
+                    className={`relative w-24 h-24 md:w-32 md:h-24 flex-shrink-0 rounded-2xl overflow-hidden border-2 transition-all ${selectedImage === idx ? 'border-green-500 ring-2 ring-green-500/20' : 'border-transparent opacity-70 hover:opacity-100'}`}
                   >
-                    <div className='space-y-4'>
-                      <div className='flex flex-col space-y-3'>
-                        <div className='flex flex-col'>
-                          <label className='text-xs lg:text-sm font-medium text-[#333333] mb-1'>Start Date</label>
-                          <input
-                            type='date'
-                            value={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
-                            className='px-3 py-2 border border-gray-300 rounded-lg text-xs lg:text-base focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:border-transparent'
-                          />
-                        </div>
-                        <div className='flex flex-col'>
-                          <label className='text-xs lg:text-sm font-medium text-[#333333] mb-1'>End Date</label>
-                          <input
-                            type='date'
-                            value={endDate}
-                            onChange={(e) => setEndDate(e.target.value)}
-                            min={startDate}
-                            className='px-3 py-2 border border-gray-300 rounded-lg text-xs lg:text-base focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:border-transparent'
-                          />
-                        </div>
-                      </div>
-                      <div className='flex space-x-2 pt-2'>
-                        <button
-                          onClick={handleDateCancel}
-                          className='flex-1 px-3 py-2 border border-gray-300 rounded-lg text-xs lg:text-base font-medium text-gray-700 hover:bg-gray-50 active:scale-95 transition-all focus:ring-2 focus:ring-offset-2 focus:ring-gray-300'
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          onClick={handleDateDone}
-                          className='flex-1 px-3 py-2 bg-[#43A047] text-white rounded-lg text-xs lg:text-base font-medium hover:bg-[#388E3C] active:scale-95 transition-all focus:ring-2 focus:ring-offset-2 focus:ring-[#43A047]'
-                        >
-                          Done
-                        </button>
-                      </div>
+                    <Image src={img.src} alt={img.alt} fill className="object-cover" />
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Mobile Title Block (Visible only on small screens) */}
+            <div className="lg:hidden">
+              <h1 className="text-2xl font-bold mb-2">{equipmentDetails.name}</h1>
+              <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
+                <span className="flex items-center gap-1"><i className="ri-map-pin-line"></i> {equipmentDetails.location}</span>
+                <span className="flex items-center gap-1 text-yellow-500"><i className="ri-star-fill"></i> {equipmentDetails.rating} ({equipmentDetails.reviews})</span>
+              </div>
+              <div className="text-2xl font-bold text-green-600">GH₵{equipmentDetails.price}<span className="text-sm font-normal text-gray-500">/day</span></div>
+            </div>
+
+            {/* Tabs & Details */}
+            <div className="bg-white rounded-[2rem] p-6 md:p-10 shadow-sm border border-gray-100">
+              <div className="flex items-center gap-8 border-b border-gray-100 mb-8 overflow-x-auto">
+                {['Description', 'Specs', 'Reviews'].map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab.toLowerCase() as any)}
+                    className={`pb-4 text-sm md:text-base font-semibold capitalize relative transition-colors ${activeTab === tab.toLowerCase() ? 'text-green-600' : 'text-gray-400 hover:text-gray-600'}`}
+                  >
+                    {tab}
+                    {activeTab === tab.toLowerCase() && <div className="absolute bottom-0 left-0 w-full h-[2px] bg-green-600 rounded-t-full"></div>}
+                  </button>
+                ))}
+              </div>
+
+              <div className="min-h-[200px]">
+                {activeTab === 'description' && (
+                  <div className="space-y-6 animate-in fade-in duration-300">
+                    <h3 className="text-xl font-bold text-gray-900">About this Equipment</h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      The {equipmentDetails.name} sets a new standard for performance and fuel efficiency in this size class.
+                      With the industry's highest level of standard factory technology, a new cab focused on operator comfort and productivity,
+                      and lower fuel and maintenance costs, this machine will set the pace for your construction site.
+                    </p>
+
+                    <div>
+                      <h4 className="font-bold text-gray-900 mb-3">Key Features</h4>
+                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {equipmentDetails.features.map((feature, idx) => (
+                          <li key={idx} className="flex items-center gap-2 text-gray-600">
+                            <i className="ri-checkbox-circle-fill text-green-500"></i> {feature}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
                 )}
-              </div>
 
-              <div className='mt-6 lg:mt-8 xl:mt-10 flex justify-center items-center'>
-                <button className='flex justify-center items-center w-40 lg:w-48 xl:w-56 h-10 lg:h-12 bg-[#43A047] hover:bg-[#388E3C] active:scale-95 transition-all rounded-full cursor-pointer focus:ring-2 focus:ring-offset-2 focus:ring-[#43A047]' onClick={() => router.push('/equipments/reserve')}>
-                  <h1 className='text-white font-medium text-xs lg:text-base'>Reserve</h1>
-                </button>
+                {activeTab === 'specs' && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in duration-300">
+                    {equipmentDetails.specs.map((spec, idx) => (
+                      <div key={idx} className="flex justify-between items-center p-4 bg-gray-50 rounded-xl">
+                        <span className="text-gray-500 font-medium">{spec.label}</span>
+                        <span className="text-gray-900 font-bold">{spec.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
+
           </div>
-        </section>
-        <section className='mt-12 md:mt-16 xl:mt-20'>
-          <Footer />
-        </section>
-      </main>
-    </>
+
+
+          {/* RIGHT COLUMN: Sidebar (4 cols) */}
+          <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-28">
+
+            {/* Desktop Title details */}
+            <div className="hidden lg:block">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2 leading-tight">{equipmentDetails.name}</h1>
+              <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
+                <span><i className="ri-map-pin-line text-green-600"></i> {equipmentDetails.location}</span>
+                <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+                <span className="flex items-center gap-1"><i className="ri-star-fill text-yellow-400"></i> {equipmentDetails.rating} ({equipmentDetails.reviews} reviews)</span>
+              </div>
+            </div>
+
+            {/* Booking Card */}
+            <div className="bg-white rounded-[2rem] p-6 md:p-8 shadow-xl shadow-gray-200/50 border border-gray-100">
+              <div className="flex items-end justify-between mb-8">
+                <div>
+                  <p className="text-sm text-gray-500 mb-1">Daily Rate</p>
+                  <h2 className="text-3xl font-bold text-gray-900">GH₵{equipmentDetails.price}</h2>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs text-green-600 font-bold bg-green-50 px-2 py-1 rounded-lg">Best Value</p>
+                </div>
+              </div>
+
+              <hr className="border-gray-100 mb-6" />
+
+              <div className="space-y-4 mb-8">
+                <label className="text-sm font-bold text-gray-900">Rental Period</label>
+                <div className="relative">
+                  <button
+                    onClick={handleDateClick}
+                    className="w-full flex items-center justify-between p-4 bg-gray-50 border border-transparent hover:border-green-500 hover:bg-white rounded-xl transition-all text-left group"
+                  >
+                    <span className={startDate ? 'text-gray-900 font-medium' : 'text-gray-400'}>
+                      {startDate && endDate ? `${startDate} - ${endDate}` : 'Select Dates'}
+                    </span>
+                    <i className="ri-calendar-event-line text-gray-400 group-hover:text-green-500"></i>
+                  </button>
+
+                  {/* Simplified Date Dropdown for Demo */}
+                  {showDateDropdown && (
+                    <div className="absolute top-full mt-2 w-full bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 z-50 animate-in fade-in zoom-in-95 duration-200">
+                      <div className="space-y-3">
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <label className="text-xs font-bold text-gray-500 mb-1 block">Start</label>
+                            <input type="date" className="w-full border rounded-lg p-2 text-sm" onChange={(e) => setStartDate(e.target.value)} />
+                          </div>
+                          <div>
+                            <label className="text-xs font-bold text-gray-500 mb-1 block">End</label>
+                            <input type="date" className="w-full border rounded-lg p-2 text-sm" onChange={(e) => setEndDate(e.target.value)} />
+                          </div>
+                        </div>
+                        <button onClick={() => setShowDateDropdown(false)} className="w-full py-2 bg-green-600 text-white rounded-lg text-sm font-bold">Done</button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <button
+                onClick={() => router.push('/equipments/reserve')}
+                className="w-full py-4 bg-black hover:bg-green-600 text-white rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-green-500/30 active:scale-95"
+              >
+                Reserver Now
+              </button>
+
+              <p className="text-center text-xs text-gray-400 mt-4">No payment required until confirmation.</p>
+            </div>
+
+            {/* Share/Save Actions */}
+            <div className="flex items-center justify-center gap-6">
+              <button className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors font-medium text-sm">
+                <i className="ri-share-forward-line text-lg"></i> Share
+              </button>
+              <button className="flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors font-medium text-sm">
+                <i className="ri-heart-line text-lg"></i> Save
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Related Items */}
+        <div className="mt-20 md:mt-32">
+          <h2 className="text-2xl font-bold text-gray-900 mb-8">Similar Equipment</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {highlyRatedCars.map((item, index) => (
+              <EquipmentCard key={index} item={item} />
+            ))}
+          </div>
+        </div>
+
+      </div>
+
+      <Footer />
+    </main>
   );
 }
 

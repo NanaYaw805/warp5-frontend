@@ -1,17 +1,19 @@
 'use client'
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Logo from '../../public/logo/warp-logo.svg';
 import UserModal from './userModal';
 import LoginForm from "@/components/auth/LoginForm";
+import { useUser } from '@/context/userContext';
 
 
 function PageHeader() {
   const router = useRouter();
   const pathname = usePathname();
-  const isUser = false;
+
+  const { user } = useUser();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -26,18 +28,11 @@ function PageHeader() {
     { label: 'Help', path: '/help' },
   ];
 
-  const renterLinks = [
-    { label: 'Overview', path: '/renter/dashboard' },
-    { label: 'My Reservations', path: '/renter/reservations' },
-    { label: 'Payment', path: '/renter/payment' },
-    { label: 'Notifications', path: '/renter/notifications' },
-  ];
 
   const handleForgotPassword = () => {
     setShowLoginModal(false);
     router.push('/forgotpassword');
   };
-
 
   return (
     <>
@@ -74,7 +69,7 @@ function PageHeader() {
               <i className="ri-notification-2-line text-[#000000] text-2xl"></i>
             </button>
 
-            {isUser ? (
+            {user ? (
               <div className="relative hidden xl:flex">
                 <button
                   className="flex justify-center items-center bg-[#000]/10 w-16 h-16 rounded-full cursor-pointer hover:bg-[#000]/20 transition-all focus:outline-none"
@@ -105,44 +100,67 @@ function PageHeader() {
         </div>
 
         {mobileMenuOpen && (
-          <div className="sm:hidden absolute left-0 right-0 top-full bg-white z-50 shadow-lg">
-            <div className="px-4 py-4 space-y-3">
+          <div className="md:hidden absolute left-0 right-0 top-full bg-white z-50 shadow-xl border-t border-gray-100 rounded-b-3xl overflow-hidden pb-4 transition-all animate-in slide-in-from-top-2">
+            <div className="px-4 py-4 space-y-1">
+
+              {/* Main Nav Items */}
               {navItems.map(({ label, path }) => (
                 <button
                   key={path}
                   type="button"
                   onClick={() => { router.push(path); setMobileMenuOpen(false); }}
-                  className={`${pathname === path ? 'bg-[#43A047] text-white' : 'text-[#333333] bg-white'} w-full text-left px-4 py-3 rounded-md transition-colors duration-200`}
+                  className={`${pathname === path ? 'bg-green-50 text-green-700 font-bold' : 'text-gray-600 hover:bg-gray-50 font-medium'} w-full text-left px-4 py-3.5 rounded-xl transition-all duration-200 text-sm flex items-center justify-between group`}
                 >
-                  <span className="font-medium text-xs">{label}</span>
+                  {label}
+                  {pathname === path && <i className="ri-check-line text-green-600"></i>}
                 </button>
               ))}
 
-              <div className="pt-2">
-                <h2 className="text-xs font-semibold text-[#333333] mb-2">Renter</h2>
-                {renterLinks.map(({ label, path }) => (
-                  <button
-                    key={path}
-                    type="button"
-                    onClick={() => { router.push(path); setMobileMenuOpen(false); }}
-                    className={`${pathname === path ? 'bg-[#43A047] text-white' : 'text-[#333333] bg-white'} w-full text-left px-4 py-2 rounded-md transition-colors duration-200`}
-                  >
-                    <span className="text-xs">{label}</span>
-                  </button>
-                ))}
-              </div>
+              {/* Renter Section (Only if User is Logged In) */}
+              {user && (
+                <div className="pt-4 mt-2 border-t border-gray-100">
+                  <h2 className="px-4 text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Renter Dashboard</h2>
+                  <div className="space-y-1">
+                    {[
+                      { label: 'Overview', path: '/renter/dashboard', icon: 'ri-dashboard-line' },
+                      { label: 'My Reservations', path: '/renter/reservations', icon: 'ri-calendar-check-line' },
+                      { label: 'Payment', path: '/renter/payment', icon: 'ri-wallet-3-line' },
+                      { label: 'Notifications', path: '/renter/notifications', icon: 'ri-notification-3-line' },
+                    ].map(({ label, path, icon }) => (
+                      <button
+                        key={path}
+                        type="button"
+                        onClick={() => { router.push(path); setMobileMenuOpen(false); }}
+                        className={`${pathname === path ? 'bg-green-600 text-white shadow-lg shadow-green-600/20' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'} w-full text-left px-4 py-3 rounded-xl transition-all duration-200 flex items-center gap-3 group`}
+                      >
+                        <i className={`${icon} text-lg ${pathname === path ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'}`}></i>
+                        <span className={`text-sm ${pathname === path ? 'font-bold' : 'font-medium'}`}>{label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
-              <div className="pt-2 border-t border-gray-100">
-                {isUser ? (
+              {/* Auth Section */}
+              <div className="pt-4 mt-2 border-t border-gray-100">
+                {user ? (
                   <div className="space-y-2">
-                    <button onClick={() => { router.push('/profile'); setMobileMenuOpen(false); }} className="w-full text-left px-4 py-3 text-xs">Profile</button>
-                    <button className="w-full text-left px-4 py-3 text-xs">Sign Out</button>
+                    <button onClick={() => { router.push('/profile'); setMobileMenuOpen(false); }} className="w-full text-left px-4 py-3.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-xl flex items-center gap-3">
+                      <i className="ri-user-settings-line text-lg text-gray-400"></i>
+                      Profile
+                    </button>
+                    <button className="w-full text-left px-4 py-3.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-xl flex items-center gap-3">
+                      <i className="ri-logout-box-r-line text-lg text-red-400"></i>
+                      Sign Out
+                    </button>
                   </div>
                 ) : (
-                  <button onClick={() => { handleLoginClick(); setMobileMenuOpen(false); }} className="w-full text-left px-4 py-3 font-medium text-xs">Log In</button>
+                  <div className="p-2">
+                    <button onClick={() => { handleLoginClick(); setMobileMenuOpen(false); }} className="w-full text-center px-4 py-3.5 font-bold text-sm bg-black text-white rounded-xl shadow-lg hover:shadow-xl active:scale-95 transition-all">
+                      Log In / Sign Up
+                    </button>
+                  </div>
                 )}
-
-                <button className='w-full text-left px-4 py-3 font-medium text-xs' onClick={() => router.push('/profile')}>Profile</button>
               </div>
             </div>
           </div>

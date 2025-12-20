@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
-import { Poppins } from 'next/font/google';
+import { Toaster } from "react-hot-toast";
 import 'remixicon/fonts/remixicon.css';
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import "./globals.css";
-import { TokenProvider } from "@/context/tokenContext";
+import { UserProvider } from "@/context/userContext";
 import { EquipmentProvider } from "@/context/equipmentContext";
-
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-poppins',
-});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,12 +19,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.className} antialiased`}>
-        <TokenProvider>
+      <body className={`antialiased`}>
+        <UserProvider>
           <EquipmentProvider>
             {children}
           </EquipmentProvider>
-        </TokenProvider>
+        </UserProvider>
+        <Toaster />
       </body>
     </html>
   );

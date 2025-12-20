@@ -25,41 +25,41 @@ export default function DateModal({
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/50 z-40" onClick={onCancel}></div>
-      <div className="absolute top-full left-1/3 -translate-x-1/2 mt-2 bg-white rounded-lg shadow-xl p-6 w-auto z-50 xl:left-1/2 xl:-translate-x-1/2 xl:w-80">
-        <h3 className="text-gray-800 text-xs font-medium mb-4 xl:text-base">Select Date Range</h3>
-        <div className="flex items-center gap-3">
-          <div>
-            <label className="block text-gray-700 text-xs font-medium mb-2 xl:text-sm">From</label>
+      <div className="fixed inset-0 z-40 bg-transparent" onClick={onCancel}></div>
+      <div className="absolute top-full left-0 mt-3 bg-white rounded-2xl shadow-2xl border border-gray-100 p-6 w-[340px] z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+        <h3 className="text-gray-800 text-sm font-semibold mb-4">Select Rental Dates</h3>
+        <div className="flex gap-3 mb-6">
+          <div className="flex-1">
+            <label className="block text-gray-500 text-xs font-medium mb-1.5 ml-1">From</label>
             <input
               type="date"
               value={fromDate}
               onChange={(e) => onFromDateChange(e.target.value)}
-              className="w-[90px] text-sm px-3 py-2 border border-gray-300 rounded-lg text-sm xl:text-base xl:w-[120px]"
+              className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-green-500/20 focus:border-green-500 focus:outline-none transition-all"
             />
           </div>
-          <div>
-            <label className="block text-gray-700 text-xs font-medium mb-2 xl:text-sm">To</label>
+          <div className="flex-1">
+            <label className="block text-gray-500 text-xs font-medium mb-1.5 ml-1">To</label>
             <input
               type="date"
               value={toDate}
               onChange={(e) => onToDateChange(e.target.value)}
-              className="w-[90px] text-sm px-3 py-2 border border-gray-300 rounded-lg text-sm xl:text-base xl:w-[120px]"
+              className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-green-500/20 focus:border-green-500 focus:outline-none transition-all"
             />
           </div>
         </div>
-        <div className="flex gap-3 mt-6">
+        <div className="flex gap-3 pt-2 border-t border-gray-100">
           <button
             onClick={onCancel}
-            className="flex-1 text-sm py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 transition-all xl:text-base"
+            className="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"
           >
-            Cancel
+            Clear
           </button>
           <button
             onClick={onClose}
-            className="flex-1 bg-[#43A047] hover:bg-[#388E3C] text-white py-2 rounded-lg font-medium text-sm transition-all xl:text-base"
+            className="flex-1 bg-black hover:bg-gray-800 text-white px-4 py-2.5 rounded-xl font-medium text-sm transition-all shadow-lg shadow-black/10 active:scale-95"
           >
-            Done
+            Apply Dates
           </button>
         </div>
       </div>

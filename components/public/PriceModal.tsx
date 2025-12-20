@@ -22,30 +22,34 @@ export default function PriceModal({
   if (!show) return null;
 
   return (
-    <div className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl p-6 w-auto z-50 xl:w-80">
-      <h3 className="text-gray-800 text-xs font-medium mb-4 xl:text-base">Select Price Range</h3>
-      <div className="flex items-center gap-3">
-        <input
-          type="number"
-          placeholder="Min"
-          value={minPrice}
-          onChange={(e) => onMinPriceChange(e.target.value)}
-          className="w-[90px] text-sm px-3 py-2 border border-gray-300 rounded-lg text-sm xl:text-base xl:w-[120px]"
-        />
-        <span className="text-gray-500">-</span>
-        <input
-          type="number"
-          placeholder="Max"
-          value={maxPrice}
-          onChange={(e) => onMaxPriceChange(e.target.value)}
-          className="w-[90px] text-sm px-3 py-2 border border-gray-300 rounded-lg text-sm xl:text-base xl:w-[120px]"
-        />
+    <div className="absolute top-full left-0 mt-3 bg-white rounded-2xl shadow-2xl border border-gray-100 p-6 w-80 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+      <h3 className="text-gray-800 text-sm font-semibold mb-4">Price Range (GH₵)</h3>
+      <div className="flex items-center gap-3 mb-6">
+        <div className="relative flex-1">
+          <span className="absolute left-3 top-2.5 text-gray-400 text-xs">Min</span>
+          <input
+            type="number"
+            value={minPrice}
+            onChange={(e) => onMinPriceChange(e.target.value)}
+            className="w-full pl-3 pt-6 pb-2 pr-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-green-500/20 focus:border-green-500 focus:outline-none transition-all"
+          />
+        </div>
+        <span className="text-gray-300">-</span>
+        <div className="relative flex-1">
+          <span className="absolute left-3 top-2.5 text-gray-400 text-xs">Max</span>
+          <input
+            type="number"
+            value={maxPrice}
+            onChange={(e) => onMaxPriceChange(e.target.value)}
+            className="w-full pl-3 pt-6 pb-2 pr-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-green-500/20 focus:border-green-500 focus:outline-none transition-all"
+          />
+        </div>
       </div>
       <button
         onClick={onClose}
-        className="w-full mt-4 bg-[#43A047] hover:bg-[#388E3C] text-white py-2 text-sm rounded-lg transition-all xl:text-base"
+        className="w-full bg-black hover:bg-gray-800 text-white py-3 rounded-xl font-medium text-sm transition-all shadow-lg shadow-black/10 active:scale-95"
       >
-        Apply
+        Apply Filter
       </button>
     </div>
   );

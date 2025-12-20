@@ -7,11 +7,24 @@ interface DashboardHeaderProps {
 }
 
 const DashboardHeader: React.FC<DashboardHeaderProps> = ({ title }) => {
+  // Get current date
+  const today = new Date();
+  const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const formattedDate = today.toLocaleDateString('en-US', options);
+
   return (
-    <section className='mt-8 flex justify-between items-center shrink-0'>
-      <h1 className='text-[#000000] font-bold text-base md:text-lg lg:text-xl'>{title}</h1>
-      <h2 className='text-[#000000] font-medium text-xs md:text-sm lg:text-base'>Welcome, Kwame</h2>
-    </section>
+    <header className="flex flex-col md:flex-row md:items-end justify-between gap-4 shrink-0 mt-8 mb-2">
+      <div>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">{title}</h1>
+        <p className="text-sm text-gray-500 mt-1 font-medium">{formattedDate}</p>
+      </div>
+
+      {/* Optional: Add a subtle user greeting or contextual action here if needed in future */}
+      <div className="hidden md:block text-right">
+        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Welcome Back</p>
+        <p className="text-sm font-bold text-gray-900">Kwame Mensah</p>
+      </div>
+    </header>
   );
 };
 

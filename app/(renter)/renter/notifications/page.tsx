@@ -1,277 +1,209 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import DashboardHeader from '@/components/renter/DashboardHeader';
 
 function Page() {
-  const [filter, setFilter] = useState<'all' | 'unread' | 'read'>('all');
+  const [filter, setFilter] = useState<'all' | 'unread' | 'archived'>('all');
+  const [activePage, setActivePage] = useState(1);
+  const itemsPerPage = 6;
 
   const notifications = [
     {
       id: 1,
       type: 'success',
-      title: 'Reservation Successful',
-      message: 'Equipment Excavator with Reservation ID R-EX45 has been confirmed.',
-      date: '17th Nov 2025',
-      time: '2:30 PM',
-      read: false,
-      icon: 'ri-check-line'
+      title: 'Reservation Confirmed',
+      message: 'Your booking for Electric Rope Shovel (R-EX23) has been confirmed by the vendor.',
+      time: '2 hours ago',
+      unread: true,
+      icon: 'ri-checkbox-circle-fill'
     },
     {
       id: 2,
-      type: 'warning',
-      title: 'Payment Reminder',
-      message: 'Your payment for Bulldozer (R-LD11) is due in 2 days.',
-      date: '16th Nov 2025',
-      time: '10:15 AM',
-      read: false,
-      icon: 'ri-alarm-warning-line'
+      type: 'alert',
+      title: 'Payment Due Soon',
+      message: 'Invoice #INV-2992 for "Bulldozer D8T" is due in 3 days. Please make a payment to avoid service interruption.',
+      time: '5 hours ago',
+      unread: true,
+      icon: 'ri-alarm-warning-fill'
     },
     {
       id: 3,
       type: 'info',
-      title: 'Rental Period Ending',
-      message: 'Your rental for Crane (R-CR09) ends tomorrow, Nov 18, 2025.',
-      date: '15th Nov 2025',
-      time: '4:45 PM',
-      read: true,
-      icon: 'ri-information-line'
+      title: 'New Message',
+      message: 'Vendor "Mega Earth Movers" sent you a message: "The equipment is ready for pickup..."',
+      time: '1 day ago',
+      unread: false,
+      icon: 'ri-message-3-fill'
     },
     {
       id: 4,
-      type: 'error',
-      title: 'Payment Failed',
-      message: 'Payment for Dump Truck (R-DM54) could not be processed. Please update your payment method.',
-      date: '14th Nov 2025',
-      time: '11:20 AM',
-      read: true,
-      icon: 'ri-close-circle-line'
+      type: 'system',
+      title: 'System Maintenance',
+      message: 'Warp5 Platform will undergo scheduled maintenance on Nov 25th from 2:00 AM to 4:00 AM.',
+      time: '2 days ago',
+      unread: false,
+      icon: 'ri-settings-3-fill'
     },
     {
       id: 5,
       type: 'success',
-      title: 'Equipment Delivered',
-      message: 'Loader (R-RL72) has been successfully delivered to your location.',
-      date: '13th Nov 2025',
-      time: '9:00 AM',
-      read: true,
-      icon: 'ri-truck-line'
+      title: 'Payment Successful',
+      message: 'We received your payment of GHC 12,000 for transaction TRX-9923.',
+      time: '3 days ago',
+      unread: false,
+      icon: 'ri-secure-payment-fill'
     },
     {
       id: 6,
-      type: 'info',
-      title: 'New Message from Vendor',
-      message: 'SkyLift Rentals sent you a message regarding your Crane rental.',
-      date: '12th Nov 2025',
-      time: '3:30 PM',
-      read: false,
-      icon: 'ri-message-3-line'
+      type: 'alert',
+      title: 'Rental Ending Soon',
+      message: 'Your rental period for "Mobile Crane 50T" ends tomorrow. Please prepare for return or extend usage.',
+      time: '4 days ago',
+      unread: false,
+      icon: 'ri-time-fill'
     },
     {
       id: 7,
-      type: 'success',
-      title: 'Refund Processed',
-      message: 'Your refund of GHC 5,000 for cancelled reservation R-CP22 has been processed.',
-      date: '11th Nov 2025',
-      time: '1:15 PM',
-      read: true,
-      icon: 'ri-refund-2-line'
-    },
-    {
-      id: 8,
-      type: 'warning',
-      title: 'Maintenance Scheduled',
-      message: 'Maintenance scheduled for your rented Backhoe on Nov 20, 2025.',
-      date: '10th Nov 2025',
-      time: '8:45 AM',
-      read: true,
-      icon: 'ri-tools-line'
-    },
-    {
-      id: 9,
       type: 'info',
-      title: 'Review Request',
-      message: 'Please rate your experience with Mega Earth Movers for your recent rental.',
-      date: '9th Nov 2025',
-      time: '5:20 PM',
-      read: true,
-      icon: 'ri-star-line'
-    },
-    {
-      id: 10,
-      type: 'success',
-      title: 'Invoice Available',
-      message: 'Invoice INV-12345 for your Excavator rental is now available for download.',
-      date: '8th Nov 2025',
-      time: '12:00 PM',
-      read: true,
-      icon: 'ri-file-text-line'
-    },
-    {
-      id: 11,
-      type: 'warning',
-      title: 'Inspection Due',
-      message: 'Routine inspection required for Grader (R-EX29) within 48 hours.',
-      date: '7th Nov 2025',
-      time: '10:30 AM',
-      read: true,
-      icon: 'ri-search-eye-line'
-    },
-    {
-      id: 12,
-      type: 'info',
-      title: 'Weather Alert',
-      message: 'Heavy rain expected. Consider rescheduling outdoor equipment usage.',
-      date: '6th Nov 2025',
-      time: '7:15 AM',
-      read: true,
-      icon: 'ri-cloud-line'
+      title: 'Profile Updated',
+      message: 'Your contact information was successfully updated.',
+      time: '1 week ago',
+      unread: false,
+      icon: 'ri-user-settings-fill'
     }
   ];
 
-  const getNotificationStyle = (type: string) => {
+  const getIconColor = (type: string) => {
     switch (type) {
-      case 'success': return { bg: 'bg-green-50', icon: 'text-green-600', border: 'border-green-100' };
-      case 'warning': return { bg: 'bg-orange-50', icon: 'text-orange-600', border: 'border-orange-100' };
-      case 'error': return { bg: 'bg-red-50', icon: 'text-red-600', border: 'border-red-100' };
-      case 'info': return { bg: 'bg-blue-50', icon: 'text-blue-600', border: 'border-blue-100' };
-      default: return { bg: 'bg-gray-50', icon: 'text-gray-600', border: 'border-gray-100' };
+      case 'success': return 'text-green-600 bg-green-100';
+      case 'alert': return 'text-orange-600 bg-orange-100';
+      case 'info': return 'text-blue-600 bg-blue-100';
+      case 'system': return 'text-gray-600 bg-gray-100';
+      default: return 'text-gray-600 bg-gray-100';
     }
   };
 
-  const pageSize = 8;
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.max(1, Math.ceil(notifications.length / pageSize));
-  const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
-  const startIndex = (currentPage - 1) * pageSize;
-  const paginatedNotifications = notifications.slice(startIndex, startIndex + pageSize);
+  const filteredNotifications = notifications.filter(n => {
+    if (filter === 'unread') return n.unread;
+    if (filter === 'archived') return false; // Mock archive
+    return true;
+  });
 
-  const goToPage = (page: number) => {
-    setCurrentPage(Math.min(Math.max(page, 1), totalPages));
-  };
-
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const totalPages = Math.max(1, Math.ceil(filteredNotifications.length / itemsPerPage));
+  const displayedNotifications = filteredNotifications.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage);
 
   return (
-    <>
-      <main className='flex flex-col h-full'>
-        <DashboardHeader title='Notifications' />
+    <div className='flex flex-col h-full space-y-8 pb-10'>
+      <DashboardHeader title='Notifications' />
 
-        <section className='flex justify-between items-center mt-6 md:mt-8 lg:mt-10'>
-          <div className='flex gap-2 md:gap-3 bg-white rounded-xl p-2 shadow-sm border border-gray-100'>
-            <button
-              onClick={() => setFilter('all')}
-              className={`px-4 md:px-5 py-2 md:py-2.5 rounded-lg text-xs md:text-sm font-medium transition-all ${filter === 'all'
-                  ? 'bg-[#43A047] text-white shadow-sm'
-                  : 'text-[#666666] hover:bg-gray-100'
-                } focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50`}
-            >
-              All
-            </button>
-            <button
-              onClick={() => setFilter('unread')}
-              className={`px-4 md:px-5 py-2 md:py-2.5 rounded-lg text-xs md:text-sm font-medium transition-all ${filter === 'unread'
-                  ? 'bg-[#43A047] text-white shadow-sm'
-                  : 'text-[#666666] hover:bg-gray-100'
-                } focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50`}
-            >
-              Unread
-            </button>
-            <button
-              onClick={() => setFilter('read')}
-              className={`px-4 md:px-5 py-2 md:py-2.5 rounded-lg text-xs md:text-sm font-medium transition-all ${filter === 'read'
-                  ? 'bg-[#43A047] text-white shadow-sm'
-                  : 'text-[#666666] hover:bg-gray-100'
-                } focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50`}
-            >
-              Read
-            </button>
-          </div>
+      {/* Controls */}
+      <section className='flex flex-col xs:flex-row justify-between items-start xs:items-center gap-4'>
 
-          <button className='text-[#43A047] hover:text-[#388E3C] font-medium text-xs md:text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50 rounded px-3 py-2'>
-            Mark all as read
-          </button>
-        </section>
+        {/* Filter Tabs */}
+        <div className='bg-white p-1 rounded-xl border border-gray-100 flex gap-1 shadow-sm'>
+          {['all', 'unread', 'archived'].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => { setFilter(tab as any); setActivePage(1); }}
+              className={`px-4 py-2 rounded-lg text-sm font-medium capitalize transition-all ${filter === tab
+                  ? 'bg-green-600 text-white shadow-md'
+                  : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
 
-        <section className='mt-6 md:mt-8 space-y-3 md:space-y-4'>
-          {paginatedNotifications.map((notification) => (
+        <button className='text-sm text-green-600 font-medium hover:text-green-700 flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-green-50 transition-colors'>
+          <i className="ri-check-double-line"></i> Mark all as read
+        </button>
+
+      </section>
+
+      {/* Notification List */}
+      <section className='space-y-4'>
+        {displayedNotifications.length > 0 ? (
+          displayedNotifications.map((note) => (
             <div
-              key={notification.id}
-              className={`bg-white rounded-xl shadow-sm border ${notification.read ? 'border-gray-100' : 'border-[#43A047] border-l-4'
-                } p-4 md:p-5 lg:p-6 hover:shadow-md transition-all cursor-pointer`}
+              key={note.id}
+              className={`relative group p-5 rounded-2xl border transition-all duration-200 cursor-pointer ${note.unread
+                  ? 'bg-white border-green-200 shadow-sm'
+                  : 'bg-gray-50/50 border-gray-100 opacity-80 hover:opacity-100'
+                }`}
             >
-              <div className='flex items-start gap-3 md:gap-4'>
-                <div className={`w-10 h-10 md:w-12 md:h-12 rounded-lg ${getNotificationStyle(notification.type).bg} border ${getNotificationStyle(notification.type).border} flex items-center justify-center flex-shrink-0`}>
-                  <i className={`${notification.icon} ${getNotificationStyle(notification.type).icon} text-xl md:text-2xl`}></i>
+              <div className="flex gap-4 items-start">
+                {/* Icon */}
+                <div className={`w-12 h-12 rounded-full shrink-0 flex items-center justify-center text-xl ${getIconColor(note.type)}`}>
+                  <i className={note.icon}></i>
                 </div>
 
-                <div className='flex-1 min-w-0'>
-                  <div className='flex justify-between items-start gap-3 mb-2'>
-                    <h1 className={`${notification.read ? 'font-medium' : 'font-semibold'} text-sm md:text-base lg:text-lg text-[#333333]`}>
-                      {notification.title}
-                    </h1>
-                    {!notification.read && (
-                      <span className='w-2 h-2 md:w-2.5 md:h-2.5 bg-[#43A047] rounded-full flex-shrink-0 mt-1.5'></span>
-                    )}
+                {/* Content */}
+                <div className="flex-1">
+                  <div className="flex justify-between items-start mb-1">
+                    <h4 className={`text-base ${note.unread ? 'font-bold text-gray-900' : 'font-medium text-gray-700'}`}>
+                      {note.title}
+                      {note.unread && <span className="inline-block w-2 h-2 rounded-full bg-red-500 ml-2 mb-0.5"></span>}
+                    </h4>
+                    <span className="text-xs text-gray-400 whitespace-nowrap">{note.time}</span>
                   </div>
-                  <p className='text-[#666666] font-regular text-xs md:text-sm mb-3'>{notification.message}</p>
-                  <div className='flex items-center gap-4 text-[#999999] text-xs md:text-sm'>
-                    <span className='flex items-center gap-1'>
-                      <i className='ri-calendar-line'></i>
-                      {notification.date}
-                    </span>
-                    <span className='flex items-center gap-1'>
-                      <i className='ri-time-line'></i>
-                      {notification.time}
-                    </span>
-                  </div>
+                  <p className="text-sm text-gray-500 leading-relaxed pr-8">{note.message}</p>
                 </div>
+
+                {/* Hover Action */}
+                <button className="absolute top-4 right-4 text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-2">
+                  <i className="ri-delete-bin-line"></i>
+                </button>
               </div>
             </div>
-          ))}
-        </section>
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center text-3xl text-gray-300 mb-4">
+              <i className="ri-notification-off-line"></i>
+            </div>
+            <h3 className="text-gray-900 font-bold text-lg">No notifications</h3>
+            <p className="text-gray-500 text-sm">You're all caught up! Check back later.</p>
+          </div>
+        )}
+      </section>
 
-        <div className='flex items-center justify-between mt-6 md:mt-8 shrink-0'>
-          <p className='text-[#666666] text-xs md:text-sm'>
-            Showing {startIndex + 1}-{Math.min(startIndex + pageSize, notifications.length)} of {notifications.length}
-          </p>
-          <div className='flex items-center space-x-1 md:space-x-2'>
+      {/* Pagination */}
+      {displayedNotifications.length > 0 && (
+        <div className="flex justify-center pt-6">
+          <div className="flex gap-2">
             <button
-              className='flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-lg border border-gray-200 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50'
-              onClick={() => goToPage(currentPage - 1)}
-              disabled={currentPage === 1}
-              aria-label='Previous page'
+              onClick={() => setActivePage(p => Math.max(1, p - 1))}
+              disabled={activePage === 1}
+              className="w-10 h-10 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              <i className='ri-arrow-left-s-line text-base md:text-lg text-[#1C1D21]'></i>
+              <i className="ri-arrow-left-s-line"></i>
             </button>
-            <div className='flex items-center space-x-1'>
-              {pages.map((pageNumber) => (
+            <div className="flex gap-1">
+              {Array.from({ length: totalPages }).map((_, i) => (
                 <button
-                  key={pageNumber}
-                  className={`w-8 h-8 md:w-9 md:h-9 flex items-center justify-center text-xs md:text-sm font-medium rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50 ${pageNumber === currentPage
-                      ? 'bg-[#43A047] text-white shadow-sm'
-                      : 'text-[#666666] hover:bg-gray-100 border border-gray-200'
-                    }`}
-                  onClick={() => goToPage(pageNumber)}
-                  aria-label={`Go to page ${pageNumber}`}
+                  key={i}
+                  onClick={() => setActivePage(i + 1)}
+                  className={`w-10 h-10 rounded-xl font-medium text-sm transition-colors ${activePage === i + 1 ? 'bg-green-600 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'}`}
                 >
-                  {pageNumber}
+                  {i + 1}
                 </button>
               ))}
             </div>
             <button
-              className='flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-lg border border-gray-200 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50'
-              onClick={() => goToPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              aria-label='Next page'
+              onClick={() => setActivePage(p => Math.min(totalPages, p + 1))}
+              disabled={activePage === totalPages}
+              className="w-10 h-10 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              <i className='ri-arrow-right-s-line text-base md:text-lg text-[#1C1D21]'></i>
+              <i className="ri-arrow-right-s-line"></i>
             </button>
           </div>
         </div>
-      </main>
-    </>
-  )
+      )}
+
+    </div>
+  );
 }
 
-export default Page
+export default Page;

@@ -1,44 +1,98 @@
 'use server';
 
-import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { NextResponse } from 'next/server';
 
 export async function GET() {
-  const store = await cookies();
-  const tokenCookie = store.get('auth_token');
-  const token = tokenCookie?.value;
+    const baseUrl = process.env.BASE_URL;
 
-  const baseUrl = process.env.BASE_URL;
+    try {
+        const apiRes = await fetch(`${baseUrl}/api/equipment`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
 
-  if (!tokenCookie?.value) {
-    return NextResponse.json({ user: null, error: 'Not authenticated' }, { status: 401 });
-  }
+        const apiData = await apiRes.json();
 
-  try {
-    const apiRes = await fetch(`${baseUrl}/equipment`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    });
+        if (!apiRes.ok) {
+            return NextResponse.json(
+                { message: apiData.message || "Something went wrong." },
+                { status: apiRes.status }
+            );
+        }
 
-    const apiData = await apiRes.json();
-
-    if (!apiRes.ok) {
-      return NextResponse.json(
-        { message: apiData.message || "Something went wrong." },
-        { status: apiRes.status }
-      );
+        return NextResponse.json(
+            { message: "Equipments fetched successfully.", data: apiData },
+            { status: 200 }
+        );
+    } catch (error) {
+        console.error('Failed to fetch equipments', error);
+        return NextResponse.json(
+            { message: "Failed to fetch equipments. Please try again later." + error },
+            { status: 500 }
+        );
     }
+}
 
-    return NextResponse.json({ equipments: apiData }, { status: 200 });
 
-  } catch (error) {
-    console.log("Equipment fetch error:", error);
-    return NextResponse.json(
-      { message: "Failed to fetch equipments. Please try again later." + error },
-      { status: 500 }
-    );
-  }
+export async function POST(req: Request) {
+    const {
+        name,
+        ownerId,
+        ownerName,
+        location,
+        description,
+        price,
+        rating,
+        availability,
+        imageOne,
+        imageTwo,
+        imageThree
+    } = await req.json();
+
+    const baseUrl = process.env.BASE_URL;
+
+    try {
+        const apiRes = await fetch(`${baseUrl}/api/equipment`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name,
+                ownerId,
+                ownerName,
+                location,
+                description,
+                price,
+                rating,
+                availability,
+                imageOne,
+                imageTwo,
+                imageThree
+            })
+        });
+
+        const apiData = await apiRes.json();
+
+        if (!apiRes.ok) {
+            return NextResponse.json(
+                { message: apiData.message || "Something went wrong." },
+                { status: apiRes.status }
+            );
+        }
+
+        return NextResponse.json(
+            { message: "Equipment added successfully.", data: apiData },
+            { status: 200 }
+        );
+
+    } catch (error) {
+        console.error('Failed to add equipment', error);
+        return NextResponse.json(
+            { message: "Failed to add equipment. Please try again later." + error },
+            { status: 500 }
+        );
+    }
 }

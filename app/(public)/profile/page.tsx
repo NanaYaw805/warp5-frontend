@@ -1,11 +1,51 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PageHeader from '@/components/public/PageHeader';
 import Footer from '@/components/public/Footer';
+import { useUser } from '@/context/userContext';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 function Page() {
+  const { user, mutate } = useUser();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState('personalInfo');
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
+  // Form state
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phoneNumber: '',
+    addressLine1: '',
+    addressLine2: '',
+    city: '',
+    dateOfBirth: '',
+  });
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email || '',
+        phoneNumber: user.phoneNumber || '',
+        addressLine1: user.addressLine1 || '',
+        addressLine2: user.addressLine2 || '',
+        city: user.city || '',
+        dateOfBirth: user.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split('T')[0] : '',
+      });
+    }
+  }, [user]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
   const [notifications, setNotifications] = useState({
     emailNotif: true,
@@ -14,13 +54,6 @@ function Page() {
     reservationReminders: true,
     promoOffers: false,
   });
-
-  const personalInfo = [
-    { label: 'First Name', name: 'firstName', value: 'Isaac' },
-    { label: 'Last Name', name: 'lastName', value: 'Newton' },
-    { label: 'Date of Birth', name: 'dob', value: '23/06/1990' },
-    { label: 'Gender', name: 'gender', value: 'Male' },
-  ]
 
   const handleNotificationChange = (name: string, checked: boolean) => {
     setNotifications(prev => ({ ...prev, [name]: checked }));
@@ -36,139 +69,331 @@ function Page() {
 
   const privacySettings = [
     { title: 'Privacy Policy', description: 'We respect your privacy. Your personal data is handled securely and used only to support your experience on Warp5. For full details, please review our Privacy Policy.', buttonText: 'View Policy', buttonColor: '#E4E4E4', textColor: '#333333' },
-    { title: 'Privacy Policy', description: 'We respect your privacy. Your personal data is handled securely and used only to support your experience on Warp5. For full details, please review our Privacy Policy.', buttonText: 'View Policy', buttonColor: '#FF0000', textColor: '#FFFFFF' },
+    { title: 'Data Deletion', description: 'Request to delete your account and all associated data permanently.', buttonText: 'Delete Account', buttonColor: '#FF0000', textColor: '#FFFFFF', isDestructive: true },
   ];
 
   const tabs = [
-    { id: 'personalInfo', label: 'Personal Information' },
-    { id: 'address', label: 'Address' },
-    { id: 'contact', label: 'Contact Details' },
-    { id: 'password', label: 'Password' },
-    { id: 'terms', label: 'Terms & Conditions' },
-    { id: 'notification', label: 'Notification' },
-    { id: 'privacy', label: 'Privacy & Security' },
+    { id: 'personalInfo', label: 'Personal Information', icon: 'ri-user-line' },
+    { id: 'address', label: 'Address', icon: 'ri-map-pin-line' },
+    { id: 'contact', label: 'Contact Details', icon: 'ri-contacts-line' },
+    { id: 'notification', label: 'Notifications', icon: 'ri-notification-3-line' },
+    { id: 'privacy', label: 'Privacy & Security', icon: 'ri-shield-keyhole-line' },
   ];
 
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <h1 className="text-2xl font-bold text-gray-800">No user found. Please login to view your profile.</h1>
+      </div>
+    );
+  }
+
+  const handleLogout = async () => {
+    if (!user) return;
+
+    try {
+      setIsLoggingOut(true);
+
+      const apiRes = await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!apiRes.ok) {
+        toast.error('Failed to logout');
+        throw new Error('Failed to logout');
+      }
+
+      toast.success('Logged out successfully');
+      router.refresh();
+      mutate(null);
+      router.push('/');
+    } catch (error) {
+      toast.error('Failed to logout');
+    } finally {
+      setIsLoggingOut(false);
+    }
+  }
+
+  const handleUpdateProfile = async () => {
+    if (!user) return;
+
+    try {
+      setIsUpdating(true);
+
+      const apiRes = await fetch('/api/auth/updateprofile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.id,
+          ...formData
+        })
+      });
+
+      const data = await apiRes.json();
+
+      if (!apiRes.ok) {
+        throw new Error(data.message || 'Failed to update profile');
+      }
+
+      toast.success('Profile updated successfully');
+      setIsEditing(false);
+      mutate();
+      router.refresh();
+
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to update profile');
+    } finally {
+      setIsUpdating(false);
+    }
+  }
+
   return (
-    <>
-      <div className='min-h-screen bg-white'>
-        <PageHeader />
+    <div className='min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50'>
+      <PageHeader />
 
-        <div className='mt-20 md:mt-24 sm:mt-16'>
-          <div className='flex justify-center items-center space-x-3 md:space-x-4 sm:space-x-6 lg:space-x-8 xl:space-x-10'>
-
-            <div className='flex justify-center items-center bg-[#D9D9D9] w-16 h-16 md:w-18 md:h-18 sm:w-20 sm:h-20 xl:w-24 xl:h-24 rounded-full'>
-              <i className="ri-user-6-line text-[#333333] text-2xl md:text-3xl sm:text-3xl xl:text-4xl"></i>
+      <main className='pt-28 pb-16 px-4 md:px-8 max-w-7xl mx-auto'>
+        {/* Profile Header Card */}
+        <div className='bg-white/80 backdrop-blur-xl border border-white/20 shadow-xl rounded-3xl p-8 mb-8 flex flex-col md:flex-row items-center justify-between gap-6'>
+          <div className='flex flex-col md:flex-row items-center gap-6'>
+            <div className='w-24 h-24 rounded-full bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center shadow-inner'>
+              <span className='text-3xl font-bold text-green-600'>
+                {user.firstName?.[0]}{user.lastName?.[0]}
+              </span>
             </div>
+            <div className='text-center md:text-left'>
+              <h1 className='text-2xl font-bold text-gray-800'>{user.firstName} {user.lastName}</h1>
+              <p className='text-gray-500 font-medium'>Member since {new Date(user.createdAt).getFullYear()}</p>
+              <p className='text-gray-400 text-sm mt-1'>{user.email}</p>
+            </div>
+          </div>
 
-            <button className='flex justify-center items-center bg-[#000000] hover:bg-[#333333] active:scale-95 transition-all w-auto h-10 md:h-12 sm:h-12 xl:h-14 px-3 md:px-4 sm:px-4 xl:px-6 rounded-full cursor-pointer focus:ring-2 focus:ring-offset-2 focus:ring-black'>
-              <h1 className='text-[#FFFFFF] text-xs md:text-sm sm:text-sm xl:text-base font-medium'>Update New Profile</h1>
+          <div className='flex gap-4'>
+            <button onClick={handleLogout} className='px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full font-medium transition-all text-sm'>
+              {isLoggingOut ? 'Logging out...' : 'Sign Out'}
             </button>
-
-            <button className='flex justify-center items-center border border-[#333333] hover:bg-[#333333] hover:text-white active:scale-95 transition-all w-auto h-10 md:h-12 sm:h-12 xl:h-14 px-4 md:px-6 sm:px-6 xl:px-8 rounded-full cursor-pointer focus:ring-2 focus:ring-offset-2 focus:ring-[#333333]'>
-              <h1 className='text-xs md:text-sm sm:text-sm xl:text-base font-medium'>Delete</h1>
-            </button>
+            {isEditing ? (
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setIsEditing(false)}
+                  className='px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full font-medium transition-all text-sm'
+                  disabled={isUpdating}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleUpdateProfile}
+                  className='px-6 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 hover:shadow-lg hover:shadow-green-500/30 text-white rounded-full font-medium transition-all text-sm'
+                  disabled={isUpdating}
+                >
+                  {isUpdating ? 'Saving...' : 'Save Changes'}
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setIsEditing(true)}
+                className='px-6 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 hover:shadow-lg hover:shadow-green-500/30 text-white rounded-full font-medium transition-all text-sm'
+              >
+                Edit Profile
+              </button>
+            )}
           </div>
         </div>
 
-        <div className='mt-12 md:mt-16 sm:mt-16 pb-12 md:pb-16'>
-          <div className='w-[90vw] md:max-w-4xl lg:max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 sm:gap-3 lg:gap-9'>
-            <div className='flex flex-col space-y-3 md:space-y-4 sm:space-y-6 lg:space-y-6 xl:space-y-8'>
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  className='flex cursor-pointer items-center text-left hover:opacity-80 transition-all focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50 rounded-md py-1'
-                  onClick={() => setActiveTab(tab.id)}
-                >
-                  <h1 className={`text-sm md:text-base sm:text-base font-regular ${activeTab === tab.id ? 'text-[#43A047] font-medium' : 'text-[#333333]'}`}>
+        <div className='grid grid-cols-1 lg:grid-cols-12 gap-8'>
+          {/* Sidebar Navigation */}
+          <div className='lg:col-span-4'>
+            <div className='bg-white/80 backdrop-blur-xl border border-white/20 shadow-xl rounded-3xl p-6 h-fit sticky top-32'>
+              <nav className='space-y-2'>
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-left ${activeTab === tab.id
+                      ? 'bg-green-50 text-green-700 font-semibold shadow-sm ring-1 ring-green-100'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      }`}
+                  >
+                    <i className={`${tab.icon} text-lg ${activeTab === tab.id ? 'text-green-600' : 'text-gray-400'}`}></i>
                     {tab.label}
-                  </h1>
-                </button>
-              ))}
+                    {activeTab === tab.id && (
+                      <i className="ri-arrow-right-s-line ml-auto text-green-600"></i>
+                    )}
+                  </button>
+                ))}
+              </nav>
             </div>
+          </div>
 
-            <div className='flex flex-col'>
-              <div className='flex justify-start items-center'>
-                <h1 className='text-[#333333] font-medium text-base md:text-lg sm:text-lg'>
-                  {tabs.find(tab => tab.id === activeTab)?.label}
-                </h1>
+          {/* Main Content Area */}
+          <div className='lg:col-span-8'>
+            <div className='bg-white/80 backdrop-blur-xl border border-white/20 shadow-xl rounded-3xl p-8 min-h-[500px]'>
+              <div className='mb-8 pb-4 border-b border-gray-100'>
+                <h2 className='text-2xl font-bold text-gray-800'>
+                  {tabs.find(t => t.id === activeTab)?.label}
+                </h2>
+                <p className='text-gray-500 text-sm mt-1'>Manage your personal information and settings</p>
               </div>
 
-              <div className='mt-4 md:mt-6 sm:mt-6 space-y-4 md:space-y-6 sm:space-y-6 lg:space-y-8'>
-                {activeTab === 'personalInfo' && (
-                  <>
-                    {personalInfo.map((info) => (
-                      <div key={info.name}>
-                        <label htmlFor={info.name} className='mb-2 block text-xs md:text-sm sm:text-sm font-regular text-[#333333]'>
-                          {info.label}
-                        </label>
-                        <input
-                          type='text'
-                          value={info.value}
-                          id={info.name}
-                          name={info.name}
-                          className='w-full h-10 md:h-12 sm:h-12 px-4 md:px-6 sm:px-6 border border-[#787878] focus:border-[#43A047] focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50 text-xs md:text-sm sm:text-sm text-[#333333] rounded-full transition-all'
-                        />
+              {activeTab === 'personalInfo' && (
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                  <div className='space-y-2'>
+                    <label className='text-sm font-medium text-gray-700 ml-1'>First Name</label>
+                    <input
+                      type="text"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      className={`w-full h-12 px-5 bg-gray-50 border rounded-2xl flex items-center text-gray-800 text-sm transition-all outline-none ${isEditing ? 'border-green-500 ring-2 ring-green-500/10 bg-white' : 'border-transparent'}`}
+                    />
+                  </div>
+                  <div className='space-y-2'>
+                    <label className='text-sm font-medium text-gray-700 ml-1'>Last Name</label>
+                    <input
+                      type="text"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      className={`w-full h-12 px-5 bg-gray-50 border rounded-2xl flex items-center text-gray-800 text-sm transition-all outline-none ${isEditing ? 'border-green-500 ring-2 ring-green-500/10 bg-white' : 'border-transparent'}`}
+                    />
+                  </div>
+                  <div className='space-y-2'>
+                    <label className='text-sm font-medium text-gray-700 ml-1'>Date of Birth</label>
+                    <input
+                      type="date"
+                      name="dateOfBirth"
+                      value={formData.dateOfBirth}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      className={`w-full h-12 px-5 bg-gray-50 border rounded-2xl flex items-center text-gray-800 text-sm transition-all outline-none ${isEditing ? 'border-green-500 ring-2 ring-green-500/10 bg-white' : 'border-transparent'}`}
+                    />
+                  </div>
+                  <div className='space-y-2'>
+                    <label className='text-sm font-medium text-gray-700 ml-1'>User ID</label>
+                    <div className='w-full h-12 px-5 bg-gray-50 border border-transparent rounded-2xl flex items-center text-gray-500 text-sm font-mono'>
+                      #{user.id}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'address' && (
+                <div className='space-y-6'>
+                  <div className='space-y-2'>
+                    <label className='text-sm font-medium text-gray-700 ml-1'>Address Line 1</label>
+                    <input
+                      type="text"
+                      name="addressLine1"
+                      value={formData.addressLine1}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      className={`w-full h-12 px-5 bg-gray-50 border rounded-2xl flex items-center text-gray-800 text-sm transition-all outline-none ${isEditing ? 'border-green-500 ring-2 ring-green-500/10 bg-white' : 'border-transparent'}`}
+                    />
+                  </div>
+                  <div className='space-y-2'>
+                    <label className='text-sm font-medium text-gray-700 ml-1'>Address Line 2</label>
+                    <input
+                      type="text"
+                      name="addressLine2"
+                      value={formData.addressLine2}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      className={`w-full h-12 px-5 bg-gray-50 border rounded-2xl flex items-center text-gray-800 text-sm transition-all outline-none ${isEditing ? 'border-green-500 ring-2 ring-green-500/10 bg-white' : 'border-transparent'}`}
+                    />
+                  </div>
+                  <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                    <div className='space-y-2'>
+                      <label className='text-sm font-medium text-gray-700 ml-1'>City</label>
+                      <input
+                        type="text"
+                        name="city"
+                        value={formData.city}
+                        onChange={handleChange}
+                        disabled={!isEditing}
+                        className={`w-full h-12 px-5 bg-gray-50 border rounded-2xl flex items-center text-gray-800 text-sm transition-all outline-none ${isEditing ? 'border-green-500 ring-2 ring-green-500/10 bg-white' : 'border-transparent'}`}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'contact' && (
+                <div className='space-y-6'>
+                  <div className='space-y-2'>
+                    <label className='text-sm font-medium text-gray-700 ml-1'>Email Address</label>
+                    <div className={`w-full h-12 px-5 bg-gray-50 border border-transparent rounded-2xl flex items-center text-gray-800 text-sm gap-3 ${isEditing ? 'opacity-70 cursor-not-allowed' : ''}`}>
+                      <i className="ri-mail-line text-gray-400"></i>
+                      {user.email}
+                      <span className='ml-auto text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium'>Verified</span>
+                    </div>
+                    {isEditing && <p className="text-xs text-gray-500 ml-1">Email cannot be changed directly.</p>}
+                  </div>
+                  <div className='space-y-2'>
+                    <label className='text-sm font-medium text-gray-700 ml-1'>Phone Number</label>
+                    <div className='relative'>
+                      <i className="ri-phone-line text-gray-400 absolute left-5 top-1/2 -translate-y-1/2 z-10"></i>
+                      <input
+                        type="tel"
+                        name="phoneNumber"
+                        value={formData.phoneNumber}
+                        onChange={handleChange}
+                        disabled={!isEditing}
+                        className={`w-full h-12 pl-12 pr-5 bg-gray-50 border rounded-2xl flex items-center text-gray-800 text-sm transition-all outline-none ${isEditing ? 'border-green-500 ring-2 ring-green-500/10 bg-white' : 'border-transparent'}`}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'notification' && (
+                <div className='space-y-6'>
+                  {notificationSettings.map((setting) => (
+                    <div key={setting.name} className='flex items-center justify-between p-4 rounded-2xl hover:bg-gray-50 transition-colors border border-gray-100'>
+                      <div className='flex-1 pr-8'>
+                        <h3 className='font-medium text-gray-800 mb-1'>{setting.label}</h3>
+                        <p className='text-sm text-gray-500'>{setting.description}</p>
                       </div>
-                    ))}
-                    <button className='flex justify-center items-center bg-[#E4E4E4] hover:bg-[#D4D4D4] active:scale-95 transition-all h-10 md:h-12 sm:h-12 rounded-full cursor-pointer focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 w-full'>
-                      <h1 className='text-xs md:text-sm sm:text-sm text-[#333333] font-medium'>Save Changes</h1>
-                    </button>
-                  </>
-                )}
-
-                {activeTab === 'notification' && (
-                  <>
-                    <div>
-                      <h1 className='text-xs md:text-sm sm:text-sm text-[#333333] font-medium'>Choose how you&apos;d like to receive updates from Warp5</h1>
-
-                      <div className='mt-4 md:mt-6 sm:mt-6 space-y-4 md:space-y-6 sm:space-y-6 lg:space-y-8'>
-                        {notificationSettings.map((setting) => (
-                          <div key={setting.name} className='flex justify-between gap-4'>
-                            <div className='flex flex-col space-y-1 md:space-y-2 sm:space-y-3 flex-1'>
-                              <h1 className='text-[#333333] text-xs md:text-sm sm:text-sm font-medium'>{setting.label}</h1>
-                              <p className='text-[#333333] text-xs md:text-sm sm:text-sm font-regular'>{setting.description}</p>
-                            </div>
-
-                            <button className='flex cursor-pointer hover:opacity-80 transition-all focus:outline-none' onClick={() => handleNotificationChange(setting.name, !setting.checked)}>
-                              <i className={`ri-toggle-${setting.checked ? 'fill' : 'line'} ${setting.checked ? 'text-[#43A047]' : 'text-[#787878]'} text-2xl md:text-3xl sm:text-3xl lg:text-4xl`}></i>
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-
-                      <button className='mt-6 md:mt-8 sm:mt-12 flex justify-center items-center bg-[#E4E4E4] hover:bg-[#D4D4D4] active:scale-95 transition-all h-10 md:h-12 sm:h-12 rounded-full cursor-pointer focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 w-full'>
-                        <h1 className='text-xs md:text-sm sm:text-sm text-[#333333] font-medium'>Save Preferences</h1>
+                      <button
+                        onClick={() => handleNotificationChange(setting.name, !setting.checked)}
+                        className={`w-12 h-7 rounded-full transition-all duration-200 relative focus:outline-none ${setting.checked ? 'bg-green-500' : 'bg-gray-200'}`}
+                      >
+                        <div className={`w-5 h-5 bg-white rounded-full shadow-md absolute top-1 transition-all duration-200 ${setting.checked ? 'left-6' : 'left-1'}`}></div>
                       </button>
                     </div>
-                  </>
-                )}
+                  ))}
+                </div>
+              )}
 
-                {activeTab === 'privacy' && (
-                  <>
-                    <div>
-                      {privacySettings.map((setting, index) => (
-                        <div key={index} className={`flex flex-col space-y-2 md:space-y-3 sm:space-y-3 lg:space-y-4 ${index > 0 ? 'border-t border-[#E4E4E4] mt-6 md:mt-8 sm:mt-8 lg:mt-10 pt-6 md:pt-8 sm:pt-8 lg:pt-10' : ''}`}>
-                          <h1 className='text-[#333333] text-xs md:text-sm sm:text-sm font-medium'>{setting.title}</h1>
-                          <p className='text-[#333333] text-xs md:text-sm sm:text-sm font-regular'>{setting.description}</p>
-                          <button className={`flex justify-center items-center w-32 md:w-36 sm:w-40 lg:w-44 xl:w-48 h-8 md:h-10 sm:h-10 lg:h-12 text-xs md:text-sm sm:text-xs lg:text-sm font-medium rounded-full hover:opacity-90 active:scale-95 transition-all focus:ring-2 focus:ring-offset-2`} style={{ backgroundColor: setting.buttonColor, color: setting.textColor }}>{setting.buttonText}</button>
-                        </div>
-                      ))}
+              {activeTab === 'privacy' && (
+                <div className='space-y-6'>
+                  {privacySettings.map((setting, index) => (
+                    <div key={index} className='p-6 rounded-2xl bg-gray-50/50 border border-gray-100'>
+                      <h3 className='font-semibold text-gray-800 mb-2'>{setting.title}</h3>
+                      <p className='text-sm text-gray-600 mb-6'>{setting.description}</p>
+                      <button className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all ${setting.isDestructive
+                        ? 'bg-red-50 text-red-600 hover:bg-red-100'
+                        : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300'
+                        }`}>
+                        {setting.buttonText}
+                      </button>
                     </div>
-                  </>
-                )}
-
-
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
-
           </div>
         </div>
+      </main>
 
-          <Footer />
-      </div>
-    </>
-  )
+      <Footer />
+    </div>
+  );
 }
 
-export default Page
+export default Page;

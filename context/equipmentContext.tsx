@@ -6,14 +6,20 @@ import useSWR from "swr";
 import { ReactNode } from "react";
 
 export interface Equipment {
+  availability: boolean;
   createdAt: string;
+  description: string;
   equipmentName: string;
   id: number;
-  imageUrl: string;
-  location: string | null;
-  postedBy: string;
-  priceRate: number;
-  serviceRating: number;
+  imageOne: string;
+  imageThree: string;
+  imageTwo: string;
+  location: string;
+  name: string;
+  ownerId: number;
+  ownerName: string;
+  price: number;
+  rating: number;
 }
 
 export interface EquipmentResponse {

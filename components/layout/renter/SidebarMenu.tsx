@@ -1,36 +1,90 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
+import React from 'react';
 
 const links = [
-  { href: '/renter/dashboard', icon: 'ri-donut-chart-fill', label: 'Overview' },
-  { href: '/renter/reservations', icon: 'ri-book-open-line', label: 'My Reservation' },
-  { href: '/renter/payment', icon: 'ri-bank-card-line', label: 'Payment' },
-  { href: '/renter/notifications', icon: 'ri-notification-2-line', label: 'Notification' },
+  { href: '/renter/dashboard', icon: 'ri-dashboard-line', label: 'Overview' },
+  { href: '/renter/reservations', icon: 'ri-calendar-check-line', label: 'Reservations' },
+  { href: '/renter/payment', icon: 'ri-wallet-3-line', label: 'Payments' },
+  { href: '/renter/notifications', icon: 'ri-notification-3-line', label: 'Notifications' },
 ];
 
 const SidebarMenu: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
 
+  // Helper to check active state (inclusive of sub-paths for reservations)
+  const isActive = (href: string) => {
+    if (href === '/renter/reservations' && pathname.startsWith('/renter/reservations')) return true;
+    return pathname === href;
+  };
+
   return (
-    <aside className='hidden lg:flex fixed left-0 top-0 h-full min-h-screen w-64 xl:w-72 flex-col bg-white shadow-lg border-r border-gray-100 px-4 xl:px-6 z-40'>
-      <nav className='mt-24 flex flex-col space-y-4 xl:space-y-5'>
-        {links.map(({ href, icon, label }) => (
-          <button
-            type='button'
-            key={href}
-            className={`flex space-x-3 xl:space-x-4 items-center h-12 xl:h-14 ${pathname === href
-                ? 'bg-[#43A047] text-white hover:bg-[#388E3C] shadow-md'
-                : 'bg-white text-[#1C1D21] hover:bg-gray-50 hover:border-[#43A047] border border-gray-100'
-              } px-4 xl:px-5 rounded-lg cursor-pointer transition-all active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50`}
-            onClick={() => router.push(href)}
-          >
-            <i className={`${icon} text-lg xl:text-xl`}></i>
-            <span className='font-medium text-sm xl:text-base'>{label}</span>
+    <aside className='hidden lg:flex fixed left-0 top-0 h-full min-h-screen w-64 xl:w-72 flex-col bg-white border-r border-gray-100 px-4 py-6 z-40 justify-between'>
+
+      {/* Top Section */}
+      <div>
+        {/* Invisible spacer for fixed header, ensuring menu starts below it */}
+        <div className="h-20 md:h-22 xl:h-24"></div>
+
+        <nav className='flex flex-col space-y-2'>
+          <p className="px-4 text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 mt-4 ml-1">Menu</p>
+          {links.map(({ href, icon, label }) => (
+            <button
+              type='button'
+              key={href}
+              onClick={() => router.push(href)}
+              className={`flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 group ${isActive(href)
+                ? 'bg-[#43A047] text-white shadow-lg shadow-green-600/20'
+                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                }`}
+            >
+              <i className={`${icon} text-xl ${isActive(href) ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'}`}></i>
+              <span className='font-medium text-sm xl:text-base'>{label}</span>
+              {href === '/renter/notifications' && (
+                <span className={`ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full ${isActive(href) ? 'bg-white/20 text-white' : 'bg-red-100 text-red-600'}`}>2</span>
+              )}
+            </button>
+          ))}
+        </nav>
+      </div>
+
+      {/* Bottom Section */}
+      <div className='space-y-6'>
+        {/* Settings & Support */}
+        <nav className='flex flex-col space-y-1'>
+          <p className="px-4 text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 ml-1">Support</p>
+          <button className='flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors w-full text-left'>
+            <i className="ri-settings-4-line text-xl text-gray-400"></i>
+            <span className='font-medium text-sm xl:text-base'>Settings</span>
           </button>
-        ))}
-      </nav>
+          <button className='flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors w-full text-left'>
+            <i className="ri-question-line text-xl text-gray-400"></i>
+            <span className='font-medium text-sm xl:text-base'>Help Center</span>
+          </button>
+        </nav>
+
+        {/* User Profile */}
+        <div className="border-t border-gray-100 pt-6">
+          <div className="flex items-center gap-3 px-2">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold text-sm shadow-sm shrink-0">
+              KM
+            </div>
+            <div className="flex-1 min-w-0">
+              <h4 className="text-sm font-bold text-gray-900 truncate">Kwame Mensah</h4>
+              <p className="text-xs text-gray-400 truncate">kwame@example.com</p>
+            </div>
+            <button
+              className="text-gray-400 hover:text-red-500 transition-colors p-2"
+              title="Logout"
+            >
+              <i className="ri-logout-box-r-line text-lg"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
     </aside>
   );
 };

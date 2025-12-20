@@ -1,170 +1,209 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import DashboardHeader from '@/components/renter/DashboardHeader'
+import DashboardHeader from '@/components/renter/DashboardHeader';
+
+type ReservationStatus = 'Active' | 'Pending' | 'Completed' | 'Cancelled';
 
 function Page() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'all' | 'active' | 'completed' | 'cancelled'>('all');
+  const [activeTab, setActiveTab] = useState<'All' | ReservationStatus>('All');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
 
-  const reservationHistory = [
-    { id: 'R-EX45', equipment: 'Bulldozer', vendor: 'Mega Earth Movers', dates: 'Nov 01 - 06, 2025', cost: 'GHC 8,450' },
-    { id: 'R-LD11', equipment: 'Loader', vendor: 'Prime Equip Leasing', dates: 'Oct 23 - 28, 2025', cost: 'GHC 6,880' },
-    { id: 'R-CR09', equipment: 'Crane', vendor: 'SkyLift Rentals', dates: 'Oct 10 - 14, 2025', cost: 'GHC 12,300' },
-    { id: 'R-DM54', equipment: 'Dump Truck', vendor: 'HaulPro Logistics', dates: 'Aug 05 - 12, 2025', cost: 'GHC 9,100' },
-    { id: 'R-CP22', equipment: 'Compactor', vendor: 'GroundForce Rentals', dates: 'May 10 - 15, 2025', cost: 'GHC 5,050' },
-    { id: 'R-RL72', equipment: 'Roller', vendor: 'SmoothRoad Co.', dates: 'Jul 25 - 30, 2025', cost: 'GHC 5,420' },
-    { id: 'R-CP22', equipment: 'Compactor', vendor: 'GroundForce Rentals', dates: 'May 10 - 15, 2025', cost: 'GHC 5,050' },
-    { id: 'R-LF08', equipment: 'Lift Boom', vendor: 'ElevateWorks', dates: 'Jun 28 - Jul 03, 2025', cost: 'GHC 7,675' },
-    { id: 'R-CP22', equipment: 'Compactor', vendor: 'GroundForce Rentals', dates: 'May 10 - 15, 2025', cost: 'GHC 5,050' },
-    { id: 'R-CP22', equipment: 'Compactor', vendor: 'GroundForce Rentals', dates: 'May 10 - 15, 2025', cost: 'GHC 5,050' },
-
-    { id: 'R-CP22', equipment: 'Compactor', vendor: 'GroundForce Rentals', dates: 'May 10 - 15, 2025', cost: 'GHC 5,050' },
-    { id: 'R-CP22', equipment: 'Compactor', vendor: 'GroundForce Rentals', dates: 'May 10 - 15, 2025', cost: 'GHC 5,050' },
-    { id: 'R-CP22', equipment: 'Compactor', vendor: 'GroundForce Rentals', dates: 'May 10 - 15, 2025', cost: 'GHC 5,050' },
-    { id: 'R-CP22', equipment: 'Compactor', vendor: 'GroundForce Rentals', dates: 'May 10 - 15, 2025', cost: 'GHC 5,050' },
-    { id: 'R-CP22', equipment: 'Compactor', vendor: 'GroundForce Rentals', dates: 'May 10 - 15, 2025', cost: 'GHC 5,050' },
-    { id: 'R-CP22', equipment: 'Compactor', vendor: 'GroundForce Rentals', dates: 'May 10 - 15, 2025', cost: 'GHC 5,050' },
-
+  const allReservations = [
+    { id: 'R-EX45', equipment: 'Bulldozer D6K', vendor: 'Mega Earth Movers', status: 'Active', dates: 'Nov 01 - Nov 06, 2025', cost: 'GHC 8,450' },
+    { id: 'R-LD11', equipment: 'Wheel Loader 950GC', vendor: 'Prime Equip Leasing', status: 'Pending', dates: 'Oct 23 - Oct 28, 2025', cost: 'GHC 6,880' },
+    { id: 'R-CR09', equipment: 'Mobile Crane 50T', vendor: 'SkyLift Rentals', status: 'Completed', dates: 'Oct 10 - Oct 14, 2025', cost: 'GHC 12,300' },
+    { id: 'R-DM54', equipment: 'Dump Truck 8x4', vendor: 'HaulPro Logistics', status: 'Cancelled', dates: 'Aug 05 - Aug 12, 2025', cost: 'GHC 9,100' },
+    { id: 'R-CP22', equipment: 'Vibratory Compactor', vendor: 'GroundForce Rentals', status: 'Completed', dates: 'May 10 - May 15, 2025', cost: 'GHC 5,050' },
+    { id: 'R-RL72', equipment: 'Road Roller', vendor: 'SmoothRoad Co.', status: 'Completed', dates: 'Jul 25 - Jul 30, 2025', cost: 'GHC 5,420' },
+    { id: 'R-LF08', equipment: 'Boom Lift 60ft', vendor: 'ElevateWorks', status: 'Active', dates: 'Jun 28 - Jul 03, 2025', cost: 'GHC 7,675' },
+    { id: 'R-EX46', equipment: 'Mini Excavator', vendor: 'Mega Earth Movers', status: 'Pending', dates: 'Dec 01 - Dec 03, 2025', cost: 'GHC 2,400' },
+    { id: 'R-Gen01', equipment: 'Diesel Generator 100kVA', vendor: 'PowerSystems Ltd', status: 'Completed', dates: 'Jan 10 - Jan 15, 2025', cost: 'GHC 3,500' },
+    { id: 'R-Fork22', equipment: 'Forklift 3Ton', vendor: 'WareLogistics', status: 'Active', dates: 'Nov 18 - Nov 25, 2025', cost: 'GHC 4,200' },
   ];
 
-  const pageSize = 11;
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.max(1, Math.ceil(reservationHistory.length / pageSize));
-  const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
-  const startIndex = (currentPage - 1) * pageSize;
-  const paginatedReservations = reservationHistory.slice(startIndex, startIndex + pageSize);
+  // Filtering Logic
+  const filteredReservations = allReservations.filter(res => {
+    const matchesTab = activeTab === 'All' || res.status === activeTab;
+    const matchesSearch = res.equipment.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      res.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      res.vendor.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesTab && matchesSearch;
+  });
 
-  const goToPage = (page: number) => {
-    setCurrentPage(Math.min(Math.max(page, 1), totalPages));
+  // Pagination Logic
+  const totalPages = Math.max(1, Math.ceil(filteredReservations.length / pageSize));
+  const paginatedData = filteredReservations.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Active': return 'bg-green-100 text-green-700 border-green-200';
+      case 'Pending': return 'bg-orange-100 text-orange-700 border-orange-200';
+      case 'Completed': return 'bg-gray-100 text-gray-700 border-gray-200';
+      case 'Cancelled': return 'bg-red-50 text-red-600 border-red-100';
+      default: return 'bg-gray-50 text-gray-600 border-gray-200';
+    }
   };
 
-
   return (
-    <>
-      <main className='flex flex-col h-full'>
-        <DashboardHeader title='My Reservations' />
+    <div className='flex flex-col h-full space-y-8 pb-10'>
+      <DashboardHeader title='My Reservations' />
 
-        <section className='mt-6 md:mt-8 lg:mt-10'>
-          <div className='flex flex-wrap gap-2 md:gap-3 bg-white rounded-xl p-2 shadow-sm border border-gray-100 w-fit'>
+      {/* Toolbar Section */}
+      <section className='flex flex-col md:flex-row md:items-center justify-between gap-4'>
+        {/* Status Tabs */}
+        <div className='flex bg-white p-1 rounded-xl shadow-sm border border-gray-100 w-fit overflow-x-auto'>
+          {['All', 'Active', 'Pending', 'Completed', 'Cancelled'].map((tab) => (
             <button
-              onClick={() => setActiveTab('all')}
-              className={`px-4 md:px-6 py-2 md:py-2.5 rounded-lg text-xs md:text-sm font-medium transition-all ${activeTab === 'all'
-                  ? 'bg-[#43A047] text-white shadow-sm'
-                  : 'text-[#666666] hover:bg-gray-100 hover:text-[#333333]'
-                } focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50`}
+              key={tab}
+              onClick={() => { setActiveTab(tab as any); setCurrentPage(1); }}
+              className={`px-5 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${activeTab === tab
+                  ? 'bg-green-600 text-white shadow-md'
+                  : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                }`}
             >
-              All Reservations
+              {tab}
             </button>
-            <button
-              onClick={() => setActiveTab('active')}
-              className={`px-4 md:px-6 py-2 md:py-2.5 rounded-lg text-xs md:text-sm font-medium transition-all ${activeTab === 'active'
-                  ? 'bg-[#43A047] text-white shadow-sm'
-                  : 'text-[#666666] hover:bg-gray-100 hover:text-[#333333]'
-                } focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50`}
-            >
-              Active
-            </button>
-            <button
-              onClick={() => setActiveTab('completed')}
-              className={`px-4 md:px-6 py-2 md:py-2.5 rounded-lg text-xs md:text-sm font-medium transition-all ${activeTab === 'completed'
-                  ? 'bg-[#43A047] text-white shadow-sm'
-                  : 'text-[#666666] hover:bg-gray-100 hover:text-[#333333]'
-                } focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50`}
-            >
-              Completed
-            </button>
-            <button
-              onClick={() => setActiveTab('cancelled')}
-              className={`px-4 md:px-6 py-2 md:py-2.5 rounded-lg text-xs md:text-sm font-medium transition-all ${activeTab === 'cancelled'
-                  ? 'bg-[#43A047] text-white shadow-sm'
-                  : 'text-[#666666] hover:bg-gray-100 hover:text-[#333333]'
-                } focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50`}
-            >
-              Cancelled
-            </button>
-          </div>
-        </section>
+          ))}
+        </div>
 
-        <section className='mt-6 md:mt-8 lg:mt-10 flex flex-col'>
+        {/* Search */}
+        <div className="relative w-full md:w-72">
+          <i className="ri-search-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+          <input
+            type="text"
+            placeholder="Search equipment, ID..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full h-11 pl-11 pr-4 rounded-xl border border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none text-sm transition-all"
+          />
+        </div>
+      </section>
 
-          <div className='bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6 lg:p-8'>
-            <div className='flex justify-between items-center mb-6 md:mb-7 lg:mb-8'>
-              <h1 className='text-[#000000] font-semibold text-base md:text-lg lg:text-xl'>Reservation History</h1>
-              <span className='text-[#666666] text-xs md:text-sm'>{reservationHistory.length} total</span>
+      {/* Mobile Reservations List (Visible on sm/md) */}
+      <div className="lg:hidden space-y-4">
+        {paginatedData.map((res) => (
+          <div key={res.id} onClick={() => router.push(`/renter/reservations/${res.id}`)} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm active:scale-[0.98] transition-all">
+            <div className="flex justify-between items-start mb-3">
+              <span className={`px-2.5 py-1 rounded-full text-xs font-semibold border ${getStatusColor(res.status)}`}>{res.status}</span>
+              <span className="text-gray-400 text-xs font-mono">{res.id}</span>
             </div>
-            <div className='overflow-x-auto'>
-              <div className='grid grid-cols-[1fr_1.2fr_1.2fr_1fr_0.8fr_auto] items-center min-w-[700px] pb-3 border-b border-gray-200'>
-                <h1 className='text-[#1C1D21] font-semibold text-xs md:text-sm lg:text-base'>ID</h1>
-                <h1 className='text-[#1C1D21] font-semibold text-xs md:text-sm lg:text-base'>Equipment</h1>
-                <h1 className='text-[#1C1D21] font-semibold text-xs md:text-sm lg:text-base'>Vendor</h1>
-                <h1 className='text-[#1C1D21] font-semibold text-xs md:text-sm lg:text-base'>Dates</h1>
-                <h1 className='text-[#1C1D21] font-semibold text-xs md:text-sm lg:text-base'>Cost</h1>
-                <span />
+            <h3 className="font-bold text-gray-900 text-lg mb-1">{res.equipment}</h3>
+            <p className="text-sm text-gray-500 mb-4">{res.vendor}</p>
+            <div className="flex justify-between items-end border-t border-gray-50 pt-3">
+              <div>
+                <p className="text-xs text-gray-400 mb-0.5">Total Cost</p>
+                <p className="font-bold text-gray-900">{res.cost}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-xs text-gray-400 mb-0.5">Duration</p>
+                <p className="text-xs font-medium text-gray-700">{res.dates}</p>
               </div>
             </div>
+          </div>
+        ))}
+      </div>
 
-            <div className='mt-2 space-y-0'>
-              {paginatedReservations.map((reservation, index) => (
-                <div key={`${reservation.id}-${index}`} className='overflow-x-auto border-b border-gray-100 last:border-b-0'>
-                  <button
-                    onClick={() => router.push('/renter/reservations/id')}
-                    className='grid grid-cols-[1fr_1.2fr_1.2fr_1fr_0.8fr_auto] items-center h-14 md:h-16 lg:h-16 min-w-[700px] w-full text-left hover:bg-gray-50 transition-colors px-0 focus:outline-none focus:bg-gray-50'
+      {/* Desktop Table (Visible on lg+) */}
+      <div className='hidden lg:block bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden'>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50/50 border-b border-gray-100">
+              <tr>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Order ID</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Equipment</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Dates</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Amount</th>
+                <th className="px-6 py-4"></th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-50">
+              {paginatedData.length > 0 ? (
+                paginatedData.map((res) => (
+                  <tr
+                    key={res.id}
+                    onClick={() => router.push(`/renter/reservations/${res.id}`)}
+                    className="hover:bg-gray-50/80 transition-colors cursor-pointer group"
                   >
-                    <h1 className='text-[#1C1D21] font-medium text-xs md:text-sm lg:text-sm'>{reservation.id}</h1>
-                    <h1 className='text-[#1C1D21] font-regular text-xs md:text-sm lg:text-sm'>{reservation.equipment}</h1>
-                    <h1 className='text-[#666666] font-regular text-xs md:text-sm lg:text-sm truncate pr-2'>{reservation.vendor}</h1>
-                    <h1 className='text-[#666666] font-regular text-xs md:text-sm lg:text-sm'>{reservation.dates}</h1>
-                    <h1 className='text-[#1C1D21] font-semibold text-xs md:text-sm lg:text-sm'>{reservation.cost}</h1>
-                    <i className="ri-arrow-right-line text-[#43A047] text-base md:text-lg lg:text-xl"></i>
-                  </button>
-                </div>
+                    <td className="px-6 py-5 text-sm font-mono text-gray-500 group-hover:text-green-600 transition-colors">{res.id}</td>
+                    <td className="px-6 py-5">
+                      <div>
+                        <p className="text-sm font-bold text-gray-900">{res.equipment}</p>
+                        <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
+                          <i className="ri-store-2-line"></i> {res.vendor}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-5">
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(res.status)}`}>
+                        {res.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-5 text-sm text-gray-600">{res.dates}</td>
+                    <td className="px-6 py-5 text-sm font-bold text-gray-900">{res.cost}</td>
+                    <td className="px-6 py-5 text-right">
+                      <i className="ri-arrow-right-s-line text-xl text-gray-300 group-hover:text-green-600 transition-colors"></i>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
+                    <div className="flex flex-col items-center justify-center gap-2">
+                      <i className="ri-inbox-2-line text-4xl text-gray-300"></i>
+                      <p>No reservations found matching your filters.</p>
+                    </div>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Pagination Footer */}
+        <div className="px-6 py-4 border-t border-gray-100 flex items-center justify-between bg-gray-50/30">
+          <span className="text-sm text-gray-500">
+            Showing <span className="font-bold text-gray-900">{paginatedData.length}</span> of <span className="font-bold text-gray-900">{filteredReservations.length}</span> results
+          </span>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            >
+              <i className="ri-arrow-left-s-line"></i>
+            </button>
+            <div className="flex gap-1">
+              {Array.from({ length: totalPages }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentPage(i + 1)}
+                  className={`w-9 h-9 flex items-center justify-center rounded-lg text-sm font-medium transition-all ${currentPage === i + 1
+                      ? 'bg-green-600 text-white shadow-md'
+                      : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
+                    }`}
+                >
+                  {i + 1}
+                </button>
               ))}
             </div>
+            <button
+              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+              className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            >
+              <i className="ri-arrow-right-s-line"></i>
+            </button>
           </div>
-          <div className='flex items-center justify-between mt-6 shrink-0'>
-            <p className='text-[#666666] text-xs md:text-sm'>
-              Showing {startIndex + 1}-{Math.min(startIndex + pageSize, reservationHistory.length)} of {reservationHistory.length}
-            </p>
-            <div className='flex items-center space-x-1 md:space-x-2'>
-              <button
-                className='flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-lg border border-gray-200 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50'
-                onClick={() => goToPage(currentPage - 1)}
-                disabled={currentPage === 1}
-                aria-label='Previous page'
-              >
-                <i className='ri-arrow-left-s-line text-base md:text-lg text-[#1C1D21]'></i>
-              </button>
-              <div className='flex items-center space-x-1'>
-                {pages.map((pageNumber) => (
-                  <button
-                    key={pageNumber}
-                    className={`w-8 h-8 md:w-9 md:h-9 flex items-center justify-center text-xs md:text-sm font-medium rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50 ${pageNumber === currentPage
-                        ? 'bg-[#43A047] text-white shadow-sm'
-                        : 'text-[#666666] hover:bg-gray-100 border border-gray-200'
-                      }`}
-                    onClick={() => goToPage(pageNumber)}
-                    aria-label={`Go to page ${pageNumber}`}
-                  >
-                    {pageNumber}
-                  </button>
-                ))}
-              </div>
-              <button
-                className='flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-lg border border-gray-200 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50'
-                onClick={() => goToPage(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                aria-label='Next page'
-              >
-                <i className='ri-arrow-right-s-line text-base md:text-lg text-[#1C1D21]'></i>
-              </button>
-            </div>
-          </div>
-        </section>
-      </main>
-    </>
-  )
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export default Page
+export default Page;

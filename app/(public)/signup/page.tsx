@@ -2,73 +2,27 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 function Page() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [activeTab, setActiveTab] = useState("personalInfo");
   const [isSigningUp, setIsSigningUp] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   const [formData, setFormData] = useState({
-    first_name: "",
-    last_name: "",
-    date_of_birth: "",
+    accountType: "",
+    firstName: "",
+    lastName: "",
+    dateOfBirth: "",
     addressLine1: "",
     addressLine2: "",
-    accountType: "",
+    city: "",
+    phoneNumber: "",
     email: "",
     password: "",
-    phoneNumber: "",
     confirmPassword: ""
   });
-
-  const validateForm = () => {
-    setError("");
-
-    if (!formData.accountType) {
-      setError("Please select an account type");
-      return false;
-    }
-
-    if (
-      !formData.first_name ||
-      !formData.last_name ||
-      !formData.date_of_birth
-    ) {
-      setError("Please fill in all personal information fields");
-      return false;
-    }
-
-    if (!formData.addressLine1) {
-      setError("Please fill in required address fields");
-      return false;
-    }
-
-    if (!formData.email || !formData.phoneNumber) {
-      setError("Please fill in all contact details");
-      return false;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      setError("Please enter a valid email address");
-      return false;
-    }
-
-    if (formData.password.length < 8) {
-      setError("Password must be at least 8 characters long");
-      return false;
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      return false;
-    }
-
-    return true;
-  };
 
   const tabs = [
     { id: "personalInfo", label: "Personal Information" },
@@ -85,12 +39,13 @@ function Page() {
   };
 
   const personalInfo = [
-    { label: "First Name*", name: "first_name", type: "text" },
-    { label: "Last Name*", name: "last_name", type: "text" },
-    { label: "Date of Birth*", name: "date_of_birth", type: "date" }
+    { label: "First Name*", name: "firstName", type: "text" },
+    { label: "Last Name*", name: "lastName", type: "text" },
+    { label: "Date of Birth*", name: "dateOfBirth", type: "date" }
   ];
 
   const addressInfo = [
+    { label: "City*", name: "city", type: "text" },
     { label: "Address Line 1*", name: "addressLine1", type: "text" },
     { label: "Address Line 2", name: "addressLine2", type: "text" }
   ];
@@ -106,13 +61,7 @@ function Page() {
   ];
 
   const handleSignUp = async () => {
-    if (!validateForm()) {
-      return;
-    }
-
     setIsSigningUp(true);
-    setError("");
-    setSuccess("");
 
     try {
       const apiRes = await fetch("/api/auth/signup", {
@@ -120,35 +69,21 @@ function Page() {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          first_name: formData.first_name,
-          last_name: formData.last_name,
-          date_of_birth: formData.date_of_birth,
-          addressLine1: formData.addressLine1,
-          addressLine2: formData.addressLine2,
-          accountType: formData.accountType,
-          email: formData.email,
-          password: formData.password,
-          phoneNumber: formData.phoneNumber
-        })
+        body: JSON.stringify(formData)
       });
 
-      console.log('res', apiRes)
       const apiData = await apiRes.json();
 
       if (!apiRes.ok) {
-        setError(apiData.message || "Something went wrong during signup.");
+        toast.error(apiData.message || "Something went wrong during signup.");
         return;
       }
 
-      setSuccess("Account created successfully! Redirecting...");
+      toast.success("Account created successfully! Redirecting...");
+      router.push("/login");
 
-      setTimeout(() => {
-        router.push("/home");
-      }, 2000);
     } catch (error) {
-      setError("Failed to sign up. Please try again.");
-      console.error("Failed to sign up", error);
+      toast.error("Failed to sign up. Please try again.");
     } finally {
       setIsSigningUp(false);
     }
@@ -156,10 +91,10 @@ function Page() {
 
   return (
     <>
-      <div className="min-h-screen bg-white flex items-center justify-center px-4 py-8">
+      <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 flex items-center justify-center px-4 py-8">
         {step === 1 ? (
           <>
-            <div className="bg-white h-auto w-full max-w-xs md:max-w-sm lg:max-w-md xl:max-w-lg shadow-md py-4 md:py-6 sm:py-6 px-4 md:px-8 sm:px-6 lg:px-12 xl:px-16 rounded-2xl">
+            <div className="bg-white/80 backdrop-blur-xl h-auto w-full max-w-xs md:max-w-sm lg:max-w-md xl:max-w-lg shadow-2xl py-8 px-6 md:px-10 rounded-3xl border border-white/20">
               <div className="flex justify-end items-center ">
                 <button
                   className="hover:bg-gray-100 rounded-full p-1 transition-all focus:outline-none"
@@ -178,54 +113,54 @@ function Page() {
               <div className="mt-6 md:mt-8 sm:mt-8">
                 <div className="flex flex-col space-y-4 md:space-y-6 sm:space-y-8">
                   <button
-                    className={`flex justify-between items-center h-16 md:h-18 sm:h-20 p-4 md:p-5 sm:p-6 border ${formData.accountType === "hirer"
-                        ? "border-[#43A047] bg-[#F1FBF3]"
-                        : "border-[#787878] hover:border-[#43A047] hover:bg-gray-50"
-                      } rounded-2xl cursor-pointer transition-all focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50 text-left`}
+                    className={`flex justify-between items-center group h-auto p-5 border transition-all duration-300 rounded-2xl cursor-pointer focus:outline-none text-left ${formData.accountType === "hirer"
+                      ? "border-green-500 bg-green-50/50 ring-1 ring-green-500"
+                      : "border-gray-200 hover:border-green-400 hover:bg-gray-50 hover:shadow-md"
+                      }`}
                     onClick={() =>
                       setFormData({ ...formData, accountType: "hirer" })
                     }
                   >
-                    <div className="flex flex-col space-y-1 md:space-y-2">
-                      <h1 className="text-[#333333] font-medium text-xs md:text-sm sm:text-sm">
+                    <div className="flex flex-col space-y-1.5">
+                      <h1 className={`font-semibold text-sm md:text-base transition-colors ${formData.accountType === "hirer" ? "text-green-800" : "text-gray-700"}`}>
                         Hirer
                       </h1>
-                      <p className="text-[#333333] font-regular text-xs md:text-sm">
+                      <p className="text-gray-500 text-xs md:text-sm font-light">
                         You&apos;re looking to rent equipment
                       </p>
                     </div>
-                    <div className="flex justify-end items-center">
+                    <div className="flex justify-end items-center pl-4">
                       <i
-                        className={`text-base md:text-lg ${formData.accountType === "hirer"
-                            ? "ri-checkbox-circle-fill text-[#43A047]"
-                            : "ri-checkbox-blank-circle-line text-[#787878]"
+                        className={`text-xl transition-all duration-300 ${formData.accountType === "hirer"
+                          ? "ri-checkbox-circle-fill text-green-500 scale-110"
+                          : "ri-checkbox-blank-circle-line text-gray-300 group-hover:text-green-400"
                           }`}
                       ></i>
                     </div>
                   </button>
 
                   <button
-                    className={`flex justify-between items-center h-16 md:h-18 sm:h-20 p-4 md:p-5 sm:p-6 border ${formData.accountType === "owner"
-                        ? "border-[#43A047] bg-[#F1FBF3]"
-                        : "border-[#787878] hover:border-[#43A047] hover:bg-gray-50"
-                      } rounded-2xl cursor-pointer transition-all focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50 text-left`}
+                    className={`flex justify-between items-center group h-auto p-5 border transition-all duration-300 rounded-2xl cursor-pointer focus:outline-none text-left ${formData.accountType === "owner"
+                      ? "border-green-500 bg-green-50/50 ring-1 ring-green-500"
+                      : "border-gray-200 hover:border-green-400 hover:bg-gray-50 hover:shadow-md"
+                      }`}
                     onClick={() =>
                       setFormData({ ...formData, accountType: "owner" })
                     }
                   >
-                    <div className="flex flex-col space-y-1 md:space-y-2">
-                      <h1 className="text-[#333333] font-medium text-xs md:text-sm sm:text-sm">
+                    <div className="flex flex-col space-y-1.5">
+                      <h1 className={`font-semibold text-sm md:text-base transition-colors ${formData.accountType === "owner" ? "text-green-800" : "text-gray-700"}`}>
                         Owner
                       </h1>
-                      <p className="text-[#333333] font-regular text-xs md:text-sm">
+                      <p className="text-gray-500 text-xs md:text-sm font-light">
                         You&apos;re looking to list equipment
                       </p>
                     </div>
-                    <div className="flex justify-end items-center">
+                    <div className="flex justify-end items-center pl-4">
                       <i
-                        className={`text-base md:text-lg ${formData.accountType === "owner"
-                            ? "ri-checkbox-circle-fill text-[#43A047]"
-                            : "ri-checkbox-blank-circle-line text-[#787878]"
+                        className={`text-xl transition-all duration-300 ${formData.accountType === "owner"
+                          ? "ri-checkbox-circle-fill text-green-500 scale-110"
+                          : "ri-checkbox-blank-circle-line text-gray-300 group-hover:text-green-400"
                           }`}
                       ></i>
                     </div>
@@ -234,22 +169,15 @@ function Page() {
               </div>
 
               <div className="flex flex-col items-center mt-8 sm:mt-12 space-y-6 sm:space-y-8">
-                {error && (
-                  <div className="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg text-sm">
-                    {error}
-                  </div>
-                )}
-
                 <button
                   onClick={() => {
                     if (!formData.accountType) {
-                      setError("Please select an account type");
+                      toast.error("Please select an account type");
                       return;
                     }
-                    setError("");
                     setStep(2);
                   }}
-                  className="w-full text-sm bg-[#43A047] text-[#FFFFFF] h-10 sm:h-12 rounded-full font-medium cursor-pointer hover:bg-[#388E3C] transition-colors"
+                  className="w-full text-sm bg-gradient-to-r from-green-600 to-emerald-600 text-white h-12 rounded-full font-semibold tracking-wide cursor-pointer hover:shadow-lg hover:shadow-green-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
                 >
                   Continue
                 </button>
@@ -269,7 +197,7 @@ function Page() {
           </>
         ) : (
           <>
-            <div className="bg-white min-h-[60vh] w-full max-w-xl lg:max-w-3xl xl:max-w-4xl shadow-md py-6 md:py-8 sm:py-8 px-4 md:px-8 sm:px-6 lg:px-12 xl:px-16 rounded-2xl grid grid-cols-1 lg:grid-cols-2">
+            <div className="bg-white/80 backdrop-blur-xl min-h-[60vh] w-full max-w-xl lg:max-w-3xl xl:max-w-4xl shadow-2xl py-8 px-6 lg:px-12 rounded-3xl border border-white/20 grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div className="flex flex-col mt-4 md:mt-6 sm:mt-6 lg:mt-8 space-y-4 md:space-y-5 sm:space-y-6 lg:space-y-8">
                 {tabs.map((tab) => (
                   <button
@@ -279,9 +207,9 @@ function Page() {
                     onClick={() => setActiveTab(tab.id)}
                   >
                     <h1
-                      className={`text-sm md:text-base sm:text-base font-regular ${activeTab === tab.id
-                          ? "text-[#43A047] font-medium"
-                          : "text-[#333333]"
+                      className={`text-sm md:text-base font-medium transition-colors duration-200 px-4 py-2 rounded-lg ${activeTab === tab.id
+                        ? "text-green-700 bg-green-50"
+                        : "text-gray-500 hover:text-gray-800 hover:bg-gray-50"
                         }`}
                     >
                       {tab.label}
@@ -296,17 +224,6 @@ function Page() {
                     {tabs.find((tab) => tab.id === activeTab)?.label}
                   </h1>
                 </div>
-
-                {(error || success) && (
-                  <div
-                    className={`mt-4 ${success
-                        ? "bg-green-100 border-green-400 text-green-700"
-                        : "bg-red-100 border-red-400 text-red-700"
-                      } border px-4 py-3 rounded-lg text-sm`}
-                  >
-                    {error || success}
-                  </div>
-                )}
 
                 <div className="mt-4 md:mt-6 sm:mt-6 space-y-6 md:space-y-7 sm:space-y-8">
                   {activeTab === "personalInfo" && (
@@ -331,14 +248,14 @@ function Page() {
                             id={info.name}
                             name={info.name}
                             placeholder={`Enter ${info.label.replace('*', '').trim().toLowerCase()}`}
-                            className="w-full h-10 md:h-11 sm:h-12 px-4 md:px-5 sm:px-6 border border-[#787878] text-xs md:text-sm sm:text-sm text-[#333333] rounded-full transition-all focus:outline-none focus:border-[#43A047] focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50"
+                            className="w-full h-12 px-5 bg-gray-50 border border-transparent text-sm text-gray-800 rounded-full transition-all duration-200 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 placeholder:text-gray-400"
                             required={info.label.includes("*")}
                           />
                         </div>
                       ))}
                       <button
                         type="button"
-                        className="flex justify-center items-center bg-[#43A047] hover:bg-[#388E3C] active:scale-95 text-white h-10 md:h-11 sm:h-12 rounded-full cursor-pointer transition-all focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-offset-2 w-full"
+                        className="flex justify-center items-center bg-gradient-to-r from-green-600 to-emerald-600 hover:shadow-lg hover:shadow-green-500/30 hover:scale-[1.02] active:scale-[0.98] text-white h-12 rounded-full cursor-pointer transition-all duration-200 w-full"
                         onClick={handleNextTab}
                       >
                         <h1 className="text-xs md:text-sm sm:text-sm font-medium">
@@ -370,14 +287,14 @@ function Page() {
                             id={info.name}
                             name={info.name}
                             placeholder={`Enter ${info.label.replace('*', '').trim().toLowerCase()}`}
-                            className="w-full h-10 md:h-11 sm:h-12 px-4 md:px-5 sm:px-6 border border-[#787878] text-xs md:text-sm sm:text-sm text-[#333333] rounded-full transition-all focus:outline-none focus:border-[#43A047] focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50"
+                            className="w-full h-12 px-5 bg-gray-50 border border-transparent text-sm text-gray-800 rounded-full transition-all duration-200 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 placeholder:text-gray-400"
                             required={info.label.includes("*")}
                           />
                         </div>
                       ))}
                       <button
                         type="button"
-                        className="flex justify-center items-center bg-[#43A047] hover:bg-[#388E3C] active:scale-95 text-white h-10 md:h-11 sm:h-12 rounded-full cursor-pointer transition-all focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-offset-2 w-full"
+                        className="flex justify-center items-center bg-gradient-to-r from-green-600 to-emerald-600 hover:shadow-lg hover:shadow-green-500/30 hover:scale-[1.02] active:scale-[0.98] text-white h-12 rounded-full cursor-pointer transition-all duration-200 w-full"
                         onClick={handleNextTab}
                       >
                         <h1 className="text-xs md:text-sm sm:text-sm font-medium">
@@ -409,14 +326,14 @@ function Page() {
                             id={info.name}
                             name={info.name}
                             placeholder={`Enter ${info.label.replace('*', '').trim().toLowerCase()}`}
-                            className="w-full h-10 md:h-11 sm:h-12 px-4 md:px-5 sm:px-6 border border-[#787878] text-xs md:text-sm sm:text-sm text-[#333333] rounded-full transition-all focus:outline-none focus:border-[#43A047] focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50"
+                            className="w-full h-12 px-5 bg-gray-50 border border-transparent text-sm text-gray-800 rounded-full transition-all duration-200 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 placeholder:text-gray-400"
                             required={info.label.includes("*")}
                           />
                         </div>
                       ))}
                       <button
                         type="button"
-                        className="flex justify-center items-center bg-[#43A047] hover:bg-[#388E3C] active:scale-95 text-white h-10 md:h-11 sm:h-12 rounded-full cursor-pointer transition-all focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-offset-2 w-full"
+                        className="flex justify-center items-center bg-gradient-to-r from-green-600 to-emerald-600 hover:shadow-lg hover:shadow-green-500/30 hover:scale-[1.02] active:scale-[0.98] text-white h-12 rounded-full cursor-pointer transition-all duration-200 w-full"
                         onClick={handleNextTab}
                       >
                         <h1 className="text-xs md:text-sm sm:text-sm font-medium">
@@ -448,7 +365,7 @@ function Page() {
                             id={info.name}
                             name={info.name}
                             placeholder={`Enter ${info.label.replace('*', '').trim().toLowerCase()}`}
-                            className="w-full h-10 md:h-11 sm:h-12 px-4 md:px-5 sm:px-6 border border-[#787878] text-xs md:text-sm sm:text-sm text-[#333333] rounded-full transition-all focus:outline-none focus:border-[#43A047] focus:ring-2 focus:ring-[#43A047] focus:ring-opacity-50"
+                            className="w-full h-12 px-5 bg-gray-50 border border-transparent text-sm text-gray-800 rounded-full transition-all duration-200 focus:outline-none focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 placeholder:text-gray-400"
                             required={info.label.includes("*")}
                           />
                         </div>
@@ -463,7 +380,7 @@ function Page() {
                         type="button"
                         onClick={handleSignUp}
                         disabled={isSigningUp}
-                        className="flex justify-center items-center bg-[#43A047] hover:bg-[#388E3C] active:scale-95 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:active:scale-100 text-white h-10 md:h-11 sm:h-12 rounded-full w-full cursor-pointer transition-all focus:outline-none focus:ring-2 focus:ring-[#43A047] focus:ring-offset-2"
+                        className="flex justify-center items-center bg-gradient-to-r from-green-600 to-emerald-600 hover:shadow-lg hover:shadow-green-500/30 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 text-white h-12 rounded-full w-full cursor-pointer transition-all duration-200"
                       >
                         <h1 className="text-xs md:text-sm sm:text-sm font-medium">
                           {isSigningUp ? "Signing up..." : "Create Account"}
@@ -476,7 +393,7 @@ function Page() {
             </div>
           </>
         )}
-      </div>
+      </div >
     </>
   );
 }

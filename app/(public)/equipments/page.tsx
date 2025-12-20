@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -11,7 +11,6 @@ import EquipmentModal from '@/components/public/EquipmentModal';
 import PriceModal from '@/components/public/PriceModal';
 import DateModal from '@/components/public/DateModal';
 import EquipmentCard from '@/components/public/EquipmentCard';
-
 
 function Page() {
   const router = useRouter();
@@ -27,131 +26,132 @@ function Page() {
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
 
+  // Sample data extended for demonstration
   const highlyRatedCars = [
     { id: 1, image: Car1Image, name: 'Bucket Wheel Excavator', location: 'Kumasi, Ghana', rating: '4.8', price: 'GHC1,123' },
     { id: 2, image: Car2Image, name: 'Honda Accord', location: 'Accra', rating: '4.9', price: 'GHC1,123' },
     { id: 3, image: Car1Image, name: 'Mercedes Benz', location: 'Takoradi', rating: '5.0', price: 'GHC1,123' },
     { id: 4, image: Car2Image, name: 'BMW X5', location: 'Accra', rating: '4.7', price: 'GHC1,123' },
     { id: 5, image: Car2Image, name: 'Audi A6', location: 'Kumasi', rating: '4.9', price: 'GHC1,123' },
+    { id: 6, image: Car2Image, name: 'Honda Accord', location: 'Accra', rating: '4.9', price: 'GHC1,123' },
+    { id: 7, image: Car1Image, name: 'Caterpillar D6', location: 'Tema', rating: '4.6', price: 'GHC2,500' },
+    { id: 8, image: Car2Image, name: 'Komatsu PC200', location: 'Obuasi', rating: '4.8', price: 'GHC3,100' },
+    { id: 9, image: Car1Image, name: 'Excavator 320', location: 'Tamale', rating: '4.8', price: 'GHC1,800' },
+    { id: 10, image: Car2Image, name: 'Backhoe 416', location: 'Accra', rating: '4.7', price: 'GHC1,400' },
+    { id: 11, image: Car1Image, name: 'Skid Steer 262', location: 'Kumasi', rating: '4.9', price: 'GHC900' },
+    { id: 12, image: Car2Image, name: 'Wheel Loader 950', location: 'Tema', rating: '4.5', price: 'GHC2,100' },
   ];
 
   return (
     <>
-      <main className='min-h-screen bg-white'>
+      <main className="min-h-screen bg-gray-50/50">
         <PageHeader />
 
-        <section className="mt-20 md:mt-24 px-2 pb-4">
-          <div className="relative h-full">
-            <div className="relative z-10 h-full pt-10 md:pt-12 flex flex-col items-center justify-center xl:pt-20">
-              <div className="grid grid-cols-2 md:grid-cols-3 border border-[#DDDDDDB2]/70 rounded-2xl p-6 md:p-8 w-full max-w-7xl gap-6 xl:grid-cols-5">
+        {/* Page Title & Search Section */}
+        <section className="pt-28 pb-10 bg-white border-b border-gray-100">
+          <div className="max-w-[95vw] xl:max-w-[90vw] mx-auto">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Explore Inventory</h1>
+                <p className="text-gray-500">Find the perfect machinery for your next project.</p>
+              </div>
+              <div className="hidden md:flex items-center gap-2 text-sm font-medium text-gray-500">
+                <span>Showing {highlyRatedCars.length} results</span>
+              </div>
+            </div>
 
-                <div className="relative flex flex-col border-r border-[#DDDDDDB2] pr-6">
-                  <h1 className="font-medium text-[#333333] text-sm md:text-base mb-2 xl:text-lg">Location</h1>
-                  <div
-                    className="flex items-center cursor-pointer"
+            {/* Sticky-ish Filter Bar */}
+            <div className="bg-white rounded-3xl shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] border border-gray-100 p-2 md:p-2 max-w-7xl">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-0 items-center">
+
+                {/* Location */}
+                <div className="relative md:col-span-3 group border-b md:border-b-0 border-gray-100">
+                  <div className="px-4 md:px-6 py-4 md:py-3 cursor-pointer hover:bg-gray-50 md:rounded-full transition-colors relative"
                     onClick={() => {
                       setShowLocationModal(!showLocationModal);
                       setShowEquipmentModal(false);
                       setShowPriceRangeModal(false);
                       setShowDateRangeModal(false);
-                    }}
-                  >
-                    <h1 className="text-[#333333] text-xs xl:text-base">{selectedLocation}</h1>
-                    <i className="ri-arrow-down-s-line text-[#333333] hidden text-2xl ml-2 xl:flex"></i>
+                    }}>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 group-hover:text-green-600 transition-colors">Location</label>
+                    <div className="flex items-center justify-between">
+                      <span className={`text-sm truncate font-medium ${selectedLocation !== 'Select Your City' ? 'text-gray-900' : 'text-gray-400'}`}>
+                        {selectedLocation}
+                      </span>
+                      <i className="ri-map-pin-line text-lg text-gray-400 group-hover:text-green-600 transition-colors"></i>
+                    </div>
                   </div>
-
-                  <LocationModal
-                    show={showLocationModal}
-                    selectedLocation={selectedLocation}
-                    onSelect={setSelectedLocation}
-                    onClose={() => setShowLocationModal(false)}
-                  />
+                  <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-[1px] h-8 bg-gray-200"></div>
+                  <LocationModal show={showLocationModal} selectedLocation={selectedLocation} onSelect={setSelectedLocation} onClose={() => setShowLocationModal(false)} />
                 </div>
 
-                <div className="relative flex flex-col border-r border-[#DDDDDDB2] pr-6">
-                  <h1 className="font-medium text-[#333333] text-sm md:text-base mb-2 xl:text-lg">Equipment</h1>
-                  <div
-                    className="flex items-center cursor-pointer"
+                {/* Equipment Type */}
+                <div className="relative md:col-span-3 group border-b md:border-b-0 border-gray-100">
+                  <div className="px-4 md:px-6 py-4 md:py-3 cursor-pointer hover:bg-gray-50 md:rounded-full transition-colors relative"
                     onClick={() => {
                       setShowEquipmentModal(!showEquipmentModal);
                       setShowLocationModal(false);
                       setShowPriceRangeModal(false);
                       setShowDateRangeModal(false);
-                    }}
-                  >
-                    <h1 className="text-[#333333] text-xs xl:text-base">{selectedEquipment}</h1>
-                    <i className="ri-arrow-down-s-line text-[#333333] hidden text-2xl ml-2 xl:flex"></i>
+                    }}>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 group-hover:text-green-600 transition-colors">Equipment</label>
+                    <div className="flex items-center justify-between">
+                      <span className={`text-sm truncate font-medium ${selectedEquipment !== 'Choose Type' ? 'text-gray-900' : 'text-gray-400'}`}>
+                        {selectedEquipment}
+                      </span>
+                      <i className="ri-tools-line text-lg text-gray-400 group-hover:text-green-600 transition-colors"></i>
+                    </div>
                   </div>
-
-                  <EquipmentModal
-                    show={showEquipmentModal}
-                    selectedEquipment={selectedEquipment}
-                    onSelect={setSelectedEquipment}
-                    onClose={() => setShowEquipmentModal(false)}
-                  />
+                  <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-[1px] h-8 bg-gray-200"></div>
+                  <EquipmentModal show={showEquipmentModal} selectedEquipment={selectedEquipment} onSelect={setSelectedEquipment} onClose={() => setShowEquipmentModal(false)} />
                 </div>
 
-                <div className="relative flex flex-col border-r border-[#DDDDDDB2] pr-6">
-                  <h1 className="font-medium text-[#333333] text-sm md:text-base mb-2 xl:text-lg">Price Range</h1>
-                  <div
-                    className="flex items-center cursor-pointer"
+                {/* Price Range */}
+                <div className="relative md:col-span-2 group border-b md:border-b-0 border-gray-100">
+                  <div className="px-4 md:px-6 py-4 md:py-3 cursor-pointer hover:bg-gray-50 md:rounded-full transition-colors relative"
                     onClick={() => {
                       setShowPriceRangeModal(!showPriceRangeModal);
                       setShowLocationModal(false);
                       setShowEquipmentModal(false);
                       setShowDateRangeModal(false);
-                    }}
-                  >
-                    <h1 className="text-[#333333] text-xs xl:text-base">
-                      {minPrice && maxPrice ? `$${minPrice} - $${maxPrice}` : 'Select Range'}
-                    </h1>
-                    <i className="ri-arrow-down-s-line text-[#333333] hidden text-2xl ml-2 xl:flex"></i>
+                    }}>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 group-hover:text-green-600 transition-colors">Price</label>
+                    <div className="flex items-center justify-between">
+                      <span className={`text-sm truncate font-medium ${minPrice && maxPrice ? 'text-gray-900' : 'text-gray-400'}`}>
+                        {minPrice && maxPrice ? `GH₵${minPrice}+` : 'Range'}
+                      </span>
+                      <i className="ri-money-dollar-circle-line text-lg text-gray-400 group-hover:text-green-600 transition-colors"></i>
+                    </div>
                   </div>
-
-                  <PriceModal
-                    show={showPriceRangeModal}
-                    minPrice={minPrice}
-                    maxPrice={maxPrice}
-                    onMinPriceChange={setMinPrice}
-                    onMaxPriceChange={setMaxPrice}
-                    onClose={() => setShowPriceRangeModal(false)}
-                  />
+                  <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-[1px] h-8 bg-gray-200"></div>
+                  <PriceModal show={showPriceRangeModal} minPrice={minPrice} maxPrice={maxPrice} onMinPriceChange={setMinPrice} onMaxPriceChange={setMaxPrice} onClose={() => setShowPriceRangeModal(false)} />
                 </div>
 
-                <div className="relative flex flex-col border-r border-[#DDDDDDB2] pr-6">
-                  <h1 className="font-medium text-[#333333] text-sm md:text-base mb-2 xl:text-lg">Date Range</h1>
-                  <div
-                    className="flex items-center cursor-pointer"
+                {/* Date Range */}
+                <div className="relative md:col-span-3 group">
+                  <div className="px-4 md:px-6 py-4 md:py-3 cursor-pointer hover:bg-gray-50 md:rounded-full transition-colors relative"
                     onClick={() => {
                       setShowDateRangeModal(!showDateRangeModal);
                       setShowLocationModal(false);
                       setShowEquipmentModal(false);
                       setShowPriceRangeModal(false);
-                    }}
-                  >
-                    <h1 className="text-[#333333] text-xs xl:text-base">
-                      {fromDate && toDate ? `${fromDate} - ${toDate}` : 'Select Dates'}
-                    </h1>
+                    }}>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 group-hover:text-green-600 transition-colors">Dates</label>
+                    <div className="flex items-center justify-between">
+                      <span className={`text-sm truncate font-medium ${fromDate && toDate ? 'text-gray-900' : 'text-gray-400'}`}>
+                        {fromDate && toDate ? `${fromDate}..` : 'Add Dates'}
+                      </span>
+                      <i className="ri-calendar-line text-lg text-gray-400 group-hover:text-green-600 transition-colors"></i>
+                    </div>
                   </div>
-
-                  <DateModal
-                    show={showDateRangeModal}
-                    fromDate={fromDate}
-                    toDate={toDate}
-                    onFromDateChange={setFromDate}
-                    onToDateChange={setToDate}
-                    onClose={() => setShowDateRangeModal(false)}
-                    onCancel={() => {
-                      setFromDate('');
-                      setToDate('');
-                      setShowDateRangeModal(false);
-                    }}
-                  />
+                  <DateModal show={showDateRangeModal} fromDate={fromDate} toDate={toDate} onFromDateChange={setFromDate} onToDateChange={setToDate} onClose={() => setShowDateRangeModal(false)} onCancel={() => { setFromDate(''); setToDate(''); setShowDateRangeModal(false); }} />
                 </div>
 
-                <div className="flex items-start justify-start xl:justify-center">
-                  <button className="bg-[#000000] hover:bg-[#333333] active:scale-95 transition-all text-xs md:text-sm text-white px-8 py-3 rounded-lg font-semibold flex items-center cursor-pointer focus:ring-2 focus:ring-offset-2 focus:ring-black xl:text-base">
-                    Search
+                {/* Search Button */}
+                <div className="md:col-span-1 p-1 mt-2 md:mt-0">
+                  <button className="w-full h-12 md:h-14 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white rounded-xl md:rounded-full flex items-center justify-center gap-2 md:gap-0 transition-all shadow-lg shadow-green-600/30 active:scale-95">
+                    <span className="md:hidden font-bold">Search</span>
+                    <i className="ri-search-line text-xl"></i>
                   </button>
                 </div>
 
@@ -160,9 +160,17 @@ function Page() {
           </div>
         </section>
 
-        <section className="mt-12 md:mt-16 xl:mt-20">
-          <div className="max-w-[85vw] mx-auto">
-            <div className="mt-6 md:mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 lg:grid-cols-4 xl:grid-cols-5 xl:gap-10">
+        {/* Listings Grid */}
+        <section className="py-12 md:py-16">
+          <div className="max-w-[95vw] xl:max-w-[90vw] mx-auto">
+            {/* 
+              Responsive Logic:
+              - Mobile (default): grid-cols-2 (2 items per row)
+              - Tablet (md): grid-cols-3
+              - Desktop (lg): grid-cols-4
+              - Large Screens (xl): grid-cols-6 (As requested)
+            */}
+            <div className="mt-6 md:mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 md:gap-4 lg:gap-6">
               {highlyRatedCars.map((item, index) => (
                 <EquipmentCard key={index} item={item} />
               ))}
@@ -170,21 +178,29 @@ function Page() {
           </div>
         </section>
 
-        <section className='mt-12 md:mt-16 xl:mt-20 pb-8 flex justify-center items-center gap-4 md:gap-6'>
-          <button className='flex items-center justify-center gap-2 border border-[#333333] hover:bg-[#333333] hover:text-white active:scale-95 transition-all px-6 md:px-8 py-2 md:py-3 rounded-full cursor-pointer focus:ring-2 focus:ring-offset-2 focus:ring-[#333333]'>
-            <i className="ri-arrow-left-line text-base"></i>
-            <span className='text-xs md:text-sm font-medium xl:text-base'>Previous</span>
-          </button>
-          <button className='flex items-center justify-center gap-2 border border-[#333333] hover:bg-[#333333] hover:text-white active:scale-95 transition-all px-6 md:px-8 py-2 md:py-3 rounded-full cursor-pointer focus:ring-2 focus:ring-offset-2 focus:ring-[#333333]'>
-            <span className='text-xs md:text-sm font-medium xl:text-base'>Next</span>
-            <i className="ri-arrow-right-line text-base"></i>
-          </button>
+        {/* Pagination */}
+        <section className="pb-20">
+          <div className="flex justify-center items-center gap-2">
+            <button className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:border-gray-900 hover:text-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+              <i className="ri-arrow-left-s-line text-xl"></i>
+            </button>
+
+            <button className="w-10 h-10 flex items-center justify-center rounded-full bg-black text-white font-medium shadow-lg shadow-black/20">1</button>
+            <button className="w-10 h-10 flex items-center justify-center rounded-full text-gray-600 hover:bg-gray-100 font-medium transition-colors">2</button>
+            <button className="w-10 h-10 flex items-center justify-center rounded-full text-gray-600 hover:bg-gray-100 font-medium transition-colors">3</button>
+            <span className="text-gray-400">...</span>
+            <button className="w-10 h-10 flex items-center justify-center rounded-full text-gray-600 hover:bg-gray-100 font-medium transition-colors">8</button>
+
+            <button className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:border-gray-900 hover:text-gray-900 transition-colors">
+              <i className="ri-arrow-right-s-line text-xl"></i>
+            </button>
+          </div>
         </section>
 
         <Footer />
       </main>
     </>
-  )
+  );
 }
 
-export default Page
+export default Page;

@@ -4,26 +4,26 @@ import { NextResponse, NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
   const {
-    first_name,
-    last_name,
-    date_of_birth,
+    firstName,
+    lastName,
+    dateOfBirth,
     addressLine1,
     addressLine2,
-    accountType,
+    city,
+    phoneNumber,
     email,
-    password,
-    phoneNumber
+    password
   } = await req.json();
 
   if (
-    !first_name ||
-    !last_name ||
-    !date_of_birth ||
+    !firstName ||
+    !lastName ||
+    !dateOfBirth ||
     !addressLine1 ||
+    !city ||
     !phoneNumber ||
     !email ||
-    !password ||
-    !accountType
+    !password
   ) {
     return NextResponse.json(
       { message: "All fields are required." },
@@ -34,18 +34,18 @@ export async function POST(req: NextRequest) {
   const baseUrl = process.env.BASE_URL;
 
   try {
-    const apiRes = await fetch(`${baseUrl}/auth/register`, {
+    const apiRes = await fetch(`${baseUrl}/api/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        first_name,
-        last_name,
-        date_of_birth,
+        firstName,
+        lastName,
+        dateOfBirth,
         addressLine1,
         addressLine2,
-        accountType,
+        city,
         email,
         password,
         phoneNumber

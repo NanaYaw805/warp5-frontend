@@ -15,10 +15,13 @@ import DateModal from "@/components/public/DateModal";
 import Footer from "@/components/public/Footer";
 import PageHeader from "@/components/public/PageHeader";
 import EquipmentCard from "@/components/public/EquipmentCard";
+import { useEquipment } from "@/context/equipmentContext";
 
 
 export default function Page() {
   const router = useRouter();
+  const { equipment } = useEquipment();
+
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [showEquipmentModal, setShowEquipmentModal] = useState(false);
   const [showPriceRangeModal, setShowPriceRangeModal] = useState(false);
@@ -49,6 +52,7 @@ export default function Page() {
     { id: 3, image: Car1Image, name: 'Mercedes Benz', location: 'Takoradi', rating: '5.0', price: 'GHC1,123' },
     { id: 4, image: Car2Image, name: 'BMW X5', location: 'Accra', rating: '4.7', price: 'GHC1,123' },
     { id: 5, image: Car2Image, name: 'Audi A6', location: 'Kumasi', rating: '4.9', price: 'GHC1,123' },
+    { id: 2, image: Car2Image, name: 'Honda Accord', location: 'Accra', rating: '4.9', price: 'GHC1,123' },
   ];
 
   const reasons = [
@@ -138,18 +142,30 @@ export default function Page() {
       <main className="min-h-screen bg-white">
         <PageHeader />
 
-        <section className="mt-20 h-[500px] md:h-[500px] xl:h-[600px]">
-          <div className="px-2 relative h-full">
+        <section className="mt-20 h-[auto] min-h-[500px] md:h-[600px] xl:h-[700px] relative pb-20 md:pb-0">
+          <div className="absolute inset-0">
             <Image src={BannerImage} alt='Banner' fill className='object-cover' priority />
-            <div className='absolute inset-0 bg-black/30'></div>
+            <div className='absolute inset-0 bg-black/40 backdrop-blur-[2px]'></div>
+          </div>
 
-            <div className="relative z-10 h-full pt-8 flex flex-col items-center justify-center xl:pt-20">
-              <div className="grid grid-cols-2 md:grid-cols-3 bg-white/40 backdrop-blur-md rounded-2xl shadow-2xl p-8 w-full max-w-7xl border border-[#DDDDDDB2]/70 gap-6 xl:grid-cols-5">
+          <div className="relative z-10 h-full flex flex-col items-center justify-center px-4">
 
-                <div className="relative flex flex-col border-r border-[#DDDDDDB2] pr-6">
-                  <h1 className="font-medium text-white text-sm md:text-base mb-2 xl:text-base">Location</h1>
+            <div className="text-center mb-8 md:mb-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+              <h1 className="text-3xl md:text-5xl xl:text-7xl font-bold text-white mb-4 tracking-tight px-2">
+                Build Better, <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-300">Faster.</span>
+              </h1>
+              <p className="text-gray-200 text-base md:text-xl max-w-2xl mx-auto font-light px-4">
+                Premium heavy equipment rental for construction and mining projects across Ghana.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-3xl md:rounded-full shadow-2xl p-4 md:p-2 w-full max-w-md md:max-w-6xl mx-auto border border-white/20 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-0 items-center">
+
+                {/* Location Filter */}
+                <div className="relative md:col-span-3 group border-b md:border-b-0 border-gray-100">
                   <div
-                    className="flex items-center cursor-pointer"
+                    className="px-4 md:px-6 py-4 md:py-3 cursor-pointer hover:bg-gray-50 md:rounded-full transition-colors relative"
                     onClick={() => {
                       setShowLocationModal(!showLocationModal);
                       setShowEquipmentModal(false);
@@ -157,9 +173,15 @@ export default function Page() {
                       setShowDateRangeModal(false);
                     }}
                   >
-                    <h1 className="text-[#DDDDDD] text-xs md:text-sm xl:text-sm">{selectedLocation}</h1>
-                    <i className="ri-arrow-down-s-line text-[#DDDDDD] hidden text-xl ml-2 xl:flex"></i>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Location</label>
+                    <div className="flex items-center justify-between">
+                      <span className={`text-sm truncate font-medium ${selectedLocation !== 'Select Your City' ? 'text-gray-900' : 'text-gray-400'}`}>
+                        {selectedLocation}
+                      </span>
+                      <i className={`ri-map-pin-line text-lg text-gray-400 group-hover:text-green-600 transition-colors`}></i>
+                    </div>
                   </div>
+                  <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-[1px] h-8 bg-gray-200"></div>
 
                   <LocationModal
                     show={showLocationModal}
@@ -169,10 +191,10 @@ export default function Page() {
                   />
                 </div>
 
-                <div className="relative flex flex-col border-r border-[#DDDDDDB2] pr-6">
-                  <h1 className="font-medium text-white text-sm md:text-base mb-2 xl:text-base">Equipment</h1>
+                {/* Equipment Filter */}
+                <div className="relative md:col-span-3 group border-b md:border-b-0 border-gray-100">
                   <div
-                    className="flex items-center cursor-pointer"
+                    className="px-4 md:px-6 py-4 md:py-3 cursor-pointer hover:bg-gray-50 md:rounded-full transition-colors relative"
                     onClick={() => {
                       setShowEquipmentModal(!showEquipmentModal);
                       setShowLocationModal(false);
@@ -180,9 +202,15 @@ export default function Page() {
                       setShowDateRangeModal(false);
                     }}
                   >
-                    <h1 className="text-[#DDDDDD] text-xs md:text-sm xl:text-sm">{selectedEquipment}</h1>
-                    <i className="ri-arrow-down-s-line text-[#DDDDDD] hidden text-xl ml-2 xl:flex"></i>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Equipment</label>
+                    <div className="flex items-center justify-between">
+                      <span className={`text-sm truncate font-medium ${selectedEquipment !== 'Choose Type' ? 'text-gray-900' : 'text-gray-400'}`}>
+                        {selectedEquipment}
+                      </span>
+                      <i className={`ri-tools-line text-lg text-gray-400 group-hover:text-green-600 transition-colors`}></i>
+                    </div>
                   </div>
+                  <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-[1px] h-8 bg-gray-200"></div>
 
                   <EquipmentModal
                     show={showEquipmentModal}
@@ -192,10 +220,10 @@ export default function Page() {
                   />
                 </div>
 
-                <div className="relative flex flex-col border-r border-[#DDDDDDB2] pr-6">
-                  <h1 className="font-medium text-white text-sm md:text-base mb-2 xl:text-base">Price Range</h1>
+                {/* Price Filter */}
+                <div className="relative md:col-span-2 group border-b md:border-b-0 border-gray-100">
                   <div
-                    className="flex items-center cursor-pointer"
+                    className="px-4 md:px-6 py-4 md:py-3 cursor-pointer hover:bg-gray-50 md:rounded-full transition-colors relative"
                     onClick={() => {
                       setShowPriceRangeModal(!showPriceRangeModal);
                       setShowLocationModal(false);
@@ -203,11 +231,15 @@ export default function Page() {
                       setShowDateRangeModal(false);
                     }}
                   >
-                    <h1 className="text-[#DDDDDD] text-xs md:text-sm xl:text-sm">
-                      {minPrice && maxPrice ? `$${minPrice} - $${maxPrice}` : 'Select Range'}
-                    </h1>
-                    <i className="ri-arrow-down-s-line text-[#DDDDDD] hidden text-xl ml-2 xl:flex"></i>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Price</label>
+                    <div className="flex items-center justify-between">
+                      <span className={`text-sm truncate font-medium ${minPrice && maxPrice ? 'text-gray-900' : 'text-gray-400'}`}>
+                        {minPrice && maxPrice ? `GH₵${minPrice}+` : 'Range'}
+                      </span>
+                      <i className={`ri-money-dollar-circle-line text-lg text-gray-400 group-hover:text-green-600 transition-colors`}></i>
+                    </div>
                   </div>
+                  <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-[1px] h-8 bg-gray-200"></div>
 
                   <PriceModal
                     show={showPriceRangeModal}
@@ -219,10 +251,10 @@ export default function Page() {
                   />
                 </div>
 
-                <div className="relative flex flex-col border-r border-[#DDDDDDB2] pr-6">
-                  <h1 className="font-medium text-white text-sm md:text-base mb-2 xl:text-base">Date Range</h1>
+                {/* Date Filter */}
+                <div className="relative md:col-span-3 group">
                   <div
-                    className="flex items-center cursor-pointer"
+                    className="px-4 md:px-6 py-4 md:py-3 cursor-pointer hover:bg-gray-50 md:rounded-full transition-colors relative"
                     onClick={() => {
                       setShowDateRangeModal(!showDateRangeModal);
                       setShowLocationModal(false);
@@ -230,9 +262,13 @@ export default function Page() {
                       setShowPriceRangeModal(false);
                     }}
                   >
-                    <h1 className="text-[#DDDDDD] text-xs md:text-sm xl:text-sm">
-                      {fromDate && toDate ? `${fromDate} - ${toDate}` : 'Select Dates'}
-                    </h1>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Dates</label>
+                    <div className="flex items-center justify-between">
+                      <span className={`text-sm truncate font-medium ${fromDate && toDate ? 'text-gray-900' : 'text-gray-400'}`}>
+                        {fromDate && toDate ? `${fromDate}..` : 'Add Dates'}
+                      </span>
+                      <i className={`ri-calendar-line text-lg text-gray-400 group-hover:text-green-600 transition-colors`}></i>
+                    </div>
                   </div>
 
                   <DateModal
@@ -250,14 +286,17 @@ export default function Page() {
                   />
                 </div>
 
-                <div className="flex items-start justify-start xl:justify-center">
-                  <button className="bg-[#000] text-xs md:text-sm text-white px-8 py-3 rounded-lg font-semibold flex items-center cursor-pointer xl:text-sm">
-                    Search
+                {/* Search Button */}
+                <div className="md:col-span-1 p-1 mt-2 md:mt-0">
+                  <button className="w-full h-12 md:h-14 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white rounded-xl md:rounded-full flex items-center justify-center gap-2 md:gap-0 transition-all shadow-lg shadow-green-600/30 active:scale-95">
+                    <span className="md:hidden font-bold">Search</span>
+                    <i className="ri-search-line text-xl"></i>
                   </button>
                 </div>
 
               </div>
             </div>
+
           </div>
         </section>
 
@@ -265,7 +304,7 @@ export default function Page() {
           <div className="max-w-[85vw] mx-auto">
             <h1 className="text-[#333333] font-medium text-base md:text-lg xl:text-xl">Highly Rated By Customers</h1>
 
-            <div className="mt-6 md:mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 lg:grid-cols-4 xl:grid-cols-5 xl:gap-10">
+            <div className="mt-6 md:mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 md:gap-6 xl:gap-8">
               {highlyRatedCars.map((item, index) => (
                 <EquipmentCard key={index} item={item} />
               ))}
@@ -277,7 +316,7 @@ export default function Page() {
           <div className="max-w-[85vw] mx-auto">
             <h1 className="text-[#333333] font-medium text-base md:text-lg xl:text-xl">Most View Equipment</h1>
 
-            <div className="mt-6 md:mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 lg:grid-cols-4 xl:grid-cols-5 xl:gap-10">
+            <div className="mt-6 md:mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 md:gap-6 xl:gap-8">
               {highlyRatedCars.map((item, index) => (
                 <EquipmentCard key={index} item={item} />
               ))}
@@ -289,7 +328,7 @@ export default function Page() {
           <div className="max-w-[85vw] mx-auto">
             <h1 className="text-[#333333] font-medium text-base md:text-lg xl:text-xl">You may Also Like</h1>
 
-            <div className="mt-6 md:mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 lg:grid-cols-4 xl:grid-cols-5 xl:gap-10">
+            <div className="mt-6 md:mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 md:gap-6 xl:gap-8">
               {highlyRatedCars.map((item, index) => (
                 <EquipmentCard key={index} item={item} />
               ))}
@@ -304,118 +343,159 @@ export default function Page() {
           </button>
         </section>
 
-        <section className="mt-12 md:mt-16 xl:mt-20">
-          <div className="relative max-w-[90vw] mx-auto h-[350px] md:h-[450px] lg:h-[500px] rounded-3xl overflow-hidden xl:max-w-[85vw] xl:h-[550px]">
-            <Image src={CTAImage} alt='Call to Action' fill className='object-cover' priority />
-            <div className='absolute inset-0 bg-black/40'></div>
+        {/* CTA Section */}
+        <section className="mt-24 md:mt-32 relative h-[500px] md:h-[600px] flex items-center justify-center overflow-hidden">
+          <Image src={CTAImage} alt='Call to Action' fill className='object-cover fixed-parallax' />
+          <div className="absolute inset-0 bg-black/60"></div>
 
-            <div className='relative z-10 flex items-center h-full'>
-              <div className='w-full pl-5 md:pl-10 xl:pl-20'>
-                <div className='flex flex-col items-start space-y-2 md:space-y-3'>
-                  <h1 className='text-base md:text-xl lg:text-2xl font-semibold text-white leading-tight xl:text-4xl'>
-                    Reserve Your Mining or Construction
-                    <br /><span className='text-[#43A047]'>Equipment </span>
-                    from us
-                  </h1>
-                  <p className='text-[#FFFFFF] font-light text-xs md:text-sm xl:text-base'>Get the gear you need. Fast, reliable, and ready for your next project</p>
-                  <button
-                    type='button'
-                    onClick={() => router.push('/signup')}
-                    className='mt-4 md:mt-6 xl:mt-8 w-auto text-xs md:text-sm px-8 md:px-10 xl:px-12 py-3 md:py-4 xl:py-5 rounded-xl bg-[#43A047] hover:bg-[#388E3C] active:scale-95 transition-all border border-[#43A047] text-white font-medium cursor-pointer focus:ring-2 focus:ring-offset-2 focus:ring-[#43A047] xl:text-base'
-                  >
-                    Sign Up Now
-                  </button>
+          <div className="relative z-10 w-full max-w-4xl mx-auto px-4 text-center">
+            <div className="bg-white/10 backdrop-blur-md border border-white/20 p-8 md:p-12 rounded-3xl animate-in fade-in slide-in-from-bottom-8 duration-700">
+              <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                Power Your Next Project with <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-300">Premium Equipment</span>
+              </h2>
+              <p className="text-gray-200 text-lg md:text-xl font-light mb-8 max-w-2xl mx-auto">
+                From excavation to construction, we provide reliable machinery to keep your operations moving.
+              </p>
+              <button
+                onClick={() => router.push('/signup')}
+                className="bg-white text-black hover:bg-gray-100 px-10 py-4 rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-xl shadow-white/10 active:scale-95 flex items-center justify-center gap-2 mx-auto"
+              >
+                Sign Up Now
+                <i className="ri-arrow-right-line"></i>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* Why Choose Us */}
+        <section className="py-24 md:py-32 bg-gray-50">
+          <div className="w-full max-w-7xl mx-auto px-4 md:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <div className="order-2 lg:order-1">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-8 tracking-tight">
+                  Why Industry Leaders <br />
+                  <span className="text-green-600">Trust Us</span>
+                </h2>
+                <div className="space-y-8">
+                  {reasons.map((reason) => (
+                    <div key={reason.id} className="flex gap-6 group">
+                      <div className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center text-green-600 group-hover:bg-green-600 group-hover:text-white transition-all duration-300">
+                        <span className="font-bold text-lg md:text-xl">{reason.id}</span>
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-green-700 transition-colors">{reason.title}</h3>
+                        <p className="text-gray-500 leading-relaxed text-sm md:text-base">{reason.description}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
-
-        <section className='pt-12 md:pt-16 xl:pt-20 pb-4 backdrop-blur-xl' style={{ background: 'linear-gradient(135deg, #dffbfe 1%, #fff0f1 100%)' }}>
-          <div className='w-[90vw] mx-auto grid grid-cols-1 gap-8 md:gap-10 xl:grid-cols-2 xl:w-[70vw]'>
-            <div className='flex flex-col'>
-              <div className='flex justify-center items-center'>
-                <h1 className='text-[#333333] font-semibold text-lg md:text-xl xl:text-2xl'>Why Choose Us</h1>
-              </div>
-
-              <div className='mt-10 md:mt-14 xl:mt-20'>
-                {reasons.map((reason) => (
-                  <div key={reason.id} className='mb-10 md:mb-14 xl:mb-20 grid grid-cols-[auto_1fr] justify-start space-x-4 md:space-x-6 xl:space-x-8'>
-                    <div className='flex justify-center items-center w-8 h-8 bg-[#333333] rounded-full xl:w-12 xl:h-12'>
-                      <span className='text-white text-xs xl:text-base'>{reason.id}</span>
-                    </div>
-
-                    <div className='flex flex-col space-y-2 md:space-y-3 xl:space-y-4'>
-                      <h2 className='text-[#333333] text-sm md:text-base font-semibold xl:text-lg'>{reason.title}</h2>
-                      <p className='text-[#333333] text-xs md:text-sm xl:text-base'>{reason.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className='flex items-center justify-center'>
-              <div className='relative w-full h-full'>
-                <Image src={AboutUsImage} fill alt='Why choose us' className='object-contain' />
+              <div className="order-1 lg:order-2 relative h-[400px] md:h-[600px] w-full bg-gray-200 rounded-3xl overflow-hidden shadow-2xl skew-y-3 group hover:skew-y-0 transition-all duration-700 ease-out">
+                <Image src={AboutUsImage} fill alt='Why choose us' className='object-cover scale-110 group-hover:scale-100 transition-transform duration-700' />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60"></div>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="mt-12 md:mt-16 xl:mt-20 pb-4">
-          <div className='w-[90vw] mx-auto flex flex-col justify-center items-center xl:w-[85vw]'>
-            <div className='flex flex-col justify-center items-center space-y-3 md:space-y-4'>
-              <h1 className='text-[#333333] font-semibold text-lg md:text-xl text-center xl:text-2xl'>Our Partners</h1>
-              <p className='text-[#333333] font-regular text-xs md:text-sm text-center xl:text-base'>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
+        {/* Partners Section (Marquee) */}
+        <section className="py-16 border-y border-gray-100 bg-white overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 text-center mb-10">
+            <span className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-[0.2em]">Trusted By Top Companies</span>
+          </div>
+
+          {/* Mobile/Tablet Grid View */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 px-6 lg:hidden opacity-50 grayscale">
+            <div className="flex justify-center"><h1 className="text-2xl font-black text-gray-800">CAT</h1></div>
+            <div className="flex justify-center"><h1 className="text-2xl font-black text-gray-800">KOMATSU</h1></div>
+            <div className="flex justify-center"><h1 className="text-2xl font-black text-gray-800">HITACHI</h1></div>
+            <div className="flex justify-center"><h1 className="text-2xl font-black text-gray-800">VOLVO</h1></div>
+            <div className="flex justify-center"><h1 className="text-2xl font-black text-gray-800">JCB</h1></div>
+            <div className="flex justify-center"><h1 className="text-2xl font-black text-gray-800">LIEBHERR</h1></div>
+            <div className="flex justify-center"><h1 className="text-2xl font-black text-gray-800">SANY</h1></div>
+            <div className="flex justify-center"><h1 className="text-2xl font-black text-gray-800">DEERE</h1></div>
+          </div>
+
+          {/* Desktop Marquee View */}
+          <div className="hidden lg:flex w-[200%] animate-marquee">
+            {/* Set 1 */}
+            <div className="flex w-1/2 justify-around items-center px-16 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
+              <h1 className="text-4xl font-black text-gray-800">CAT</h1>
+              <h1 className="text-4xl font-black text-gray-800">KOMATSU</h1>
+              <h1 className="text-4xl font-black text-gray-800">HITACHI</h1>
+              <h1 className="text-4xl font-black text-gray-800">VOLVO</h1>
+              <h1 className="text-4xl font-black text-gray-800">JCB</h1>
+              <h1 className="text-4xl font-black text-gray-800">LIEBHERR</h1>
+              <h1 className="text-4xl font-black text-gray-800">SANY</h1>
+              <h1 className="text-4xl font-black text-gray-800">DEERE</h1>
+            </div>
+            {/* Set 2 (Duplicate) */}
+            <div className="flex w-1/2 justify-around items-center px-16 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
+              <h1 className="text-4xl font-black text-gray-800">CAT</h1>
+              <h1 className="text-4xl font-black text-gray-800">KOMATSU</h1>
+              <h1 className="text-4xl font-black text-gray-800">HITACHI</h1>
+              <h1 className="text-4xl font-black text-gray-800">VOLVO</h1>
+              <h1 className="text-4xl font-black text-gray-800">JCB</h1>
+              <h1 className="text-4xl font-black text-gray-800">LIEBHERR</h1>
+              <h1 className="text-4xl font-black text-gray-800">SANY</h1>
+              <h1 className="text-4xl font-black text-gray-800">DEERE</h1>
             </div>
           </div>
         </section>
 
-        <section className="mt-12 md:mt-16 xl:mt-20 pb-4">
-          <div className='w-[90vw] mx-auto xl:w-[85vw]'>
-            <div className='flex justify-center items-center'>
-              <h1 className='text-[#333333] text-lg md:text-xl font-semibold xl:text-2xl'>How It Works</h1>
+        {/* How It Works */}
+        <section className="py-24 md:py-32 bg-white">
+          <div className="max-w-7xl mx-auto px-4 md:px-8">
+            <div className="text-center mb-16 md:mb-24">
+              <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">How It Works</h2>
+              <p className="text-gray-500 max-w-2xl mx-auto text-lg">Simple, transparent, and efficient rental process designed for your convenience.</p>
             </div>
 
-            <div className='w-[90vw] mx-auto mt-6 md:mt-8 space-y-6 md:space-y-8 xl:space-y-10 xl:w-[50vw]'>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+              {/* Connecting line for desktop */}
+              <div className="hidden lg:block absolute top-12 left-1/2 -translate-x-1/2 w-[80%] h-0.5 bg-gray-100 -z-10"></div>
+
               {howItWorksSteps.map((step, index) => (
-                <div key={step.id} className='flex items-start space-x-8'>
-                  <div className='flex flex-col items-center'>
-                    <div className='flex justify-center items-center w-8 h-8 bg-[#333333] rounded-full xl:w-12 xl:h-12'>
-                      <span className='text-white text-sm xl:text-base'>{step.id}</span>
-                    </div>
-                    {index < howItWorksSteps.length - 1 && <div className='w-0.5 h-20 bg-[#333333] mt-2'></div>}
+                <div key={step.id} className="relative group p-6 rounded-3xl bg-white border border-gray-100 hover:border-green-100 hover:shadow-xl hover:shadow-green-500/5 transition-all duration-300">
+                  <div className="w-14 h-14 bg-black text-white rounded-2xl flex items-center justify-center font-bold text-xl mb-6 group-hover:bg-green-600 transition-colors shadow-lg group-hover:scale-110 duration-300">
+                    {step.id}
                   </div>
-                  <div className='flex flex-col space-y-4'>
-                    <h2 className='text-[#333333] text-sm lg:text-lg font-semibold'>{step.title}</h2>
-                    <p className='text-[#333333] text-xs lg:text-base'>{step.description}</p>
-                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">{step.description}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="mt-12 md:mt-16 xl:mt-20 pb-4">
-          <div className='w-[90vw] mx-auto xl:w-[70vw]'>
-            <div className='flex justify-center items-center'>
-              <h1 className='text-[#333333] text-lg md:text-xl font-semibold xl:text-2xl'>FAQ</h1>
+        {/* FAQ Section */}
+        <section className="py-24 bg-gray-50">
+          <div className="max-w-4xl mx-auto px-4">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">Common Questions</h2>
+              <p className="text-gray-500">Everything you need to know about our rental service.</p>
             </div>
 
-            <div className='mt-8 md:mt-10 xl:mt-12 grid grid-cols-1 gap-8 md:gap-10 xl:gap-12 xl:grid-cols-2'>
+            <div className="space-y-4">
               {faqs.map((faq) => (
-                <div key={faq.id} className='pb-4'>
+                <div key={faq.id} className={`bg-white rounded-2xl transition-all duration-300 overflow-hidden ${openFaqs.has(faq.id) ? 'shadow-lg border-green-500/20' : 'shadow-sm border-transparent'}`}>
                   <button
-                    type='button'
-                    className='flex justify-between items-center w-full cursor-pointer'
                     onClick={() => toggleFaq(faq.id)}
+                    className="w-full flex items-center justify-between p-6 text-left"
                   >
-                    <span className='text-[#333333] text-sm md:text-base font-semibold text-left xl:text-lg'>{faq.question}</span>
-                    <i className={`ri-arrow-down-s-line text-xs transition-transform xl:text-base ${openFaqs.has(faq.id) ? 'rotate-180' : ''}`}></i>
+                    <span className={`font-bold text-base md:text-lg transition-colors ${openFaqs.has(faq.id) ? 'text-green-700' : 'text-gray-800'}`}>
+                      {faq.question}
+                    </span>
+                    <span className={`flex items-center justify-center w-8 h-8 rounded-full border transition-all duration-300 ${openFaqs.has(faq.id) ? 'bg-green-600 border-green-600 text-white rotate-180' : 'bg-transparent border-gray-200 text-gray-400'}`}>
+                      <i className="ri-arrow-down-s-line"></i>
+                    </span>
                   </button>
-                  {openFaqs.has(faq.id) && <p className='text-[#333333] text-xs lg:text-base mt-1 sm:mt-2 lg:mt-3 xl:mt-4'>{faq.answer}</p>}
+                  <div className={`transition-all duration-300 ease-in-out ${openFaqs.has(faq.id) ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                    <div className="p-6 pt-0 text-gray-500 leading-relaxed border-t border-gray-50 mt-2">
+                      {faq.answer}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>

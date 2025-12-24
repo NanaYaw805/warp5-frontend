@@ -5,7 +5,7 @@ import { fetcher } from "../lib/fetcher";
 import useSWR from "swr";
 import { ReactNode } from "react";
 
-export interface Equipment {
+export interface HighlyRatedEquipment {
   availability: boolean;
   createdAt: string;
   description: string;
@@ -23,21 +23,21 @@ export interface Equipment {
 }
 
 export interface EquipmentResponse {
-  data: Equipment[];
+  data: HighlyRatedEquipment[];
 }
 
 interface EquipmentContextType {
-  equipment: EquipmentResponse | undefined;
+  higlyRatedData: EquipmentResponse | undefined;
   error: any;
   isLoading: boolean;
   mutate: any;
 }
 
-const EquipmentContext = createContext<EquipmentContextType | null>(null);
+const HiglyRatedEquipmentContext = createContext<EquipmentContextType | null>(null);
 
-export function EquipmentProvider({ children }: { children: ReactNode }) {
+export function HighlyRatedEquipmentProvider({ children }: { children: ReactNode }) {
   const { data, error, isLoading, mutate } = useSWR<EquipmentResponse>(
-    "/api/equipmentRoutes/equipments",
+    "/api/equipmentRoutes/highlyRated",
     fetcher,
     {
       revalidateOnFocus: false,
@@ -47,21 +47,21 @@ export function EquipmentProvider({ children }: { children: ReactNode }) {
   );
 
   return (
-    <EquipmentContext.Provider
+    <HiglyRatedEquipmentContext.Provider
       value={{
-        equipment: data,
+        higlyRatedData: data,
         error,
         isLoading,
         mutate
       }}>
       {children}
-    </EquipmentContext.Provider>
+    </HiglyRatedEquipmentContext.Provider>
   );
 }
-export function useEquipment() {
-  const context = useContext(EquipmentContext);
+export function useHighlyRatedEquipment() {
+  const context = useContext(HiglyRatedEquipmentContext);
   if (!context) {
-    throw new Error("useEquipment must be used inside EquipmentProvider");
+    throw new Error("useHighlyRatedEquipment must be used inside Highly Rated Equipment Provider");
   }
   return context;
 }

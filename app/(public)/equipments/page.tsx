@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Car1Image from '../../../public/cars/car1.jpg';
-import Car2Image from '../../../public/cars/car2.jpg';
 import PageHeader from '@/components/public/PageHeader';
 import Footer from '@/components/public/Footer';
 import LocationModal from '@/components/public/LocationModal';
@@ -11,9 +9,13 @@ import EquipmentModal from '@/components/public/EquipmentModal';
 import PriceModal from '@/components/public/PriceModal';
 import DateModal from '@/components/public/DateModal';
 import EquipmentCard from '@/components/public/EquipmentCard';
+import EquipmentCardSkeleton from "@/components/public/EquipmentCardSkeleton";
+import { useEquipment } from '@/context/equipmentContext';
 
 function Page() {
   const router = useRouter();
+
+  const { equipment, isLoading } = useEquipment();
 
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [showEquipmentModal, setShowEquipmentModal] = useState(false);
@@ -26,21 +28,6 @@ function Page() {
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
 
-  // Sample data extended for demonstration
-  const highlyRatedCars = [
-    { id: 1, image: Car1Image, name: 'Bucket Wheel Excavator', location: 'Kumasi, Ghana', rating: '4.8', price: 'GHC1,123' },
-    { id: 2, image: Car2Image, name: 'Honda Accord', location: 'Accra', rating: '4.9', price: 'GHC1,123' },
-    { id: 3, image: Car1Image, name: 'Mercedes Benz', location: 'Takoradi', rating: '5.0', price: 'GHC1,123' },
-    { id: 4, image: Car2Image, name: 'BMW X5', location: 'Accra', rating: '4.7', price: 'GHC1,123' },
-    { id: 5, image: Car2Image, name: 'Audi A6', location: 'Kumasi', rating: '4.9', price: 'GHC1,123' },
-    { id: 6, image: Car2Image, name: 'Honda Accord', location: 'Accra', rating: '4.9', price: 'GHC1,123' },
-    { id: 7, image: Car1Image, name: 'Caterpillar D6', location: 'Tema', rating: '4.6', price: 'GHC2,500' },
-    { id: 8, image: Car2Image, name: 'Komatsu PC200', location: 'Obuasi', rating: '4.8', price: 'GHC3,100' },
-    { id: 9, image: Car1Image, name: 'Excavator 320', location: 'Tamale', rating: '4.8', price: 'GHC1,800' },
-    { id: 10, image: Car2Image, name: 'Backhoe 416', location: 'Accra', rating: '4.7', price: 'GHC1,400' },
-    { id: 11, image: Car1Image, name: 'Skid Steer 262', location: 'Kumasi', rating: '4.9', price: 'GHC900' },
-    { id: 12, image: Car2Image, name: 'Wheel Loader 950', location: 'Tema', rating: '4.5', price: 'GHC2,100' },
-  ];
 
   return (
     <>
@@ -56,7 +43,9 @@ function Page() {
                 <p className="text-gray-500 text-sm md:text-base">Find the perfect machinery for your next project.</p>
               </div>
               <div className="hidden md:flex items-center gap-2 text-sm font-medium text-gray-500">
-                <span>Showing {highlyRatedCars.length} results</span>
+                <span>
+                  {isLoading ? 'Loading equipment...' : `Showing ${equipment?.equipments?.length || 0} results`}
+                </span>
               </div>
             </div>
 
@@ -163,17 +152,26 @@ function Page() {
         {/* Listings Grid */}
         <section className="py-12 md:py-16">
           <div className="max-w-[95vw] xl:max-w-[90vw] mx-auto">
-            {/* 
-              Responsive Logic:
-              - Mobile (default): grid-cols-2 (2 items per row)
-              - Tablet (md): grid-cols-3
-              - Desktop (lg): grid-cols-4
-              - Large Screens (xl): grid-cols-6 (As requested)
-            */}
             <div className="mt-6 md:mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 md:gap-8 lg:gap-12">
-              {highlyRatedCars.map((item, index) => (
-                <EquipmentCard key={index} item={item} />
-              ))}
+              {isLoading ? (
+                Array.from({ length: 10 }).map((_, index) => (
+                  <EquipmentCardSkeleton key={index} />
+                ))
+              ) : (
+                equipment?.data?.map((item, index) => (
+                  <EquipmentCard
+                    key={index}
+                    item={{
+                      id: item.id,
+                      imageOne: item.imageOne,
+                      name: item.name,
+                      location: item.location,
+                      rating: item.rating.toString(),
+                      price: item.price.toString(),
+                    }}
+                  />
+                ))
+              )}
             </div>
           </div>
         </section>

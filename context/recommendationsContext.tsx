@@ -5,7 +5,7 @@ import { fetcher } from "../lib/fetcher";
 import useSWR from "swr";
 import { ReactNode } from "react";
 
-export interface Equipment {
+export interface RecommendationsEquipment {
   availability: boolean;
   createdAt: string;
   description: string;
@@ -23,21 +23,21 @@ export interface Equipment {
 }
 
 export interface EquipmentResponse {
-  data: Equipment[];
+  data: RecommendationsEquipment[];
 }
 
 interface EquipmentContextType {
-  equipment: EquipmentResponse | undefined;
+  recommendedData: EquipmentResponse | undefined;
   error: any;
   isLoading: boolean;
   mutate: any;
 }
 
-const EquipmentContext = createContext<EquipmentContextType | null>(null);
+const RecommendationsEquipmentContext = createContext<EquipmentContextType | null>(null);
 
-export function EquipmentProvider({ children }: { children: ReactNode }) {
+export function RecommendationsEquipmentProvider({ children }: { children: ReactNode }) {
   const { data, error, isLoading, mutate } = useSWR<EquipmentResponse>(
-    "/api/equipmentRoutes/equipments",
+    "/api/equipmentRoutes/recommendations",
     fetcher,
     {
       revalidateOnFocus: false,
@@ -47,21 +47,22 @@ export function EquipmentProvider({ children }: { children: ReactNode }) {
   );
 
   return (
-    <EquipmentContext.Provider
+    <RecommendationsEquipmentContext.Provider
       value={{
-        equipment: data,
+        recommendedData: data,
         error,
         isLoading,
         mutate
-      }}>
+      }
+      }>
       {children}
-    </EquipmentContext.Provider>
+    </RecommendationsEquipmentContext.Provider>
   );
 }
-export function useEquipment() {
-  const context = useContext(EquipmentContext);
+export function useRecommendationsEquipment() {
+  const context = useContext(RecommendationsEquipmentContext);
   if (!context) {
-    throw new Error("useEquipment must be used inside EquipmentProvider");
+    throw new Error("useRecommendationsEquipment must be used inside RecommendationsEquipmentProvider");
   }
   return context;
 }

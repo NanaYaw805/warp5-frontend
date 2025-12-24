@@ -5,7 +5,7 @@ import { fetcher } from "../lib/fetcher";
 import useSWR from "swr";
 import { ReactNode } from "react";
 
-export interface Equipment {
+export interface MostViewedEquipment {
   availability: boolean;
   createdAt: string;
   description: string;
@@ -23,21 +23,21 @@ export interface Equipment {
 }
 
 export interface EquipmentResponse {
-  data: Equipment[];
+  data: MostViewedEquipment[];
 }
 
 interface EquipmentContextType {
-  equipment: EquipmentResponse | undefined;
+  mostViewedData: EquipmentResponse | undefined;
   error: any;
   isLoading: boolean;
   mutate: any;
 }
 
-const EquipmentContext = createContext<EquipmentContextType | null>(null);
+const MostViewedEquipmentContext = createContext<EquipmentContextType | null>(null);
 
-export function EquipmentProvider({ children }: { children: ReactNode }) {
+export function MostViewedEquipmentProvider({ children }: { children: ReactNode }) {
   const { data, error, isLoading, mutate } = useSWR<EquipmentResponse>(
-    "/api/equipmentRoutes/equipments",
+    "/api/equipmentRoutes/mostViewed",
     fetcher,
     {
       revalidateOnFocus: false,
@@ -47,21 +47,21 @@ export function EquipmentProvider({ children }: { children: ReactNode }) {
   );
 
   return (
-    <EquipmentContext.Provider
+    <MostViewedEquipmentContext.Provider
       value={{
-        equipment: data,
+        mostViewedData: data,
         error,
         isLoading,
         mutate
       }}>
       {children}
-    </EquipmentContext.Provider>
+    </MostViewedEquipmentContext.Provider>
   );
 }
-export function useEquipment() {
-  const context = useContext(EquipmentContext);
+export function useMostViewedEquipment() {
+  const context = useContext(MostViewedEquipmentContext);
   if (!context) {
-    throw new Error("useEquipment must be used inside EquipmentProvider");
+    throw new Error("useMostViewedEquipment must be used inside MostViewedEquipmentProvider");
   }
   return context;
 }

@@ -23,7 +23,7 @@ export interface Equipment {
 }
 
 export interface EquipmentResponse {
-  equipments: Equipment[];
+  data: Equipment[];
 }
 
 interface EquipmentContextType {

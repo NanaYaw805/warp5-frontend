@@ -6,7 +6,7 @@ export async function GET(req: Request) {
   const baseUrl = process.env.BASE_URL;
 
   try {
-    const apiRes = await fetch(`${baseUrl}/api/equipment/most-viewed?limit=10`, {
+    const apiRes = await fetch(`${baseUrl}/api/equipment/most-viewed?limit=5`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

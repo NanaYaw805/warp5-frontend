@@ -4,8 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
   const searchParams = new URL(req.url).searchParams;
-
-  const limit = parseFloat(searchParams.get('limit') || '10');
+  const limit = parseFloat(searchParams.get('limit') || '5');
 
   const baseUrl = process.env.BASE_URL;
 

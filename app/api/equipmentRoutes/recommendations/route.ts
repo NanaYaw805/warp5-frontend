@@ -3,7 +3,10 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
+
 export async function GET(req: Request) {
+  const searchParams = new URL(req.url).searchParams;
+  const limit = parseFloat(searchParams.get('limit') || '5');
   const store = await cookies();
   const user = store.get("user");
 
@@ -12,7 +15,7 @@ export async function GET(req: Request) {
   const baseUrl = process.env.BASE_URL;
 
   try {
-    const apiRes = await fetch(`${baseUrl}/api/equipment/${userId}/recommendations`, {
+    const apiRes = await fetch(`${baseUrl}/api/equipment/${userId}/recommendations?limit=${limit}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

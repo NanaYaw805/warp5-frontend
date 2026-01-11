@@ -10,16 +10,12 @@ interface LocationModalProps {
 }
 
 const cities = [
-  'Kumasi',
-  'Accra',
-  'Takoradi',
-  'Cape Coast',
-  'Tamale',
-  'Bolga',
-  'Sunyani',
-  'Obuasi',
-  'Techiman',
-  'Ho',
+  'Tarkwa, Ghana',
+  'Obuasi, Ghana',
+  'Kumasi, Ghana',
+  'Accra, Ghana',
+  'Ahafo, Ghana',
+  'Tema, Ghana',
 ];
 
 export default function LocationModal({ show, selectedLocation, onSelect, onClose }: LocationModalProps) {

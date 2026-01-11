@@ -18,10 +18,12 @@ export default function EquipmentCard({ item }: EquipmentCardProps) {
 
   const imageSource = item.image || item.imageOne || '';
 
+  console.log('item', item)
+
   return (
     <div
       className="group relative flex flex-col h-full bg-white border border-gray-100 rounded-3xl overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-      onClick={() => router.push(`/equipments/details`)}
+      onClick={() => router.push(`/equipments/${item.id}`)}
     >
       {/* Image Section */}
       <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
@@ -70,7 +72,7 @@ export default function EquipmentCard({ item }: EquipmentCardProps) {
             className="h-10 w-10 md:h-11 md:w-11 rounded-full bg-black text-white flex items-center justify-center group-hover:bg-green-600 transition-all duration-300 shadow-lg shadow-black/10 group-hover:shadow-green-600/20 active:scale-95"
             onClick={(e) => {
               e.stopPropagation();
-              router.push(`/equipments/details`);
+              router.push(`/equipments/${item.id}`);
             }}
           >
             <i className="ri-arrow-right-line text-lg md:text-xl transform group-hover:-rotate-45 transition-transform duration-300"></i>

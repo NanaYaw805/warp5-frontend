@@ -1,23 +1,29 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import PageHeader from '@/components/public/PageHeader';
 import Footer from '@/components/public/Footer';
-import Car1Image from '../../../public/cars/car1.jpg';
 
-function Page() {
+function PaymentContent() {
   const router = useRouter();
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'momo'>('card');
   const [isProcessing, setIsProcessing] = useState(false);
 
+  const searchParams = useSearchParams();
+  const name = searchParams.get('name') || 'Unknown Item';
+  const total = parseFloat(searchParams.get('total') || '0');
+  const image = searchParams.get('image') || '';
+  const startDate = searchParams.get('startDate') || '';
+  const endDate = searchParams.get('endDate') || '';
+
   const orderDetails = {
-    id: 'ORD-7723-XJ',
-    item: 'CAT 320 GC Hydraulic Excavator',
-    image: Car1Image,
-    total: 15300,
-    date: 'Nov 01 - Nov 12, 2025'
+    id: 'ORD-' + Math.floor(Math.random() * 10000) + '-XJ', // Generate or pass ID
+    item: name,
+    image: image,
+    total: total,
+    date: `${startDate} - ${endDate}`
   };
 
   const handlePay = () => {
@@ -154,7 +160,7 @@ function Page() {
 
               <div className="flex gap-4 mb-6">
                 <div className="relative w-20 h-20 bg-gray-100 rounded-lg overflow-hidden shrink-0">
-                  <Image src={orderDetails.item === 'CAT 320 GC Hydraulic Excavator' ? Car1Image : Car1Image} alt="Equipment" fill className="object-cover" />
+                  <Image src={orderDetails.image || '/placeholder.jpg'} alt="Equipment" fill className="object-cover" />
                 </div>
                 <div>
                   <div className="text-xs font-bold text-gray-400 mb-1">ID: {orderDetails.id}</div>
@@ -195,6 +201,18 @@ function Page() {
 
       <Footer />
     </main>
+  );
+}
+
+function Page() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen bg-gray-50/50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-600"></div>
+      </main>
+    }>
+      <PaymentContent />
+    </Suspense>
   );
 }
 

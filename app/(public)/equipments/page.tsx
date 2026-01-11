@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import PageHeader from '@/components/public/PageHeader';
 import Footer from '@/components/public/Footer';
 import LocationModal from '@/components/public/LocationModal';
@@ -10,7 +11,7 @@ import PriceModal from '@/components/public/PriceModal';
 import DateModal from '@/components/public/DateModal';
 import EquipmentCard from '@/components/public/EquipmentCard';
 import EquipmentCardSkeleton from "@/components/public/EquipmentCardSkeleton";
-import { useEquipment } from '@/context/equipmentContext';
+import { useEquipment, Equipment } from '@/context/equipmentContext';
 
 function Page() {
   const router = useRouter();
@@ -28,13 +29,52 @@ function Page() {
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
 
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchResults, setSearchResults] = useState<Equipment[] | null>(null);
+
+  const handleSearch = async () => {
+    setIsSearching(true);
+    setSearchResults(null);
+
+    try {
+      const params = new URLSearchParams();
+
+      if (selectedLocation && selectedLocation !== 'Select Your City') {
+        params.append('location', selectedLocation);
+      }
+      if (selectedEquipment && selectedEquipment !== 'Choose Type') {
+        params.append('equipment', selectedEquipment);
+      }
+      if (minPrice) params.append('minPrice', minPrice);
+      if (maxPrice) params.append('maxPrice', maxPrice);
+      if (fromDate) params.append('fromDate', fromDate);
+      if (toDate) params.append('toDate', toDate);
+
+      const res = await fetch(`/api/searchRoutes/filtering?${params.toString()}`);
+      const data = await res.json();
+
+      if (res.ok) {
+        setSearchResults(data.data);
+        toast.success(data.message);
+      } else {
+        toast.error(data.message || "Search failed");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while searching.");
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const displayData = equipment?.data || [];
+  const isDataLoading = isLoading || isSearching;
 
   return (
     <>
       <main className="min-h-screen bg-gray-50/50">
         <PageHeader />
 
-        {/* Page Title & Search Section */}
         <section className="pt-28 pb-10 bg-white border-b border-gray-100">
           <div className="max-w-[95vw] xl:max-w-[90vw] mx-auto">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
@@ -44,7 +84,7 @@ function Page() {
               </div>
               <div className="hidden md:flex items-center gap-2 text-sm font-medium text-gray-500">
                 <span>
-                  {isLoading ? 'Loading equipment...' : `Showing ${equipment?.data?.length || 0} results`}
+                  {isDataLoading ? 'Loading equipment...' : `Showing ${displayData.length} results`}
                 </span>
               </div>
             </div>
@@ -138,9 +178,18 @@ function Page() {
 
                 {/* Search Button */}
                 <div className="md:col-span-1 p-1 mt-2 md:mt-0">
-                  <button className="w-full h-12 md:h-14 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white rounded-xl md:rounded-full flex items-center justify-center gap-2 md:gap-0 transition-all shadow-lg shadow-green-600/30 active:scale-95">
-                    <span className="md:hidden font-bold">Search</span>
-                    <i className="ri-search-line text-xl"></i>
+                  <button
+                    onClick={handleSearch}
+                    disabled={isSearching}
+                    className="w-full h-12 md:h-14 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white rounded-xl md:rounded-full flex items-center justify-center gap-2 md:gap-0 transition-all shadow-lg shadow-green-600/30 active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed">
+                    {isSearching ? (
+                      <i className="ri-loader-4-line text-xl animate-spin"></i>
+                    ) : (
+                      <>
+                        <span className="md:hidden font-bold">Search</span>
+                        <i className="ri-search-line text-xl"></i>
+                      </>
+                    )}
                   </button>
                 </div>
 
@@ -153,24 +202,30 @@ function Page() {
         <section className="py-12 md:py-16">
           <div className="max-w-[95vw] xl:max-w-[90vw] mx-auto">
             <div className="mt-6 md:mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 md:gap-8 lg:gap-12">
-              {isLoading ? (
+              {isDataLoading ? (
                 Array.from({ length: 10 }).map((_, index) => (
                   <EquipmentCardSkeleton key={index} />
                 ))
               ) : (
-                equipment?.data?.map((item, index) => (
-                  <EquipmentCard
-                    key={index}
-                    item={{
-                      id: item.id,
-                      imageOne: item.imageOne,
-                      name: item.name,
-                      location: item.location,
-                      rating: item.rating.toString(),
-                      price: item.price.toString(),
-                    }}
-                  />
-                ))
+                displayData.length > 0 ? (
+                  displayData.map((item, index) => (
+                    <EquipmentCard
+                      key={index}
+                      item={{
+                        id: item.id,
+                        imageOne: item.imageOne,
+                        name: item.name,
+                        location: item.location,
+                        rating: item.rating.toString(),
+                        price: item.price.toString(),
+                      }}
+                    />
+                  ))
+                ) : (
+                  <div className="col-span-full text-center py-20 text-gray-500">
+                    <p className="text-xl">No equipment found matching your criteria.</p>
+                  </div>
+                )
               )}
             </div>
           </div>

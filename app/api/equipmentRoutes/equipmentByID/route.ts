@@ -1,19 +1,17 @@
 'use server';
 
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from "next/server";
 
-export async function GET(req: Request) {
-    const searchParams = new URL(req.url).searchParams;
-    const location = searchParams.get('location');
-
+export async function GET(req: NextRequest) {
     const baseUrl = process.env.BASE_URL;
+    const id = req.nextUrl.searchParams.get('id');
 
     try {
-        const apiRes = await fetch(`${baseUrl}/api/equipment/search?location=${location}`, {
+        const apiRes = await fetch(`${baseUrl}/api/equipment/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-            },
+            }
         });
 
         const apiData = await apiRes.json();
@@ -22,18 +20,19 @@ export async function GET(req: Request) {
             return NextResponse.json(
                 { message: apiData.message || "Something went wrong." },
                 { status: apiRes.status }
-            );
+            )
         }
 
         return NextResponse.json(
-            { message: "Equipments fetched successfully.", data: apiData },
+            { message: "Equipment fetched successfully.", data: apiData },
             { status: 200 }
-        );
+        )
+
     } catch (error) {
-        console.error('Failed to fetch equipments', error);
+        console.error('Failed to fetch equipment', error);
         return NextResponse.json(
-            { message: "Failed to fetch equipments. Please try again later." + error },
+            { message: "Failed to fetch equipment. Please try again later." + error },
             { status: 500 }
-        );
+        )
     }
 }

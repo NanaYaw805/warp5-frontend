@@ -1,27 +1,73 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import PageHeader from '@/components/public/PageHeader';
 import Footer from '@/components/public/Footer';
-import Car1Image from '../../../../public/cars/car1.jpg';
 
-function Page() {
+
+function ReserveContent() {
   const router = useRouter();
 
-  // Mock Data
+  const searchParams = useSearchParams();
+
+  const name = searchParams.get('name') || 'Unknown Equipment';
+  const price = parseFloat(searchParams.get('price') || '0');
+  const image = searchParams.get('image') || '';
+  const location = searchParams.get('location') || 'Unknown Location';
+  const startDate = searchParams.get('startDate') || '';
+  const endDate = searchParams.get('endDate') || '';
+
+  // Calculate duration
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const diffTime = Math.abs(end.getTime() - start.getTime());
+  const duration = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1; // Default to 1 day if invalid
+
   const equipment = {
-    name: 'CAT 320 GC Hydraulic Excavator',
-    image: Car1Image,
-    location: 'Takoradi, Ghana',
-    pricePerDay: 1200,
-    duration: 12,
+    name,
+    image,
+    location,
+    pricePerDay: price,
+    duration,
     serviceFee: 150,
     tax: 50,
   };
 
   const total = (equipment.pricePerDay * equipment.duration) + equipment.serviceFee + equipment.tax;
+
+  const [userDetails, setUserDetails] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    notes: ''
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
+  };
+
+  const handlePaymentNavigation = () => {
+    if (!userDetails.firstName || !userDetails.lastName || !userDetails.email || !userDetails.phone) {
+      alert('Please fill in all contact information fields.');
+      return;
+    }
+
+    const params = new URLSearchParams({
+      name,
+      image,
+      location,
+      price: price.toString(),
+      startDate,
+      endDate,
+      total: total.toString(),
+      ...userDetails
+    });
+
+    router.push(`/equipments/payment?${params.toString()}`);
+  };
 
   return (
     <main className="min-h-screen bg-gray-50/50 font-sans text-gray-900">
@@ -50,19 +96,47 @@ function Page() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-gray-700">First Name</label>
-                  <input type="text" placeholder="John" className="w-full h-12 px-4 rounded-xl bg-gray-50 border border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:outline-none transition-all" />
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={userDetails.firstName}
+                    onChange={handleInputChange}
+                    placeholder="John"
+                    className="w-full h-12 px-4 rounded-xl bg-gray-50 border border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:outline-none transition-all"
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-gray-700">Last Name</label>
-                  <input type="text" placeholder="Doe" className="w-full h-12 px-4 rounded-xl bg-gray-50 border border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:outline-none transition-all" />
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={userDetails.lastName}
+                    onChange={handleInputChange}
+                    placeholder="Doe"
+                    className="w-full h-12 px-4 rounded-xl bg-gray-50 border border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:outline-none transition-all"
+                  />
                 </div>
                 <div className="space-y-2 md:col-span-2">
                   <label className="text-sm font-semibold text-gray-700">Email Address</label>
-                  <input type="email" placeholder="john@example.com" className="w-full h-12 px-4 rounded-xl bg-gray-50 border border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:outline-none transition-all" />
+                  <input
+                    type="email"
+                    name="email"
+                    value={userDetails.email}
+                    onChange={handleInputChange}
+                    placeholder="john@example.com"
+                    className="w-full h-12 px-4 rounded-xl bg-gray-50 border border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:outline-none transition-all"
+                  />
                 </div>
                 <div className="space-y-2 md:col-span-2">
                   <label className="text-sm font-semibold text-gray-700">Phone Number</label>
-                  <input type="tel" placeholder="+233 20 000 0000" className="w-full h-12 px-4 rounded-xl bg-gray-50 border border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:outline-none transition-all" />
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={userDetails.phone}
+                    onChange={handleInputChange}
+                    placeholder="+233 20 000 0000"
+                    className="w-full h-12 px-4 rounded-xl bg-gray-50 border border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:outline-none transition-all"
+                  />
                 </div>
               </div>
             </div>
@@ -77,52 +151,27 @@ function Page() {
               <div className="flex flex-col md:flex-row gap-6">
                 <div className="flex-1 bg-gray-50 p-4 rounded-2xl border border-gray-100">
                   <label className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 block">Pickup Date</label>
-                  <div className="font-bold text-gray-900 text-lg">Nov 01, 2025</div>
+                  <div className="font-bold text-gray-900 text-lg">{startDate}</div>
                   <div className="text-sm text-gray-500">From 8:00 AM</div>
                 </div>
                 <div className="flex-1 bg-gray-50 p-4 rounded-2xl border border-gray-100">
                   <label className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 block">Return Date</label>
-                  <div className="font-bold text-gray-900 text-lg">Nov 12, 2025</div>
+                  <div className="font-bold text-gray-900 text-lg">{endDate}</div>
                   <div className="text-sm text-gray-500">By 5:00 PM</div>
                 </div>
               </div>
 
               <div className="mt-6">
                 <label className="text-sm font-semibold text-gray-700 mb-2 block">Additional Notes (Optional)</label>
-                <textarea placeholder="Any special requests or delivery instructions?" className="w-full h-24 p-4 rounded-xl bg-gray-50 border border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:outline-none transition-all resize-none"></textarea>
+                <textarea
+                  name="notes"
+                  value={userDetails.notes}
+                  onChange={handleInputChange}
+                  placeholder="Any special requests or delivery instructions?"
+                  className="w-full h-24 p-4 rounded-xl bg-gray-50 border border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 focus:outline-none transition-all resize-none"
+                ></textarea>
               </div>
             </div>
-
-            {/* Section 3: Payment Method */}
-            <div className="bg-white rounded-[2rem] p-6 md:p-10 shadow-sm border border-gray-100">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-600 font-bold text-sm">3</span>
-                <h2 className="text-xl font-bold text-gray-900">Payment Method</h2>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="relative p-4 border-2 border-green-500 bg-green-50/50 rounded-xl cursor-pointer flex items-center justify-between transition-all">
-                  <div className="flex items-center gap-3">
-                    <i className="ri-bank-card-fill text-xl text-green-600"></i>
-                    <span className="font-bold text-gray-900">Credit / Debit Card</span>
-                  </div>
-                  <i className="ri-checkbox-circle-fill text-xl text-green-600"></i>
-                </div>
-                <div className="relative p-4 border border-gray-200 hover:border-gray-300 rounded-xl cursor-pointer flex items-center justify-between transition-all opacity-60">
-                  <div className="flex items-center gap-3">
-                    <i className="ri-wallet-3-line text-xl text-gray-600"></i>
-                    <span className="font-medium text-gray-900">Mobile Money</span>
-                  </div>
-                  <div className="w-5 h-5 rounded-full border border-gray-300"></div>
-                </div>
-              </div>
-
-              <div className="mt-6 p-4 bg-yellow-50 rounded-xl flex gap-3 text-sm text-yellow-800 border border-yellow-100">
-                <i className="ri-shield-check-line text-xl shrink-0"></i>
-                <p>Your payment information is encrypted and secure. We do not store your card details.</p>
-              </div>
-            </div>
-
           </div>
 
 
@@ -181,7 +230,7 @@ function Page() {
             </div>
 
             <button
-              onClick={() => router.push('/payment')}
+              onClick={handlePaymentNavigation}
               className="w-full h-16 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white rounded-2xl font-bold text-xl transition-all shadow-xl shadow-green-600/30 active:scale-95 flex items-center justify-center gap-3"
             >
               <span>Confirm & Pay</span>
@@ -196,6 +245,18 @@ function Page() {
 
       <Footer />
     </main>
+  );
+}
+
+function Page() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen bg-gray-50/50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-600"></div>
+      </main>
+    }>
+      <ReserveContent />
+    </Suspense>
   );
 }
 

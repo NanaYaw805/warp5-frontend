@@ -36,8 +36,8 @@ function PageHeader() {
 
   return (
     <>
-      <header className="fixed right-0 left-0 top-0 h-20 md:h-22 z-[100] bg-white xl:h-24">
-        <div className="max-w-[90vw] mx-auto grid grid grid-cols-2 items-center h-full xl:grid-cols-3 xl:max-w-[85vw]">
+      <header className="fixed right-0 left-0 top-0 h-20 md:h-22 z-[100] bg-white lg:h-24">
+        <div className="max-w-[90vw] mx-auto grid grid grid-cols-2 items-center h-full lg:grid-cols-3 xl:max-w-[85vw]">
           <div className="flex items-center">
             <Image
               src={Logo}
@@ -48,7 +48,7 @@ function PageHeader() {
             />
           </div>
 
-          <nav className="hidden xl:flex justify-center items-center space-x-6">
+          <nav className="hidden lg:flex justify-center items-center space-x-6">
             {navItems.map(({ label, path }) => (
               <button
                 onClick={() => router.push(path)}
@@ -62,7 +62,7 @@ function PageHeader() {
 
           <div className="flex justify-end items-center space-x-8">
             {user ? (
-              <div className="relative hidden xl:flex">
+              <div className="relative hidden lg:flex">
                 <button
                   className="flex justify-center items-center bg-[#000]/10 w-16 h-16 rounded-full cursor-pointer hover:bg-[#000]/20 transition-all focus:outline-none"
                   onClick={() => setShowUserModal(!showUserModal)}
@@ -75,13 +75,13 @@ function PageHeader() {
                 )}
               </div>
             ) : (
-              <button className="hidden justify-center items-center border-2 border-[#333333] hover:bg-[#333333] hover:text-white px-12 py-3 rounded-full xl:flex transition-all active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#333333] focus:ring-offset-2" onClick={() => setShowLoginModal(true)}>
+              <button className="hidden justify-center items-center border-2 border-[#333333] hover:bg-[#333333] hover:text-white px-8 lg:px-12 py-3 rounded-full lg:flex transition-all active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#333333] focus:ring-offset-2" onClick={() => setShowLoginModal(true)}>
                 <h1 className="text-base font-semibold">Log In</h1>
               </button>
             )}
 
 
-            <div className="flex justify-end items-center xl:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            <div className="flex justify-end items-center lg:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               {mobileMenuOpen ? (
                 <i className="ri-close-line text-xl"></i>
               ) : (
@@ -92,7 +92,7 @@ function PageHeader() {
         </div>
 
         {mobileMenuOpen && (
-          <div className="xl:hidden absolute left-0 right-0 top-full bg-white z-50 shadow-xl border-t border-gray-100 rounded-b-3xl overflow-hidden pb-4 transition-all animate-in slide-in-from-top-2">
+          <div className="lg:hidden absolute left-0 right-0 top-full bg-white z-50 shadow-xl border-t border-gray-100 rounded-b-3xl overflow-hidden pb-4 transition-all animate-in slide-in-from-top-2">
             <div className="px-4 py-4 space-y-1">
 
               {/* Main Nav Items */}
@@ -152,9 +152,12 @@ function PageHeader() {
                     </button>
                   </div>
                 ) : (
-                  <div className="p-2">
+                  <div className="p-2 space-y-3">
                     <button onClick={() => { handleLoginClick(); setMobileMenuOpen(false); }} className="w-full text-center px-4 py-3.5 font-bold text-sm bg-black text-white rounded-xl shadow-lg hover:shadow-xl active:scale-95 transition-all">
-                      Log In / Sign Up
+                      Log In
+                    </button>
+                    <button onClick={() => { router.push('/signup'); setMobileMenuOpen(false); }} className="w-full text-center px-4 py-3.5 font-bold text-sm bg-white border border-gray-200 text-gray-900 rounded-xl hover:bg-gray-50 active:scale-95 transition-all">
+                      Create Account
                     </button>
                   </div>
                 )}

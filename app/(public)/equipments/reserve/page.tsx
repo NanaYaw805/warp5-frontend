@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import PageHeader from '@/components/public/PageHeader';
 import Footer from '@/components/public/Footer';
+import toast from 'react-hot-toast';
 
 
 function ReserveContent() {
@@ -13,6 +14,8 @@ function ReserveContent() {
   const searchParams = useSearchParams();
 
   const name = searchParams.get('name') || 'Unknown Equipment';
+  const equipmentId = searchParams.get('id') || '';
+  const ownerId = searchParams.get('ownerId') || '';
   const price = parseFloat(searchParams.get('price') || '0');
   const image = searchParams.get('image') || '';
   const location = searchParams.get('location') || 'Unknown Location';
@@ -44,29 +47,57 @@ function ReserveContent() {
     phone: '',
     notes: ''
   });
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
   };
 
-  const handlePaymentNavigation = () => {
+  const handleReserveAndPay = async () => {
     if (!userDetails.firstName || !userDetails.lastName || !userDetails.email || !userDetails.phone) {
       alert('Please fill in all contact information fields.');
       return;
     }
 
-    const params = new URLSearchParams({
-      name,
-      image,
-      location,
-      price: price.toString(),
-      startDate,
-      endDate,
-      total: total.toString(),
-      ...userDetails
-    });
+    setIsProcessing(true);
 
-    router.push(`/equipments/payment?${params.toString()}`);
+    try {
+      const paymentRes = await fetch('/api/payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          rentalRequestId: 1,
+          equipmentId,
+          renterId: 2,
+          ownerId,
+          email: userDetails.email,
+          amount: total,
+        })
+      });
+
+      const paymentData = await paymentRes.json();
+      console.log(paymentData);
+
+      if (!paymentRes.ok) {
+        throw new Error(paymentData.message || 'Payment initiation failed');
+      }
+
+      // Check for authorizationUrl in the response
+      const authUrl = paymentData.data?.authorizationUrl || paymentData.data?.data?.authorizationUrl;
+
+      if (authUrl) {
+        window.location.href = authUrl;
+      } else {
+        console.error('Payment Data:', paymentData);
+        throw new Error('Authorization URL not found in response');
+      }
+
+    } catch (error: any) {
+      console.error('Payment Error:', error);
+      toast.error('Payment Error: ' + (error.message || 'An unexpected error occurred'));
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -230,11 +261,21 @@ function ReserveContent() {
             </div>
 
             <button
-              onClick={handlePaymentNavigation}
-              className="w-full h-16 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white rounded-2xl font-bold text-xl transition-all shadow-xl shadow-green-600/30 active:scale-95 flex items-center justify-center gap-3"
+              onClick={handleReserveAndPay}
+              disabled={isProcessing}
+              className="w-full h-16 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 disabled:from-gray-400 disabled:to-gray-500 text-white rounded-2xl font-bold text-xl transition-all shadow-xl shadow-green-600/30 active:scale-95 flex items-center justify-center gap-3 relative overflow-hidden"
             >
-              <span>Confirm & Pay</span>
-              <i className="ri-arrow-right-line"></i>
+              {isProcessing ? (
+                <>
+                  <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  <span>Processing...</span>
+                </>
+              ) : (
+                <>
+                  <span>Confirm & Pay</span>
+                  <i className="ri-arrow-right-line"></i>
+                </>
+              )}
             </button>
 
           </div>

@@ -6,10 +6,12 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import PageHeader from '@/components/public/PageHeader';
 import Footer from '@/components/public/Footer';
 import toast from 'react-hot-toast';
+import { useUser } from '@/context/userContext';
 
 
 function ReserveContent() {
   const router = useRouter();
+  const { user } = useUser();
 
   const searchParams = useSearchParams();
 
@@ -21,6 +23,8 @@ function ReserveContent() {
   const location = searchParams.get('location') || 'Unknown Location';
   const startDate = searchParams.get('startDate') || '';
   const endDate = searchParams.get('endDate') || '';
+
+  console.log('user', user)
 
   // Calculate duration
   const start = new Date(startDate);
@@ -53,6 +57,40 @@ function ReserveContent() {
     setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
   };
 
+  const handleCreateReservation = async () => {
+    try {
+      const apiRes = await fetch(`/api/reservationRoutes`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          equipmentId,
+          equipmentName: name,
+          ownerId,
+          renterId: user?.id,
+          rentalAmount: total,
+          startDate,
+          endDate
+        })
+      })
+
+      const apiData = await apiRes.json();
+
+      if (!apiRes.ok) {
+        throw new Error(apiData.message || 'Reservation creation failed');
+      }
+
+      toast.success('Reservation created successfully');
+      return true;
+
+    } catch (error) {
+      console.error('Reservation Error:', error);
+      toast.error('Reservation Error: ' + (error || 'An unexpected error occurred'));
+      return false;
+    }
+  }
+
   const handleReserveAndPay = async () => {
     if (!userDetails.firstName || !userDetails.lastName || !userDetails.email || !userDetails.phone) {
       alert('Please fill in all contact information fields.');
@@ -62,13 +100,22 @@ function ReserveContent() {
     setIsProcessing(true);
 
     try {
+      // Step 1: Create Reservation
+      const reservationSuccess = await handleCreateReservation();
+
+      if (!reservationSuccess) {
+        // If reservation failed, stop here
+        return;
+      }
+
+      // Step 2: Initiate Payment
       const paymentRes = await fetch('/api/payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           rentalRequestId: 1,
           equipmentId,
-          renterId: 2,
+          renterId: user?.id,
           ownerId,
           email: userDetails.email,
           amount: total,

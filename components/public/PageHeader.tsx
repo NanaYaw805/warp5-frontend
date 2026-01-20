@@ -116,8 +116,6 @@ function PageHeader() {
                     {[
                       { label: 'Overview', path: '/renter/dashboard', icon: 'ri-dashboard-line' },
                       { label: 'My Reservations', path: '/renter/reservations', icon: 'ri-calendar-check-line' },
-                      { label: 'Payment', path: '/renter/payment', icon: 'ri-wallet-3-line' },
-                      { label: 'Notifications', path: '/renter/notifications', icon: 'ri-notification-3-line' },
                     ].map(({ label, path, icon }) => (
                       <button
                         key={path}
